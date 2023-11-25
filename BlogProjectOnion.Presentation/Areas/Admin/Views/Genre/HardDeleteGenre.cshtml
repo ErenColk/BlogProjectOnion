@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewData["Title"] = "HardDeleteGenre";
+}
+
+
+<div class="content">
+    <div class="container-fluid">
+        <h4 class="page-title">KATEGORİ SİLME BAŞARILI</h4>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Silme İşlemi Başarıyla Tamamlandı</div>
+                    </div>
+                    <div class="card-body">
+                        <p>Kategori başarıyla silindi.</p>
+                        <p><strong>Silinen Kategori:</strong> @Model.Name</p>
+                        <p><strong>Silme Tarihi:</strong> @DateTime.Now.ToShortDateString()</p>
+                        <a href="/Admin/Genre/Index" class="btn btn-outline-success">Ana Sayfaya Dön</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

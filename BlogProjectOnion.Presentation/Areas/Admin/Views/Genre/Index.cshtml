@@ -1,0 +1,51 @@
+﻿@using BlogProjectOnion.Application.Helper;
+@using BlogProjectOnion.Application.Models.DTOs.GenreDTOs;
+@model List<ResultGenreDTO>
+
+<div class="content">
+
+    <div class="container-fluid" >
+        <h4 class="page-title">KATEGORİ </h4>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Kategori İşlemleri</div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table mt-4">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Kategori Adı</th>
+                                    <th scope="col">Durumu</th>
+                                    @* <th scope="col">Oluşturulma Tarihi</th> *@
+                                    <th scope="col">Güncelle</th>
+                                    <th scope="col">Detaylar</th>
+                                    <th scope="col">Sil</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.Id</td>
+                                        <td>@item.Name</td>
+                                        <td>@GetEnumDescription.Description(item.Status)</td>                                        
+                                        @* <td >@item.CreatedDate.ToShortDateString()</td> *@
+                                        <td><a href="/Admin/Genre/UpdateGenre/@item.Id"  class="btn btn-outline-success">Güncelle</a></td>
+                                        <td><a href="/Admin/Genre/DetailGenre/@item.Id" class="btn btn-outline-primary">Detaylar</a></td>
+                                        <td><a href="/Admin/Genre/DeleteGenre/@item.Id" class="btn btn-outline-danger">Sil</a></td>
+                                    </tr>
+                                }
+                              
+                            </tbody>
+                        </table>
+                        <a href="/Admin/Genre/AddGenre" class="btn btn-outline-primary">Yeni Kategori Girişi </a>
+                        <a style="margin-left:10px" href="/Admin/Genre/DeletedListGenre" class="btn btn-outline-danger">Silinen Kategoriler</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,69 @@
+﻿@model BlogProjectOnion.Application.Models.DTOs.CommentDTOs.LoginAppUserDTO
+@{
+    ViewData["Title"] = "Login";
+}
+@* <h1>Login</h1>
+
+<h4>LoginAppUserDTO</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Index">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RememberMe">Beni Hatırla</label>
+                <input asp-for="RememberMe" type="checkbox" class="form-check-input"  />               
+            </div>
+            <div class="form-group" style="margin-top:10px">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+ *@
+@* @section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} *@
+
+
+<link href="~/css/login.css" rel="stylesheet" id="bootstrap-css">
+
+<div class="wrapper fadeInDown" style="margin-top:80px">
+    <div id="formContent">
+        <!-- Tabs Titles -->
+        <!-- Icon -->
+        <div class="fadeIn first" style="margin-top:10px">
+            <h3 style="font-weight: normal; color:#f8f5fc;">Giriş İşlemi</h3>
+        </div>
+
+        <!-- Login Form -->
+        <form asp-action="Index" asp-controller="Login" method="post">
+            <input type="text" asp-for="UserName" id="login" class="fadeIn second"  placeholder="Kullanıcı Adı">
+            <input type="text" asp-for="Password" id="password" class="fadeIn third"  placeholder="Parola">
+            <div class="form-group">
+                <label style="color:white" asp-for="RememberMe">Beni Hatırla</label>
+                <input asp-for="RememberMe" type="checkbox" class="form-check-input"  />
+            </div>
+            <input type="submit" class="fadeIn fourth "   value="Giriş Yap">
+        </form>
+        <!-- Remind Passowrd -->
+        <div id="formFooter">
+            <a class="underlineHover" href="#">Şifreyi mi unuttun?</a>
+        </div>
+
+    </div>
+</div>
