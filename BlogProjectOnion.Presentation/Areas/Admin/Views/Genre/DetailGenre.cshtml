@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "DetailGenre";
+}
+
+@model DetailGenreDTO
+
+<div class="content">
+
+    <div class="container-fluid">
+        <h4 class="page-title">KATEGORİ </h4>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Kategori Detayı</div>
+                    </div>
+                    <table class="table ">
+                        <tbody>
+                            <tr>
+                                <td><strong>Kategori Adı :</strong></td>
+                                <td>@Model.Name</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Durumu :</strong></td>
+                                <td>@GetEnumDescription.Description(@Model.Status)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Oluşturulma Tarihi :</strong></td>
+                                <td>@Model.CreatedDate.ToShortDateString()</td>
+                            </tr>
+                            @if (Model.UpdatedDate.Year != 0001)
+                            {
+                                <tr>
+                                    <td><strong>Güncellenme Tarihi :</strong></td>
+                                    <td>@Model.UpdatedDate.ToShortDateString()</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <div class="col-md-12" style="margin-bottom:10px">
+                        <a href="/Admin/Genre/Index" class="btn btn-outline-danger">Geri Dön </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

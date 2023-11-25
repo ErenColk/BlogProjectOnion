@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewData["Title"] = "DeleteGenre";
+}
+
+@model DetailGenreDTO
+@{
+    ViewData["Title"] = "DeleteGenre";
+}
+
+<div class="content">
+    <div class="container-fluid">
+        <h4 class="page-title">KATEGORİ SİLME </h4>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Silmek İstediğine Emin Misin ?</div>
+                    </div>
+                    <table class="table mt-4">
+                        <tbody>
+                            <tr>
+                                <td><strong>Kategori Adı :</strong></td>
+                                <td>@Model.Name</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Durumu :</strong></td>
+                                <td>@GetEnumDescription.Description(@Model.Status)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Oluşturulma Tarihi :</strong></td>
+                                <td>@Model.CreatedDate.ToShortDateString()</td>
+                            </tr>
+                            @if (Model.UpdatedDate.Year != 0001)
+                            {
+                                <tr>
+                                    <td><strong>Güncellenme Tarihi :</strong></td>
+                                    <td>@Model.UpdatedDate.ToShortDateString()</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <div class="mt-2" style="margin-left:10px;margin-bottom: 10px">
+                        <a href="/Admin/Genre/HardDeleteGenre/@Model.Id" class="btn btn-outline-danger mr-2">Sil</a>
+                        <a href="/Admin/Genre/Index" class="btn btn-outline-success">Geri Dön</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
