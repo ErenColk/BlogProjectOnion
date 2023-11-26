@@ -64,8 +64,8 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("644a4b31-042e-44e5-b47d-17c32e96db8c"),
-                            ConcurrencyStamp = "72b4e891-9b86-4bad-9518-5a81cfca176d",
+                            Id = new Guid("2e08d5ce-8b66-4b4d-99de-d320a91b1c70"),
+                            ConcurrencyStamp = "9ce3214b-d6a1-427e-9331-d73befd50734",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "User",
                             NormalizedName = "USER",
@@ -73,8 +73,17 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("3af932bc-9dfa-4c03-968c-42622002b121"),
-                            ConcurrencyStamp = "b2ad13be-7684-4254-b8b4-a24528d7c14e",
+                            Id = new Guid("6e1f8684-7b84-41eb-9567-5366d4b2a869"),
+                            ConcurrencyStamp = "719c8a09-e453-4c8f-9294-4f65ae0a7b88",
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Admin",
+                            NormalizedName = "ADMIN",
+                            Status = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("ed576c48-fdb6-4965-be01-8f5d1628af99"),
+                            ConcurrencyStamp = "00daa940-edc9-4272-b2d5-9af71863f3e6",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Author",
                             NormalizedName = "AUTHOR",
@@ -89,6 +98,9 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("AuthorId")
                         .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -155,6 +167,8 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                         .HasAnnotation("MinLength", 5);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -324,6 +338,9 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                     b.Property<int>("AuthorId")
                         .HasColumnType("int");
 
+                    b.Property<int>("ClickCount")
+                        .HasColumnType("int");
+
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -462,6 +479,15 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("BlogProjectOnion.Domain.Entities.AppUser", b =>
+                {
+                    b.HasOne("BlogProjectOnion.Domain.Entities.Author", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId");
+
+                    b.Navigation("Author");
                 });
 
             modelBuilder.Entity("BlogProjectOnion.Domain.Entities.Comment", b =>

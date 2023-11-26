@@ -4,6 +4,7 @@ using BlogProjectOnion.Application.Models.DTOs.CommentDTOs;
 using BlogProjectOnion.Application.Models.DTOs.GenreDTOs;
 using BlogProjectOnion.Application.Models.DTOs.PostDTOs;
 using BlogProjectOnion.Application.Models.VMs;
+using BlogProjectOnion.Application.Models.VMs.PostVMs;
 using BlogProjectOnion.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -40,11 +41,12 @@ namespace BlogProjectOnion.Application.AutoMapper
 
 
             CreateMap<Post,CreatePostDTO>().ReverseMap();
+            CreateMap<Post,ResultPostDTO>().ReverseMap();
             CreateMap<Post,UpdatePostDTO>().ReverseMap();
             CreateMap<Post,PostGetVM>().ReverseMap();
-            CreateMap<Post,PostDetailVM>().ReverseMap();
             CreateMap<Post,PostVMT>().ReverseMap();
             CreateMap<Post,PostVM>().ReverseMap();
+            CreateMap<Post,CreatePostVM>().ReverseMap();
 
             CreateMap<Genre,CreateGenreDTO>().ReverseMap();
             CreateMap<Genre,UpdateGenreDTO>().ReverseMap();

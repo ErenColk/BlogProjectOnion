@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogProjectOnion.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231122110041_initial")]
-    partial class initial
+    [Migration("20231126165004_initial2")]
+    partial class initial2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -66,8 +66,8 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("644a4b31-042e-44e5-b47d-17c32e96db8c"),
-                            ConcurrencyStamp = "72b4e891-9b86-4bad-9518-5a81cfca176d",
+                            Id = new Guid("def26d1f-8d0d-4254-803e-45d139be5531"),
+                            ConcurrencyStamp = "4d29037e-ade7-4017-a57a-71c1c66d0213",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "User",
                             NormalizedName = "USER",
@@ -75,8 +75,17 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("3af932bc-9dfa-4c03-968c-42622002b121"),
-                            ConcurrencyStamp = "b2ad13be-7684-4254-b8b4-a24528d7c14e",
+                            Id = new Guid("180308fd-278d-42fb-bd4d-4377eac63ae9"),
+                            ConcurrencyStamp = "50b18d2c-fe96-4d6f-8a78-919d2e09e0d5",
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Admin",
+                            NormalizedName = "ADMIN",
+                            Status = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("3475ff01-ab15-4260-8dce-3df48a4932c8"),
+                            ConcurrencyStamp = "67ec199d-6cf8-4bd3-ab98-eeb11e75994c",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Author",
                             NormalizedName = "AUTHOR",
@@ -91,6 +100,9 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("AuthorId")
                         .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -157,6 +169,8 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                         .HasAnnotation("MinLength", 5);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -326,6 +340,9 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                     b.Property<int>("AuthorId")
                         .HasColumnType("int");
 
+                    b.Property<int>("ClickCount")
+                        .HasColumnType("int");
+
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -464,6 +481,15 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("BlogProjectOnion.Domain.Entities.AppUser", b =>
+                {
+                    b.HasOne("BlogProjectOnion.Domain.Entities.Author", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId");
+
+                    b.Navigation("Author");
                 });
 
             modelBuilder.Entity("BlogProjectOnion.Domain.Entities.Comment", b =>

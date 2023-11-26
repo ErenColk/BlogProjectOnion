@@ -1,0 +1,83 @@
+﻿@{
+    ViewData["Title"] = "DetailPost";
+}
+
+@model PostDetailVM
+<div class="content">
+    <div class="container-fluid">
+        <h4 class="page-title">MAKALE </h4>
+        <div class="row">
+            <div class="col-md-">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Makale Detayı</div>
+                    </div>
+                    <table class="table ">
+                        <tbody>
+                            <tr>
+                                <td><strong>Yazar Adı :</strong></td>
+                                <td>@Model.Author.FirstName  @Model.Author.LastName</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Makale Başlığı :</strong></td>
+                                <td>@Model.Title</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Kategorisi:</strong></td>
+                                <td>@Model.Genre.Name</td>
+                            </tr>
+                            <tr>
+                                <td><strong>İçerik :</strong></td>
+                                <td>@Model.Content</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Beğenilme Sayısı :</strong></td>
+                                <td>@Model.Likes.Count</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tıklanma Sayısı:</strong></td>
+                                <td>@Model.ClickCount</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Durumu :</strong></td>
+                                <td>@GetEnumDescription.Description(@Model.Status)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Yapılan Yorumlar :</strong></td>
+                                <td><a class="btn btn-outline-success" onclick="ViewComments(@Model.Id)" style="padding:7px">Görmek İçin Tıkla</a></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Oluşturulma Tarihi :</strong></td>
+                                <td>@Model.CreatedDate.ToShortDateString()</td>
+                            </tr>
+                            @if (Model.UpdatedDate.HasValue)
+                            {
+                                <tr>
+                                    <td><strong>Güncellenme Tarihi :</strong></td>
+                                    <td>@Model.UpdatedDate.Value</td>
+                                </tr>
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td><strong>Güncellenme Tarihi :</strong></td>
+                                    <td>Güncelleme Yapılmadı</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <div class="col-md-12" style="margin-bottom:10px">
+                        <a href="/Admin/Post/PostList" class="btn btn-outline-danger">Geri Dön </a>
+                        <a href="/Admin/Post/PostList" class="btn btn-outline-primary">Makale İçeriği İçin Tıklayınız </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="CommentsView">
+
+
+</div>
+

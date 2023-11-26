@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Security.Cryptography.X509Certificates;
@@ -73,27 +74,27 @@ namespace BlogProjectOnion.Infrastructure.Repositories
 
         public async Task<T> GetById(int id)
         {
-            return  await _table.FindAsync(id);
+            return await _table.FindAsync(id);
         }
 
-        public async Task<T> GetDefault(Expression<Func<T, bool>> expression )
+        public async Task<T> GetDefault(Expression<Func<T, bool>> expression = null)
         {
-
-            return await _table.FirstOrDefaultAsync(expression);
+              
+                return await _table.FirstOrDefaultAsync(expression);
 
         }
 
         public async Task<List<T>> GetDefaults(Expression<Func<T, bool>> expression = null)
         {
-            if(expression == null)
+            if (expression == null)
             {
                 return _table.ToList();
             }
             else
-            return _table.Where(expression).ToList();
+                return _table.Where(expression).ToList();
         }
 
-        public async Task<TResult> GetFilteredFirstOrDefault<TResult>(Expression<Func<T, TResult>> select, Expression<Func<T, bool>> where, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null)
+        public async Task<TResult> GetFilteredFirstOrDefault<TResult>(Expression<Func<T, TResult>> select = null, Expression<Func<T, bool>> where = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null)
         {
 
             IQueryable<T> query = _context.Set<T>();  // SELECT * FROM Post gibi...
@@ -120,7 +121,7 @@ namespace BlogProjectOnion.Infrastructure.Repositories
 
         }
 
-        public async Task<List<TResult>> GetFilteredList<TResult>(Expression<Func<T, TResult>> select, Expression<Func<T, bool>> where, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null)
+        public async Task<List<TResult>> GetFilteredList<TResult>(Expression<Func<T, TResult>> select = null, Expression<Func<T, bool>> where = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null)
         {
 
             IQueryable<T> query = _table; // SELECT * FROM Post gibi...

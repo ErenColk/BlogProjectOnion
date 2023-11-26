@@ -1,0 +1,25 @@
+﻿@using BlogProjectOnion.Application.Models.VMs.PostVMs;
+@model List<PostDetailCommentVM>
+    @foreach (var item in Model)
+{
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title h5">YORUM  : @item.Comment.Content </div>
+            </div>
+            <div class="card-body">
+                @if (Model != null)
+                {
+                    <div class="mb-3">
+                        <strong>Yorumu Yapan</strong>
+                        <div>ID: @item.Comment.AppUser.Id</div>
+                        <div>Kullanıcı Adı: @item.Comment.AppUser.UserName</div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+}
+

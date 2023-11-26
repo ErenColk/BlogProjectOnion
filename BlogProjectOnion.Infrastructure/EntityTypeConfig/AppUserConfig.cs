@@ -13,11 +13,11 @@ namespace BlogProjectOnion.Infrastructure.EntityTypeConfig
     {
         public override void Configure(EntityTypeBuilder<AppUser> builder)
         {
-            builder.HasKey(x => x.Id);
+            
             builder.Property(x => x.UserName).IsRequired(true).HasMaxLength(30).HasAnnotation("MinLength", 5); ;
             builder.Property(x=> x.Email).IsRequired(true);
             builder.Property(x => x.ImagePath).HasMaxLength(255).IsRequired(false);
-
+     
             base.Configure(builder);
         }
 

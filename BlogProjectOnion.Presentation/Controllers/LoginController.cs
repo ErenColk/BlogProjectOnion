@@ -35,13 +35,26 @@ namespace BlogProjectOnion.Presentation.Controllers
             Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(user, loginAppUser.Password, loginAppUser.RememberMe, false);
             if (result.Succeeded)
             {
+                bool isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+                if( isAdmin)
+                {
+                return RedirectToAction("Index", "Home", new { area = "Admin" });
+
+                }
+                else
                 return RedirectToAction("Index", "Home");
             }
             else
                 return View();        
+
+
+            
         }
         public async Task<IActionResult> Logout()
         {
+            //SİLİNECEK
+            //AppUser ıd = await _userManager.GetUserAsync(HttpContext.User);
+
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }

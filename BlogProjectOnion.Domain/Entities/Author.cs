@@ -27,8 +27,6 @@ namespace BlogProjectOnion.Domain.Entities
         [NotMapped] // DB' de yer almayacak
         public IFormFile UploadPath { get; set; }
 
-
-
         //Navigation Properties
         public List<Post> Posts { get; set; }
     }

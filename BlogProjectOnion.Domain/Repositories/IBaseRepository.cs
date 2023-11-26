@@ -19,13 +19,14 @@ namespace BlogProjectOnion.Domain.Repositories
         Task<bool> Any(Expression<Func<T, bool>> expression); // Bir kayıt varsa true yoksa false dönecek.
         Task<T> GetDefault(Expression<Func<T, bool>> expression); // Dinamik olarak where filtre işlemi sağlar. Id'ye göre getir gibi...
         Task<T> GetById(int id);
-        Task<List<T>> GetDefaults(Expression<Func<T, bool>> expression); // Kategorisi = 5 olan postların gelmesini sağlamak gibi...
+        Task<List<T>> GetDefaults(Expression<Func<T, bool>> expression = null); // Kategorisi = 5 olan postların gelmesini sağlamak gibi...
 
+        
         // Hem Select hem de orderby işlemini yapabileceğimiz, Post, Yazar, Comment, Like'ları bir arada çekebileceğimiz include işlemini yapabileceğimiz bir metot gerekir. Bir sorgunun içine birden fazla tablo girecek demektir. Eager Loading kullanacağız.
 
         Task<TResult> GetFilteredFirstOrDefault<TResult>(
-            Expression<Func<T, TResult>> select, // select işlemi
-            Expression<Func<T, bool>> where, // Where işlemi
+            Expression<Func<T, TResult>> select = null, // select işlemi
+            Expression<Func<T, bool>> where = null, // Where işlemi
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, // Sıralama işlemi
             Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null // Join işlemi            
             );
@@ -33,8 +34,8 @@ namespace BlogProjectOnion.Domain.Repositories
         // Backend' e bir Stored Procedure yazacakmışız gibi bir çalışma  yapıyoruz. Eager Loading'e göre Include (join) , Order By, Where, Select işlemleri yapıyoruz.
 
         Task<List<TResult>> GetFilteredList<TResult>(
-              Expression<Func<T, TResult>> select, // select işlemi
-              Expression<Func<T, bool>> where, // Where işlemi
+              Expression<Func<T, TResult>> select = null, // select işlemi
+              Expression<Func<T, bool>> where = null, // Where işlemi
               Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, // sırlama işlemi
               Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null // Join işlemi
               );

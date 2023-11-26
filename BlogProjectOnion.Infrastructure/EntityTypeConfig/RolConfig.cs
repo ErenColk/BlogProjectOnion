@@ -12,7 +12,6 @@ namespace BlogProjectOnion.Infrastructure.EntityTypeConfig
 {
     public class RolConfig : IEntityTypeConfiguration<AppRole>
     {
-
         public void Configure(EntityTypeBuilder<AppRole> builder)
         {
             builder.HasData(
@@ -22,12 +21,19 @@ namespace BlogProjectOnion.Infrastructure.EntityTypeConfig
                     Name = "User",
                     NormalizedName = "USER"
                 },
-                 new AppRole
-                 {
-                     Id = Guid.NewGuid(),
-                     Name = "Author",
-                     NormalizedName = "AUTHOR"
-                 });
+                     new AppRole
+                     {
+                         Id = Guid.NewGuid(),
+                         Name = "Admin",
+                         NormalizedName = "ADMIN"
+                     },
+            new AppRole
+            {
+                Id = Guid.NewGuid(),
+                Name = "Author",
+                NormalizedName = "AUTHOR"
+            });
+
         }
     }
 }
