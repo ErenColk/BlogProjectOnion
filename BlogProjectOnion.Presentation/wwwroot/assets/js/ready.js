@@ -55,3 +55,20 @@ $('[data-select="checkbox"]').change(function(){
 })
 
 });
+
+function ViewComments(id) {
+	debugger
+	console.log('Yorumlarý görüntüle:', id);
+	$.ajax({
+		url: "Admin/Post/PostDetailComments/" + id,
+		type: "GET",
+
+		success: function (response) {
+
+			$("#commentsView").html(response)
+
+		}
+
+
+	})
+}

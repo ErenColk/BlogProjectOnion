@@ -8,8 +8,10 @@ using BlogProjectOnion.Domain.Entities;
 using BlogProjectOnion.Domain.Repositories;
 using BlogProjectOnion.Infrastructure.Context;
 using BlogProjectOnion.Infrastructure.Repositories;
+using BlogProjectOnion.Infrastructure.SeedData;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BlogProjectOnion.Presentation
 {
@@ -39,6 +41,8 @@ namespace BlogProjectOnion.Presentation
 
             builder.Services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
       
+            builder.Services.AddTransient<IAppUserService,AppUserManager>();
+            builder.Services.AddTransient<IAppUserRepository,AppUserRepository>();
             builder.Services.AddTransient<IAuthorRepository,AuthorRepository>();
             builder.Services.AddTransient<ICommentRepository,CommentRepository>();
             builder.Services.AddTransient<IGenreRepository,GenreRepository>();
@@ -51,17 +55,20 @@ namespace BlogProjectOnion.Presentation
             builder.Services.AddTransient<ILikeService, LikeManager>();
             builder.Services.AddTransient<IPostService, PostManager>();
 
-            builder.Services.ConfigureApplicationCookie(options =>
-            {
-                options.ExpireTimeSpan = TimeSpan.FromDays(7);
-                options.AccessDeniedPath = "/Home/Index";
-                options.LoginPath = "/Login/Index";
 
-            });
 
             var app = builder.Build();
 
+            //SEEDDATA ADMÝN 
+            var serviceScope = app.Services.CreateScope();
+            AppDbContext _context =  serviceScope.ServiceProvider.GetService<AppDbContext>()!;
+            UserManager<AppUser> userManager = serviceScope.ServiceProvider.GetService<UserManager<AppUser>>()!;
+            RoleManager<AppRole> roleManager = serviceScope.ServiceProvider.GetService<RoleManager<AppRole>>()!;
+
+            AdminSeedData.Seed(userManager, roleManager, _context);
             // Configure the HTTP request pipeline.
+
+
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");

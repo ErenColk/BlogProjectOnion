@@ -22,15 +22,15 @@ namespace BlogProjectOnion.Application.Services.Abstract
         Task<List<T>> TGetDefaults(Expression<Func<T, bool>> expression = null);
 
         Task<TResult> TGetFilteredFirstOrDefault<TResult>(
-            Expression<Func<T, TResult>> select, 
-            Expression<Func<T, bool>> where, 
+            Expression<Func<T, TResult>> select = null, 
+            Expression<Func<T, bool>> where = null, 
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, 
             Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null         
             );
 
         Task<List<TResult>> TGetFilteredList<TResult>(
-              Expression<Func<T, TResult>> select, 
-              Expression<Func<T, bool>> where, 
+              Expression<Func<T, TResult>> select = null, 
+              Expression<Func<T, bool>> where = null, 
               Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, 
               Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null 
               );

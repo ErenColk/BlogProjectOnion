@@ -1,4 +1,5 @@
 ﻿using BlogProjectOnion.Application.Models.VMs;
+using BlogProjectOnion.Domain.Entities;
 using BlogProjectOnion.Domain.Enums;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BlogProjectOnion.Application.Models.DTOs.PostDTOs
 {
-    public class UpdatePostDTO
+    public class UpdatePostDTO : IUploadImagePath
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -22,7 +23,7 @@ namespace BlogProjectOnion.Application.Models.DTOs.PostDTOs
         public int GenreId { get; set; }
 
         // Author ve Genre VM Listeleri dolduracak. 
-        public List<AuthorVM> Authors { get; set; }
-        public List<GenreVM> Genres { get; set; }
+        public List<Author> Authors { get; set; }
+        public List<Genre> Genres { get; set; }
     }
 }

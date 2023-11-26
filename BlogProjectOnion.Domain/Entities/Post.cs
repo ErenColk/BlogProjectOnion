@@ -16,8 +16,10 @@ namespace BlogProjectOnion.Domain.Entities
             Likes = new List<Like>();
             Comments = new List<Comment>();
         }
+        public int Id { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
+        public int ClickCount { get; set; }
         public string ImagePath { get; set; }
         [NotMapped] // DB' de yer almayacak
         public IFormFile UploadPath { get; set; }
@@ -30,8 +32,7 @@ namespace BlogProjectOnion.Domain.Entities
         public Genre Genre { get; set; }
 
         public List<Comment> Comments { get; set; }
-        public List<Like> Likes { get; set; }
-        public int Id { get ; set ; }
+        public List<Like> Likes { get; set; }      
         public DateTime CreatedDate { get ; set ; }
         public DateTime? UpdatedDate { get ; set ; }
         public DateTime? DeletedDate { get ; set ; }
