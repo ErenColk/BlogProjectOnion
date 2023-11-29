@@ -64,8 +64,8 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("2e08d5ce-8b66-4b4d-99de-d320a91b1c70"),
-                            ConcurrencyStamp = "9ce3214b-d6a1-427e-9331-d73befd50734",
+                            Id = new Guid("0663ae62-7880-4fd1-9c7b-2f440db3ef74"),
+                            ConcurrencyStamp = "042392f8-befa-4819-ad90-fd3a6a691641",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "User",
                             NormalizedName = "USER",
@@ -73,8 +73,8 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("6e1f8684-7b84-41eb-9567-5366d4b2a869"),
-                            ConcurrencyStamp = "719c8a09-e453-4c8f-9294-4f65ae0a7b88",
+                            Id = new Guid("f2f56c70-009b-430f-80e4-5ef9a625f013"),
+                            ConcurrencyStamp = "2cef5980-e7a9-48eb-9028-1fa185b7d7f5",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Admin",
                             NormalizedName = "ADMIN",
@@ -82,8 +82,8 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("ed576c48-fdb6-4965-be01-8f5d1628af99"),
-                            ConcurrencyStamp = "00daa940-edc9-4272-b2d5-9af71863f3e6",
+                            Id = new Guid("5ae3e391-a7b5-46b9-8103-6cfdfddd939e"),
+                            ConcurrencyStamp = "c3627fe1-3758-4ee2-bcba-d9c4e1f17a41",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Author",
                             NormalizedName = "AUTHOR",
@@ -361,6 +361,10 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<string>("SubTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(150)
@@ -495,13 +499,13 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                     b.HasOne("BlogProjectOnion.Domain.Entities.AppUser", "AppUser")
                         .WithMany("Comments")
                         .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("BlogProjectOnion.Domain.Entities.Post", "Post")
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("AppUser");
@@ -514,13 +518,13 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                     b.HasOne("BlogProjectOnion.Domain.Entities.AppUser", "AppUser")
                         .WithMany("Likes")
                         .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("BlogProjectOnion.Domain.Entities.Post", "Post")
                         .WithMany("Likes")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("AppUser");

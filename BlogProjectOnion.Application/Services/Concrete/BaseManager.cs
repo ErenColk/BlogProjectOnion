@@ -20,6 +20,11 @@ namespace BlogProjectOnion.Application.Services.Concrete
             _baseRepository = baseRepository;
         }
 
+        public Task<bool> DefaultUpdate(T entity)
+        {
+            return _baseRepository.DefaultUpdate(entity);
+        }
+
         public async Task<T> GetById(int id)
         {
             if (id <= 0)

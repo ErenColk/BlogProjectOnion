@@ -14,6 +14,8 @@ namespace BlogProjectOnion.Application.Services.Abstract
 
         Task<bool> TCreate(T entity);
         Task<bool> TUpdate(T entity);
+        Task<bool> DefaultUpdate(T entity);
+
         Task<bool> TDelete(T entity); 
         Task<bool> TAny(Expression<Func<T, bool>> expression); 
         Task<T> TGetDefault(Expression<Func<T, bool>> expression);

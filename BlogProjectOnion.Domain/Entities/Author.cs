@@ -22,7 +22,6 @@ namespace BlogProjectOnion.Domain.Entities
         public Status Status { get; set; }
         public string  FirstName { get; set; }
         public string LastName { get; set; }
-
         public string ImagePath { get; set; }
         [NotMapped] // DB' de yer almayacak
         public IFormFile UploadPath { get; set; }

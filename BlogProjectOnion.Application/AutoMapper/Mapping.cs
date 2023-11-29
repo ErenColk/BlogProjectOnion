@@ -4,6 +4,7 @@ using BlogProjectOnion.Application.Models.DTOs.CommentDTOs;
 using BlogProjectOnion.Application.Models.DTOs.GenreDTOs;
 using BlogProjectOnion.Application.Models.DTOs.PostDTOs;
 using BlogProjectOnion.Application.Models.VMs;
+using BlogProjectOnion.Application.Models.VMs.AuthorVMs;
 using BlogProjectOnion.Application.Models.VMs.PostVMs;
 using BlogProjectOnion.Domain.Entities;
 using System;

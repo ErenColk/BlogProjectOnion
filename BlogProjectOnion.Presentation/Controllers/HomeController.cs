@@ -1,4 +1,7 @@
-﻿using BlogProjectOnion.Presentation.Models;
+﻿using AutoMapper;
+using BlogProjectOnion.Application.Models.VMs;
+using BlogProjectOnion.Application.Services.Abstract;
+using BlogProjectOnion.Presentation.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -7,15 +10,20 @@ namespace BlogProjectOnion.Presentation.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IPostService _postService;
+        private readonly IMapper _mapper;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger,IPostService postService,IMapper mapper)
         {
             _logger = logger;
+            _postService = postService;
+            _mapper = mapper;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            List<PostVM> postVm = _mapper.Map<List<PostVM>>(await _postService.TGetDefaults()).OrderByDescending(x=> x.ClickCount).Take(10).ToList();
+            return View(postVm);
         }
 
         public IActionResult Privacy()

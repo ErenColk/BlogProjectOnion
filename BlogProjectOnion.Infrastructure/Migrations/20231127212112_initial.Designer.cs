@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogProjectOnion.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231126165004_initial2")]
-    partial class initial2
+    [Migration("20231127212112_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -66,8 +66,8 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("def26d1f-8d0d-4254-803e-45d139be5531"),
-                            ConcurrencyStamp = "4d29037e-ade7-4017-a57a-71c1c66d0213",
+                            Id = new Guid("0663ae62-7880-4fd1-9c7b-2f440db3ef74"),
+                            ConcurrencyStamp = "042392f8-befa-4819-ad90-fd3a6a691641",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "User",
                             NormalizedName = "USER",
@@ -75,8 +75,8 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("180308fd-278d-42fb-bd4d-4377eac63ae9"),
-                            ConcurrencyStamp = "50b18d2c-fe96-4d6f-8a78-919d2e09e0d5",
+                            Id = new Guid("f2f56c70-009b-430f-80e4-5ef9a625f013"),
+                            ConcurrencyStamp = "2cef5980-e7a9-48eb-9028-1fa185b7d7f5",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Admin",
                             NormalizedName = "ADMIN",
@@ -84,8 +84,8 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("3475ff01-ab15-4260-8dce-3df48a4932c8"),
-                            ConcurrencyStamp = "67ec199d-6cf8-4bd3-ab98-eeb11e75994c",
+                            Id = new Guid("5ae3e391-a7b5-46b9-8103-6cfdfddd939e"),
+                            ConcurrencyStamp = "c3627fe1-3758-4ee2-bcba-d9c4e1f17a41",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Author",
                             NormalizedName = "AUTHOR",
@@ -363,6 +363,10 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<string>("SubTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(150)
@@ -497,13 +501,13 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                     b.HasOne("BlogProjectOnion.Domain.Entities.AppUser", "AppUser")
                         .WithMany("Comments")
                         .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("BlogProjectOnion.Domain.Entities.Post", "Post")
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("AppUser");
@@ -516,13 +520,13 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                     b.HasOne("BlogProjectOnion.Domain.Entities.AppUser", "AppUser")
                         .WithMany("Likes")
                         .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("BlogProjectOnion.Domain.Entities.Post", "Post")
                         .WithMany("Likes")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("AppUser");

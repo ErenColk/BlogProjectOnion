@@ -14,6 +14,7 @@ namespace BlogProjectOnion.Application.Models.VMs.PostVMs
     public class CreatePostVM : IUploadImagePath
     {
         public string Title { get; set; }
+        public string SubTitle { get; set; }
         public string Content { get; set; }
         public string ImagePath { get; set; }
         public IFormFile UploadPath { get; set; }

@@ -1,4 +1,5 @@
 ﻿using BlogProjectOnion.Application.Models.VMs;
+using BlogProjectOnion.Application.Models.VMs.AuthorVMs;
 using BlogProjectOnion.Domain.Enums;
 using Microsoft.AspNetCore.Http;
 using System;

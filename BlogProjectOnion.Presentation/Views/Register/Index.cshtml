@@ -4,64 +4,6 @@
     ViewData["Title"] = "Register";
 }
 @* 
-<h1>Register</h1>
-
-<h4>RegisterAppUserDTO</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Index" asp-controller="Register" method="post" enctype="multipart/form-data">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ConfirmPassword" class="control-label"></label>
-                <input asp-for="ConfirmPassword" class="form-control" />
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UploadPath" class="control-label"></label>
-                <input asp-for="UploadPath" type="file" class="form-control" />
-                <span asp-validation-for="UploadPath" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-
-
-
-
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
- *@
-@* @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
- *@
-
 <section class="vh-100" style="background-color: #eee; margin-top:80px">
     <div class="container h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
@@ -132,4 +74,72 @@
             </div>
         </div>
     </div>
+</section> *@
+
+<section class="vh-100 bg-image"
+         style="background-image: url('/assets/img/register.jpg');">
+    <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+        <div class="container h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                    <div class="card" style="border-radius: 15px;">
+                        <div class="card-body p-3">
+                            <h2 class="text-uppercase text-center mb-5">KAYIT OL</h2>
+                            <form>
+                                <div class="form-outline mb-2">
+                                    <label class="form-label" for="form3Example1cg">Adınız</label>
+                                    <input type="text" id="form3Example1cg" class="form-control form-control-lg" />
+                                </div>
+
+                                <div class="form-outline mb-2">
+                                    <label class="form-label" for="form3Example3cg">Mail Adresiniz</label>
+                                    <input type="email" id="form3Example3cg" placeholder="Mail Adresi" class="form-control form-control-lg" />
+                                </div>
+
+                                <div class="form-outline mb-2">
+                                    <label class="form-label" for="form3Example4cg">Parola</label>
+                                    <input type="password" id="form3Example4cg" class="form-control form-control-lg" />
+                                </div>
+
+                                <div class="form-outline mb-2">
+                                    <label class="form-label" for="form3Example4cdg">Parola Tekrarı</label>
+                                    <input type="password" id="form3Example4cdg" class="form-control form-control-lg" />
+                                </div>
+                                <div class="form-check d-flex  mb-4">
+                                    <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3cg" />
+                                    <label class="form-check-label" for="form2Example3g">
+                                        Beni Hatırla <a href="#!" class="text-body"><u>Terms of service</u></a>
+                                    </label>
+                                </div>
+
+                                <div class="d-flex justify-content-center">
+                                    <button type="button"
+                                            class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">
+                                        Kayıt
+                                    </button>
+                                </div>
+
+                                <p  class="text-center text-muted mt-5 mb-0">
+                                  Hazırda Bir Üyeliğiniz Var Mı? <a href="#!" 
+                                                                class="fw-bold text-body"><u style="color:white">Giriş Yap</u></a>
+                                </p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
+
+
+<style>
+    .card {
+        border-radius: 15px;
+        background-color: #212229; /* Koyu arka plan rengi */
+        opacity: 0.9; /* Saydamlık değeri (0 ile 1 arasında bir değer) */
+        color: #ffffff; /* Metin rengi beyaz */
+        padding: 15px; /* İsteğe bağlı: içeriği biraz içeri çekmek için bir iç kenarlık ekleyebilirsiniz */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Yumuşak bir gölge efekti ekler */
+    }
+</style>

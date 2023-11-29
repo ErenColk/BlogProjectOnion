@@ -41,6 +41,7 @@ namespace BlogProjectOnion.Presentation.Areas.Admin.Controllers
              {
                  Id = x.Id,
                  Title = x.Title,
+                  SubTitle = x.SubTitle,
                  Genre = x.Genre,
                  Content = x.Content,
                  Likes = x.Likes,
@@ -124,6 +125,7 @@ namespace BlogProjectOnion.Presentation.Areas.Admin.Controllers
              {
                  Id = x.Id,
                  Title = x.Title,
+                 SubTitle = x.SubTitle,
                  Genre = x.Genre,
                  Content = x.Content,
                  Likes = x.Likes,
@@ -184,7 +186,6 @@ namespace BlogProjectOnion.Presentation.Areas.Admin.Controllers
                 ResultPostDTO deletePost = _mapper.Map<ResultPostDTO>(post);
                 return View(deletePost);
             }
-
         }
 
         [HttpGet]
@@ -229,7 +230,7 @@ namespace BlogProjectOnion.Presentation.Areas.Admin.Controllers
                 if (updatePost.UploadPath != null)
                 {
                     var oldImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/", post.ImagePath);
-               
+
                     if (System.IO.File.Exists(oldImagePath))
                     {
                         System.IO.File.Delete(oldImagePath);

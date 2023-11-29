@@ -1,8 +1,9 @@
-﻿@{
+﻿@using BlogProjectOnion.Application.Models.VMs;
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<header class="masthead" style="background-image: url('assets/img/home-bg.jpg')">
+<header class="masthead" style="background-image: url('/assets/img/home-bg.jpg')">
     <div class="container position-relative px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
@@ -16,3 +17,79 @@
         </div>
     </div>
 </header>
+
+@model List<PostVM>
+<div class="read px-4 px-lg-5">
+    <!-- Most Read Section -->
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            <h2 class="text-center mb-4">En Çok Okunanlar</h2>
+        </div>
+    </div>
+</div>
+
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            <!-- Filters -->
+            <div class="d-flex justify-content-between mb-4">
+                <div class="filter-group d-flex align-items-center">
+                    <label for="sortBy" class="mr-2">Sırala:</label>
+                    <select class="selectpicker">
+                        <option>Okunan Artan</option>
+                        <option>Okunan Azalan</option>
+                    </select>
+                </div>
+                <div class="filter-group d-flex align-items-center">
+                    <label for="filterByLetter" class="mr-2">Ara:</label>
+                    <input type="text" id="filterByLetter" class="form-control" maxlength="1">
+                </div>
+            </div>
+            <!-- Post preview-->
+            @foreach (var item in Model)
+            {
+                <div class="post-preview">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <a href="/Post/Index/@item.Id">
+                                <h2 class="post-title">@item.Title</h2>
+                                @Html.Raw("<div class='custom-font'>" + item.SubTitle + "</div>")
+                            </a>
+                            <p class="post-meta">
+                                Posted by
+                                <a href="#!">@item.Author</a>
+                                on @item.CreatedDate.ToShortDateString()
+                            </p>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-eye mr-1"></i>
+                            <span class="post-view-counter">@item.ClickCount</span>
+                        </div>
+                    </div>
+                    <hr class="my-4" />
+                </div>
+            }
+            <!-- Divider-->
+          
+            <!-- Pager-->
+            <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Older Posts →</a></div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .read {
+        background-color: rgba(255, 165, 0, 0.8); /* Turuncu tonları ve 0.8 opaklık */
+    }
+
+
+    .custom-font {
+        font-family: 'Arial', sans-serif; /* Özel yazı tipi tanımı */
+        font-size: 16px; /* Yazı tipi boyutu */
+        font-weight: bold; /* Yazı tipi kalınlığı */
+        /* Diğer stil özellikleri... */
+    }
+
+</style>
+
+

@@ -18,5 +18,13 @@ body {
 }
 
 
+.post-view-counter {
+    margin-left: 5px;
+}
+
+.fa-eye {
+    color: #007bff; /* You can change the color as needed */
+}
+
 
 

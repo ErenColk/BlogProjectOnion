@@ -44,16 +44,11 @@ namespace BlogProjectOnion.Infrastructure.Repositories
             }
             catch (Exception)
             {
-
                 return false;
             }
-
-
-
-
-
         }
 
+  
         public async Task<bool> Delete(T entity)
         {
             try
@@ -147,6 +142,12 @@ namespace BlogProjectOnion.Infrastructure.Repositories
 
             return result;
 
+        }
+        public async Task<bool> DefaultUpdate(T entity)
+        {
+            _table.Update(entity);
+
+            return await _context.SaveChangesAsync() > 0;
         }
 
 
