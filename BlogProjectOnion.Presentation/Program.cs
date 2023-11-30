@@ -55,7 +55,13 @@ namespace BlogProjectOnion.Presentation
             builder.Services.AddTransient<ILikeService, LikeManager>();
             builder.Services.AddTransient<IPostService, PostManager>();
 
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.ExpireTimeSpan = TimeSpan.FromDays(7);
+                options.AccessDeniedPath = "/Home/Index";
+                options.LoginPath = "/Login/Index";
 
+            });
 
             var app = builder.Build();
 

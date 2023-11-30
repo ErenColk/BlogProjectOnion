@@ -58,7 +58,11 @@ namespace BlogProjectOnion.Application.Services.Concrete
 
             if(result.Succeeded)
             {
+                if(model.Role == 1)
+                await _userManager.AddToRoleAsync(user, "Author");
+                else if(model.Role == 2)
                 await _userManager.AddToRoleAsync(user, "User");
+
                 await _signInManager.SignInAsync(user, isPersistent: false); // eger kayıt olabildiyse direkt olarak signin olmasını saglayacak
 
             }

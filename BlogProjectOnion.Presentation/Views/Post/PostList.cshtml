@@ -1,0 +1,190 @@
+﻿@using BlogProjectOnion.Application.Models.VMs;
+
+
+@{
+    ViewData["Title"] = "PostList";
+}
+@model List<PostVM>
+
+
+
+<section class="dark">
+    <div class="container py-4">
+        <h1 class="h1 text-center" id="pageHeaderTitle">MAKALELER</h1>
+        @foreach (var item in Model)
+        {
+            @if (ViewData["renk"] == "blue")
+            {
+
+                ViewData["renk"] = "red";
+
+                <article class="postcard dark blue">
+                    <a class="postcard__img_link" href="~/Post/Index/@item.Id">
+                        @if (item.ImagePath == "" || item.ImagePath == null)
+                        {
+                            <img class="postcard__img" src="~/assets/img/defaultPost.jpg" alt="Image Title" />
+                        }
+                        else
+                        {
+                            <img class="postcard__img" src="/@item.ImagePath" alt="Image Title" />
+
+                        }
+                    </a>
+                    <div class="postcard__text">
+                        <h1 class="postcard__title blue"><a href="~/Post/Index/@item.Id">@item.Title</a></h1>
+                        <h6 style="font-weight:normal;">Yazar : @item.Author.FirstName @item.Author.LastName</h6>
+                        <div class="postcard__subtitle small">
+                            <time datetime="2020-05-25 12:00:00">
+                                <i class="fas fa-calendar-alt mr-2"></i>  @item.CreatedDate.ToShortDateString()
+                            </time>
+                        </div>
+                        <div class="postcard__bar"></div>
+                        @if (item.Content.Length >= 350)
+                        {
+                            <div class="postcard__preview-txt">@Html.Raw(@item.Content.Substring(0,350))...</div>
+
+                        }
+                        else
+                        {
+                            <div class="postcard__preview-txt">@Html.Raw(@item.Content)</div>
+
+                        }                     
+                        <ul class="postcard__tagbox">
+                            <li class="tag__item"><i class="fas fa-tag mr-2"></i>Beğen</li>
+                            <li class="tag__item"><i class="fas fa-clock mr-2"></i>Yorum Yap</li>                         
+                        </ul>
+                    </div>
+                </article>
+            }
+            else if (ViewData["renk"] == "red")
+            {
+                ViewData["renk"] = "green";
+                <article class="postcard dark red">
+                    <a class="postcard__img_link" href="~/Post/Index/@item.Id">
+                        @if (item.ImagePath == "" || item.ImagePath == null)
+                        {
+                            <img class="postcard__img" src="~/assets/img/defaultPost.jpg" alt="Image Title" />
+                        }
+                        else
+                        {
+                            <img class="postcard__img" src="/@item.ImagePath" alt="Image Title" />
+
+                        }
+                    </a>
+                    <div class="postcard__text">
+                        <h1 class="postcard__title blue"><a href="~/Post/Index/@item.Id">@item.Title</a></h1>
+                        <h6 style="font-weight:normal;">Yazar : @item.Author.FirstName @item.Author.LastName</h6>
+                        <div class="postcard__subtitle small">
+                            <time datetime="2020-05-25 12:00:00">
+                                <i class="fas fa-calendar-alt mr-2"></i>  @item.CreatedDate.ToShortDateString()
+                            </time>
+                        </div>
+                        <div class="postcard__bar"></div>
+                        @if (item.Content.Length >= 350)
+                        {
+                            <div class="postcard__preview-txt">@Html.Raw( @item.Content.Substring(0,350))...</div>
+
+                        }
+                        else
+                        {
+                            <div class="postcard__preview-txt">@Html.Raw(@item.Content)</div>
+
+                        }
+                        <ul class="postcard__tagbox">
+                            <li class="tag__item"><i class="fas fa-tag mr-2"></i>Beğen</li>
+                            <li class="tag__item"><i class="fas fa-clock mr-2"></i>Yorum Yap</li>
+                        </ul>
+                    </div>
+                </article>
+
+
+            }
+            else if (ViewData["renk"] == "green")
+            {
+                ViewData["renk"] = "yellow";
+
+                <article class="postcard dark green">
+                    <a class="postcard__img_link" href="~/Post/Index/@item.Id">
+                        @if(item.ImagePath == "" || item.ImagePath == null)
+                        {
+                            <img class="postcard__img" src="~/assets/img/defaultPost.jpg" alt="Image Title" />
+                        }
+                        else
+                        {
+                            <img class="postcard__img" src="/@item.ImagePath" alt="Image Title" />
+
+                        }
+                    </a>
+                    <div class="postcard__text">
+                        <h1 class="postcard__title blue"><a href="~/Post/Index/@item.Id">@item.Title</a></h1>
+                        <h6 style="font-weight:normal;">Yazar : @item.Author.FirstName @item.Author.LastName</h6>
+                        <div class="postcard__subtitle small">
+                            <time datetime="2020-05-25 12:00:00">
+                                <i class="fas fa-calendar-alt mr-2"></i>  @item.CreatedDate.ToShortDateString()
+                            </time>
+                        </div>
+                        <div class="postcard__bar"></div>
+                        @if (item.Content.Length >= 350)
+                        {
+                            <div class="postcard__preview-txt">@Html.Raw( @item.Content.Substring(0,350))...</div>
+
+                        }
+                        else
+                        {
+                            <div class="postcard__preview-txt">@Html.Raw(@item.Content)</div>
+
+                        }
+                        <ul class="postcard__tagbox">
+                            <li class="tag__item"><i class="fas fa-tag mr-2"></i>Beğen</li>
+                            <li class="tag__item"><i class="fas fa-clock mr-2"></i>Yorum Yap</li>
+                        </ul>
+                    </div>
+                </article>
+
+            }
+            else if (ViewData["renk"] == "yellow")
+            {
+                ViewData["renk"] = "blue";
+                <article class="postcard dark yellow">
+                    <a class="postcard__img_link" href="~/Post/Index/@item.Id">
+                        @if (item.ImagePath == "" || item.ImagePath == null)
+                        {
+                            <img class="postcard__img" src="~/assets/img/defaultPost.jpg" alt="Image Title" />
+                        }
+                        else
+                        {
+                            <img class="postcard__img" src="/@item.ImagePath" alt="Image Title" />
+
+                        }
+                    </a>
+                    <div class="postcard__text">
+                        <h1 class="postcard__title blue"><a href="~/Post/Index/@item.Id">@item.Title</a></h1>
+                        <h6 style="font-weight:normal;">Yazar : @item.Author.FirstName @item.Author.LastName</h6>
+                        <div class="postcard__subtitle small">
+                            <time datetime="2020-05-25 12:00:00">
+                                <i class="fas fa-calendar-alt mr-2"></i>  @item.CreatedDate.ToShortDateString()
+                            </time>
+                        </div>
+                        <div class="postcard__bar"></div>
+                        @if (item.Content.Length >= 350)
+                        {
+                            <div class="postcard__preview-txt">@Html.Raw( @item.Content.Substring(0,350))...</div>
+
+                        }
+                        else
+                        {
+                            <div class="postcard__preview-txt">@Html.Raw(@item.Content)</div>
+
+                        }
+                        <ul class="postcard__tagbox">
+                            <li class="tag__item"><i class="fas fa-tag mr-2"></i>Beğen</li>
+                            <li class="tag__item"><i class="fas fa-clock mr-2"></i>Yorum Yap</li>
+                        </ul>
+                    </div>
+                </article>
+
+
+            }
+        }
+    </div>
+</section>

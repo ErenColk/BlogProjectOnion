@@ -2,6 +2,7 @@
 using BlogProjectOnion.Application.Models.DTOs.AuthorDTOs;
 using BlogProjectOnion.Application.Models.VMs.AuthorVMs;
 using BlogProjectOnion.Application.Services.Abstract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -9,6 +10,8 @@ using System.Collections.Generic;
 namespace BlogProjectOnion.Presentation.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
+
     public class AuthorController : Controller
     {
         private readonly IAuthorService _authorService;
@@ -30,7 +33,6 @@ namespace BlogProjectOnion.Presentation.Areas.Admin.Controllers
             return View(authorVM);
         }
 
-
         //TODOO : BURAYI YAP
         [HttpGet]
         public async Task<IActionResult> DetailAuthor(int id)
@@ -50,10 +52,5 @@ namespace BlogProjectOnion.Presentation.Areas.Admin.Controllers
 
             return View(authorDetail);
         }
-
-
-
-
-
     }
 }

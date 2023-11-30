@@ -99,8 +99,11 @@
     <link href="~/css/styles.css" rel="stylesheet" type="text/css" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="~/css/styles.css" rel="stylesheet" />
+    <link href="~/css/postlist.css" rel="stylesheet" />
     <link href="~/css/register.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/comments.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="~/js/site.js"></script>
 
 
 
@@ -110,41 +113,52 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark " id="mainNav">
         <div class="container px-4 px-lg-5">
-            <a class="navbar-brand" href="~/Home/Index">Blog Vista</a>
+            <a class="navbar-brand" href="~/Home/Index" style="font-size:30px">Blog Vista</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 Menu
                 <i class="fas fa-bars"></i>
             </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ms-auto py-4 py-lg-0">
+            <div class="collapse navbar-collapse"  id="navbarResponsive">
+                <ul class="navbar-nav ms-auto py-4 py-lg-2" >
 
-                @if (Context.User.Identity.IsAuthenticated)
-                {
-
-                    @if (Context.User.IsInRole("Author"))
+                    @if (Context.User.Identity.IsAuthenticated)
                     {
+
+                        @if (Context.User.IsInRole("Author"))
+                        {
                             <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="~/Home/Index">Anasayfa</a></li>
                             <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="index.html">Makalelerim</a></li>
-                            <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="index.html">Makaleler</a></li>
-
+                            <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="~/Post/PostList">Makaleler</a></li>
+                            <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="~/Profil/Detail">Profilim</a></li>
                             <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="~/Login/Logout">Çıkış Yap</a></li>
 
-                    }
-                    else if (Context.User.IsInRole("User"))
-                    {
+                        }
+                        else if (Context.User.IsInRole("User"))
+                        {
                             <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="~/Home/Index">Anasayfa</a></li>
-                            <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="index.html">Makaleler</a></li>
+                            <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="~/Post/PostList">Makaleler</a></li>
+                            <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="~/Profil/Detail">Profilim</a></li>
                             <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="~/Login/Logout">Çıkış Yap</a></li>
 
+                        }
+                        else if (Context.User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="~/Home/Index">Anasayfa</a></li>
+                            <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="~/Admin/Home/Index">Admin Sayfası</a></li>
+                            <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="index.html">Makalelerim</a></li>
+                            <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="~/Post/PostList">Makaleler</a></li>
+                            <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="~/Login/Logout">Çıkış Yap</a></li>
+
+                        }
+
                     }
-                }
-                else
-                {
-                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="~/Home/Index">Ana Sayfa</a></li>
-                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="about.html">Hakkımızda</a></li>
+                    else
+                    {
+                        <li class="nav-item"><a  class="nav-link px-lg-3 py-3 py-lg-4" href="~/Home/Index">Ana Sayfa</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="~/Home/About">Hakkımızda</a></li>
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="~/Login/Index">Giriş Yap</a></li>
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="~/Register/Index">Kayıt Ol</a></li>
-                }                 
+                    }
                 </ul>
             </div>
         </div>
@@ -194,5 +208,11 @@
     </footer>
     <!-- Bootstrap core JS-->
     <!-- Core theme JS-->
+    <style>
+        .nav-link {
+            font-size: 15px !important; /* Yazı boyutunu 10px yapar */
+        }
+    </style>
+
 </body>
 </html>

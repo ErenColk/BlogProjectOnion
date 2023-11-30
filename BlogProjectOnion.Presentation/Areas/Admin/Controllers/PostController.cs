@@ -7,6 +7,7 @@ using BlogProjectOnion.Application.Models.VMs.PostVMs;
 using BlogProjectOnion.Application.Services.Abstract;
 using BlogProjectOnion.Domain.Entities;
 using BlogProjectOnion.Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ using System;
 namespace BlogProjectOnion.Presentation.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
 
     public class PostController : Controller
     {
