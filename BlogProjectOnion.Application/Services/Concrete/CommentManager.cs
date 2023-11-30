@@ -1,20 +1,24 @@
 ﻿using BlogProjectOnion.Application.Services.Abstract;
 using BlogProjectOnion.Domain.Entities;
 using BlogProjectOnion.Domain.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace BlogProjectOnion.Application.Services.Concrete
 {
-    public class CommentManager : BaseManager<Comment>, ICommentService
+	public class CommentManager : BaseManager<Comment>, ICommentService
     {
         private readonly IBaseRepository<Comment> _baseRepository;
-        public CommentManager(IBaseRepository<Comment> baseRepository) : base(baseRepository)
+		private readonly ICommentRepository _commentService;
+
+		public CommentManager(IBaseRepository<Comment> baseRepository,ICommentRepository commentService) : base(baseRepository)
         {
             _baseRepository = baseRepository;
-        }
-    }
+			_commentService = commentService;
+		}
+
+		public Task<List<Comment>> GetCommentThenInclude(Expression<Func<Comment, bool>> expression = null)
+		{
+			return _commentService.GetCommentThenInclude(expression);
+		}
+	}
 }

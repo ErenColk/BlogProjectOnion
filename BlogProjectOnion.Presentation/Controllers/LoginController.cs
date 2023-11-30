@@ -36,6 +36,7 @@ namespace BlogProjectOnion.Presentation.Controllers
             if (result.Succeeded)
             {
                 bool isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+                bool author = await _userManager.IsInRoleAsync(user, "Author");
                 if( isAdmin)
                 {
                 return RedirectToAction("Index", "Home", new { area = "Admin" });

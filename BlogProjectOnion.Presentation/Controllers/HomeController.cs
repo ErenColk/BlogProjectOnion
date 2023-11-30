@@ -22,10 +22,15 @@ namespace BlogProjectOnion.Presentation.Controllers
 
         public async Task<IActionResult> Index()
         {
-            List<PostVM> postVm = _mapper.Map<List<PostVM>>(await _postService.TGetDefaults()).OrderByDescending(x=> x.ClickCount).Take(10).ToList();
+            List<PostVM> postVm = _mapper.Map<List<PostVM>>(await _postService.TGetDefaults(x=>x.Status != Domain.Enums.Status.Passive)).OrderByDescending(x=> x.ClickCount).Take(10).ToList();
             return View(postVm);
         }
 
+        public async Task<IActionResult> About()
+        {
+
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();

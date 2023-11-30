@@ -68,7 +68,7 @@
                     </table>
                     <div class="col-md-12" style="margin-bottom:10px">
                         <a href="/Admin/Post/PostList" class="btn btn-outline-danger">Geri Dön </a>
-                        <a href="/Admin/Post/PostList" class="btn btn-outline-primary">Makale İçeriği İçin Tıklayınız </a>
+                        <a asp-action="Index" asp-controller="Post" asp-area="" asp-route-id="@Model.Id" class="btn btn-outline-primary">Makale İçeriği İçin Tıklayınız </a>
                     </div>
                 </div>
             </div>

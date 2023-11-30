@@ -4,9 +4,13 @@ using BlogProjectOnion.Application.Services.Abstract;
 using BlogProjectOnion.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using BlogProjectOnion.Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
+
 namespace BlogProjectOnion.Presentation.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
+
     public class GenreController : Controller
     {
         private readonly IGenreService _genreService;
