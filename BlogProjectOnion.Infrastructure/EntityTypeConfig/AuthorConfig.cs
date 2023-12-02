@@ -16,6 +16,7 @@ namespace BlogProjectOnion.Infrastructure.EntityTypeConfig
             builder.Property(x=> x.LastName).IsRequired(true).HasMaxLength(35).HasAnnotation("MinLength", 3);
             builder.Property(x => x.ImagePath).HasMaxLength(255).IsRequired(false);
 
+
             base.Configure(builder);
         }
 

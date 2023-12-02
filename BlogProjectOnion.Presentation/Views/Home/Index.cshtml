@@ -50,16 +50,19 @@
                     <div class="post-preview">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <a href="/Post/Index/@item.Id">
+                                <a href="/Post/Index/@item.Id" style="text-align: left; display: block;">
                                     <h2 style="font-size: 40px; margin-bottom: 10px;" class="post-title">@item.Title</h2>
-                                    <label style="font-size: 50px; margin-top: -20px;"> @Html.Raw("<div class='custom-font'>" + item.SubTitle + "</div>")</label>
+                                    <label style="margin-top: 20px; text-align: left; display: block;">
+                                        @Html.Raw("<div class='custom-font' style='font-size: 18px;'>" + item.SubTitle + "</div>")
+                                    </label>
                                 </a>
-                                <p class="post-meta">
+                                <p class="post-meta" style="text-align: left;">
                                     Yayınlandığı Tarih
                                     <a href="#!">@item.Author</a>
                                     @item.CreatedDate.ToShortDateString()
                                 </p>
                             </div>
+
                             <div class="d-flex align-items-center">
                                 <i class="fas fa-eye mr-1"></i>
                                 <span class="post-view-counter">@item.ClickCount</span>
@@ -110,6 +113,11 @@
         padding: 50px 0; /* İhtiyaca göre ayarlayabilirsiniz */
         text-align: center;
     }
+
+    .post-title, .post-meta {
+        text-align: left;
+    }
+
 </style>
 
 

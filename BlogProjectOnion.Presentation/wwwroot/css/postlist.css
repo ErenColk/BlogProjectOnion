@@ -1,4 +1,4 @@
-﻿/*@import url("https://fonts.googleapis.com/css2?family=Baloo+2&display=swap");
+﻿@import url("https://fonts.googleapis.com/css2?family=Baloo+2&display=swap");
 
 :root {
     --main-green: #79dd09;
@@ -9,7 +9,7 @@
     --main-red-rgb-015: rgba(189, 21, 11, 0.1);
     --main-blue: #0076bd;
     --main-blue-rgb-015: rgba(0, 118, 189, 0.1);
-}*/
+}
 
 /*body {
     font-family: "Baloo 2", cursive;

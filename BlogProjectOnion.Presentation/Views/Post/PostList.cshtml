@@ -1,4 +1,13 @@
 ﻿@using BlogProjectOnion.Application.Models.VMs;
+@using BlogProjectOnion.Domain.Entities;
+@using Microsoft.AspNetCore.Identity;
+
+@inject UserManager<AppUser> _userManager
+
+@{
+    AppUser appUser = await _userManager.GetUserAsync(User);
+}
+
 
 
 @{
@@ -6,185 +15,109 @@
 }
 @model List<PostVM>
 
+@{
+    var random = new Random();
+}
 
 
-<section class="dark">
-    <div class="container py-4">
-        <h1 class="h1 text-center" id="pageHeaderTitle">MAKALELER</h1>
+<section class="light">
+
+    <div class="container py-5">
+        <div class="h1 text-center text-dark" id="pageHeaderTitle"></div>
         @foreach (var item in Model)
         {
-            @if (ViewData["renk"] == "blue")
-            {
-
-                ViewData["renk"] = "red";
-
-                <article class="postcard dark blue">
-                    <a class="postcard__img_link" href="~/Post/Index/@item.Id">
-                        @if (item.ImagePath == "" || item.ImagePath == null)
-                        {
-                            <img class="postcard__img" src="~/assets/img/defaultPost.jpg" alt="Image Title" />
-                        }
-                        else
-                        {
-                            <img class="postcard__img" src="/@item.ImagePath" alt="Image Title" />
-
-                        }
-                    </a>
-                    <div class="postcard__text">
-                        <h1 class="postcard__title blue"><a href="~/Post/Index/@item.Id">@item.Title</a></h1>
-                        <h6 style="font-weight:normal;">Yazar : @item.Author.FirstName @item.Author.LastName</h6>
-                        <div class="postcard__subtitle small">
-                            <time datetime="2020-05-25 12:00:00">
-                                <i class="fas fa-calendar-alt mr-2"></i>  @item.CreatedDate.ToShortDateString()
-                            </time>
-                        </div>
-                        <div class="postcard__bar"></div>
-                        @if (item.Content.Length >= 350)
-                        {
-                            <div class="postcard__preview-txt">@Html.Raw(@item.Content.Substring(0,350))...</div>
-
-                        }
-                        else
-                        {
-                            <div class="postcard__preview-txt">@Html.Raw(@item.Content)</div>
-
-                        }                     
-                        <ul class="postcard__tagbox">
-                            <li class="tag__item"><i class="fas fa-tag mr-2"></i>Beğen</li>
-                            <li class="tag__item"><i class="fas fa-clock mr-2"></i>Yorum Yap</li>                         
-                        </ul>
+            @*   @if (ViewData["renk"] == "blue")
+        {
+        ViewData["renk"] = "red";
+        *@
+            var darkRandomColor = $"rgba({random.Next(100)}, {random.Next(100)}, {random.Next(100)}, 0.1)";
+            var lightRandomColor = $"rgba({random.Next(222, 256)}, {random.Next(211, 256)}, {random.Next(215, 256)}, 0.2)";
+            <article class="postcard light" style="background: linear-gradient(to right, @darkRandomColor 50%, @lightRandomColor 100%);">
+                <a class="postcard__img_link" href="~/Post/Index/@item.Id">
+                    @if (item.ImagePath == "" || item.ImagePath == null)
+                    {
+                        <img class="postcard__img skewed-img" src="~/assets/img/defaultPost.jpg" alt="Image Title" />
+                    }
+                    else
+                    {
+                        <img class="postcard__img" src="/@item.ImagePath" alt="Image Title" />
+                    }
+                </a>
+                <div class="postcard__text t-dark">
+                    <h1 class="postcard__title blue"><a href="~/Post/Index/@item.Id">@item.Title</a></h1>
+                    <h6 style="font-weight:normal;">Yazar : @item.Author.FirstName @item.Author.LastName</h6>
+                    <div class="postcard__subtitle small">
+                        <time datetime="2020-05-25 12:00:00">
+                            <i class="fas fa-calendar-alt mr-2"></i> @item.CreatedDate.ToShortDateString()
+                        </time>
                     </div>
-                </article>
-            }
-            else if (ViewData["renk"] == "red")
-            {
-                ViewData["renk"] = "green";
-                <article class="postcard dark red">
-                    <a class="postcard__img_link" href="~/Post/Index/@item.Id">
-                        @if (item.ImagePath == "" || item.ImagePath == null)
-                        {
-                            <img class="postcard__img" src="~/assets/img/defaultPost.jpg" alt="Image Title" />
-                        }
-                        else
-                        {
-                            <img class="postcard__img" src="/@item.ImagePath" alt="Image Title" />
+                    <div class="postcard__bar"></div>
+                    @if (item.Content.Length >= 350)
+                    {
+                        <div class="postcard__preview-txt">@Html.Raw(@item.Content.Substring(0,350))...</div>
 
-                        }
-                    </a>
-                    <div class="postcard__text">
-                        <h1 class="postcard__title blue"><a href="~/Post/Index/@item.Id">@item.Title</a></h1>
-                        <h6 style="font-weight:normal;">Yazar : @item.Author.FirstName @item.Author.LastName</h6>
-                        <div class="postcard__subtitle small">
-                            <time datetime="2020-05-25 12:00:00">
-                                <i class="fas fa-calendar-alt mr-2"></i>  @item.CreatedDate.ToShortDateString()
-                            </time>
-                        </div>
-                        <div class="postcard__bar"></div>
-                        @if (item.Content.Length >= 350)
-                        {
-                            <div class="postcard__preview-txt">@Html.Raw( @item.Content.Substring(0,350))...</div>
+                    }
+                    else
+                    {
+                        <div class="postcard__preview-txt">@Html.Raw(@item.Content)</div>
 
-                        }
-                        else
-                        {
-                            <div class="postcard__preview-txt">@Html.Raw(@item.Content)</div>
+                    }
+                    <ul class="postcard__tagbox">
+                        <li class="tag__item">
+                            <a onclick="GetpostAndUserId(@item.Id,'@appUser.Id')">
+                                <i class="fas fa-clock mr-2"></i> Beğen
+                            </a>
+                        </li>
+                        <li class="tag__item">
+                            <a href="/Post/Index/@item.Id">
+                                <i class="fas fa-clock mr-2"></i> Yorum Yap
+                            </a>
+                        </li>
 
-                        }
-                        <ul class="postcard__tagbox">
-                            <li class="tag__item"><i class="fas fa-tag mr-2"></i>Beğen</li>
-                            <li class="tag__item"><i class="fas fa-clock mr-2"></i>Yorum Yap</li>
-                        </ul>
-                    </div>
-                </article>
-
-
-            }
-            else if (ViewData["renk"] == "green")
-            {
-                ViewData["renk"] = "yellow";
-
-                <article class="postcard dark green">
-                    <a class="postcard__img_link" href="~/Post/Index/@item.Id">
-                        @if(item.ImagePath == "" || item.ImagePath == null)
-                        {
-                            <img class="postcard__img" src="~/assets/img/defaultPost.jpg" alt="Image Title" />
-                        }
-                        else
-                        {
-                            <img class="postcard__img" src="/@item.ImagePath" alt="Image Title" />
-
-                        }
-                    </a>
-                    <div class="postcard__text">
-                        <h1 class="postcard__title blue"><a href="~/Post/Index/@item.Id">@item.Title</a></h1>
-                        <h6 style="font-weight:normal;">Yazar : @item.Author.FirstName @item.Author.LastName</h6>
-                        <div class="postcard__subtitle small">
-                            <time datetime="2020-05-25 12:00:00">
-                                <i class="fas fa-calendar-alt mr-2"></i>  @item.CreatedDate.ToShortDateString()
-                            </time>
-                        </div>
-                        <div class="postcard__bar"></div>
-                        @if (item.Content.Length >= 350)
-                        {
-                            <div class="postcard__preview-txt">@Html.Raw( @item.Content.Substring(0,350))...</div>
-
-                        }
-                        else
-                        {
-                            <div class="postcard__preview-txt">@Html.Raw(@item.Content)</div>
-
-                        }
-                        <ul class="postcard__tagbox">
-                            <li class="tag__item"><i class="fas fa-tag mr-2"></i>Beğen</li>
-                            <li class="tag__item"><i class="fas fa-clock mr-2"></i>Yorum Yap</li>
-                        </ul>
-                    </div>
-                </article>
-
-            }
-            else if (ViewData["renk"] == "yellow")
-            {
-                ViewData["renk"] = "blue";
-                <article class="postcard dark yellow">
-                    <a class="postcard__img_link" href="~/Post/Index/@item.Id">
-                        @if (item.ImagePath == "" || item.ImagePath == null)
-                        {
-                            <img class="postcard__img" src="~/assets/img/defaultPost.jpg" alt="Image Title" />
-                        }
-                        else
-                        {
-                            <img class="postcard__img" src="/@item.ImagePath" alt="Image Title" />
-
-                        }
-                    </a>
-                    <div class="postcard__text">
-                        <h1 class="postcard__title blue"><a href="~/Post/Index/@item.Id">@item.Title</a></h1>
-                        <h6 style="font-weight:normal;">Yazar : @item.Author.FirstName @item.Author.LastName</h6>
-                        <div class="postcard__subtitle small">
-                            <time datetime="2020-05-25 12:00:00">
-                                <i class="fas fa-calendar-alt mr-2"></i>  @item.CreatedDate.ToShortDateString()
-                            </time>
-                        </div>
-                        <div class="postcard__bar"></div>
-                        @if (item.Content.Length >= 350)
-                        {
-                            <div class="postcard__preview-txt">@Html.Raw( @item.Content.Substring(0,350))...</div>
-
-                        }
-                        else
-                        {
-                            <div class="postcard__preview-txt">@Html.Raw(@item.Content)</div>
-
-                        }
-                        <ul class="postcard__tagbox">
-                            <li class="tag__item"><i class="fas fa-tag mr-2"></i>Beğen</li>
-                            <li class="tag__item"><i class="fas fa-clock mr-2"></i>Yorum Yap</li>
-                        </ul>
-                    </div>
-                </article>
-
-
-            }
+                    </ul>
+                </div>
+            </article>
         }
     </div>
 </section>
+
+
+<style>
+    .tag__item a {
+        cursor: pointer; /* Fare imlecini değiştir */
+        text-decoration: none; /* Link altı çizgisini kaldır */
+        color: #000; /* Varsayılan metin rengi */
+    }
+
+        .tag__item a:hover {
+            color: #007bff; /* Fare üzerine gelindiğinde metin rengini değiştir */
+        }
+
+    .tag__item .btn {
+        height: 20px; /* İhtiyaca göre yüksekliği ayarla */
+    }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+    function GetpostAndUserId(_postid, _userid) {
+        let like = {
+            postId: _postid,
+            userId: _userid,
+        };
+
+        $.ajax({
+            url: "/Post/AddLike",
+            type: "POST",
+            data: like,
+            dataType: "json",
+            success: function () {
+                console.log("Başarılı");
+            },
+            error: function (error) {
+                console.log("Başarısız");
+            },
+        });
+    }
+</script>
