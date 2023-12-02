@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BlogProjectOnion.Application.Models.DTOs.LikeDTOs;
 using BlogProjectOnion.Application.Models.VMs;
 using BlogProjectOnion.Application.Services.Abstract;
 using BlogProjectOnion.Domain.Entities;
@@ -17,18 +18,17 @@ namespace BlogProjectOnion.Presentation.Controllers
         private readonly IMapper _mapper;
         private readonly ICommentService _commentService;
         private readonly UserManager<AppUser> _userManager;
+        private readonly ILikeService _likeService;
         private readonly IAppUserService _appUserService;
 
-        public PostController(IPostService postService, IMapper mapper, ICommentService commentService, UserManager<AppUser> userManager)
+        public PostController(IPostService postService, IMapper mapper, ICommentService commentService, UserManager<AppUser> userManager, ILikeService likeService)
         {
             _postService = postService;
             _mapper = mapper;
             _commentService = commentService;
             _userManager = userManager;
+            _likeService = likeService;
         }
-
-
-
 
         //TODOO : BURAYI DÜZENLE
         [HttpGet]
@@ -58,9 +58,17 @@ namespace BlogProjectOnion.Presentation.Controllers
 
             ViewData["renk"] = "blue";
             List<PostVM> postVm = _mapper.Map<List<PostVM>>(await _postService.GetIncludePost(x => x.Status != Domain.Enums.Status.Passive, includes)).OrderByDescending(x => x.ClickCount).Take(10).ToList();
+            //.Skip((pagenumber - 1) * 10) // SAFYA ATLAMA METODU
             return View(postVm);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AddLike(CreateLikeDTO createLikeDTO)
+        {
+            Like like = _mapper.Map<Like>(createLikeDTO);
+            await _likeService.TCreate(like);
+            return Ok("OK");
+        }
 
         [HttpGet]
         public async Task<IActionResult> ListComments(int id)
@@ -69,14 +77,10 @@ namespace BlogProjectOnion.Presentation.Controllers
 
             if (commentVM.Count > 0)
             {
-
                 return PartialView("_CommentListPartialView", commentVM);
-
             }
             return View();
-
         }
-
 
         [HttpPost]
         public async Task<IActionResult> CommentPost(PostVM postVM)

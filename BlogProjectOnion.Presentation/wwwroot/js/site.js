@@ -64,3 +64,25 @@ function CommentOnThePost(id) {
         },
     });
 }
+
+
+function GetpostAndUserId(_postid,_userid) {
+    debugger;
+    let like = {
+        postId: _postid, 
+        userId:_userid,
+    };
+
+    $.ajax({
+        url: "/Post/AddLike",
+        type: "POST",
+        data: like,
+        dataType:"json",
+        success: function () {
+            console.log("Başarılı");
+        },
+        error: function (error) {
+            console.log("Başarısız");
+        },
+    });
+}
