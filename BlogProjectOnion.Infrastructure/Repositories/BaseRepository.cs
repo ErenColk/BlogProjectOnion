@@ -48,7 +48,7 @@ namespace BlogProjectOnion.Infrastructure.Repositories
             }
         }
 
-  
+
         public async Task<bool> Delete(T entity)
         {
             try
@@ -74,8 +74,8 @@ namespace BlogProjectOnion.Infrastructure.Repositories
 
         public async Task<T> GetDefault(Expression<Func<T, bool>> expression = null)
         {
-              
-                return await _table.FirstOrDefaultAsync(expression);
+
+            return await _table.FirstOrDefaultAsync(expression);
 
         }
 
@@ -158,6 +158,22 @@ namespace BlogProjectOnion.Infrastructure.Repositories
                 entity.UpdatedDate = DateTime.Now;
                 entity.Status = Domain.Enums.Status.Modified;
                 _context.Entry<T>(entity).State = EntityState.Modified; // Güncelleme işlemini Entity State'ini değiştirerek yapıyoruz
+                return await _context.SaveChangesAsync() > 0;
+
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+
+        }
+
+        public async Task<bool> HardDelete(T entity)
+        {
+            try
+            {
+                _table.Remove(entity);
                 return await _context.SaveChangesAsync() > 0;
 
             }

@@ -23,12 +23,18 @@
             <p>@item.Content</p>
             <ul class="list-unstyled list-inline media-detail pull-left">
                 <li><i class="fa fa-calendar"></i>@item.CreatedDate.ToShortDateString()</li>
-                <li><i class="fa fa-thumbs-up"></i>0</li>
-            </ul>
-            <ul class="list-unstyled list-inline media-detail pull-right">
-                <li class=""><a href="">Beğen</a></li>
-            </ul>
+                <li style="float:left"><i class="fa fa-thumbs-up" ></i>0</li>
+            </ul>     
         </div>
     </div>
 }
 
+<style>
+    .media-object{
+        width: 150px;
+        border-radius: 20px;
+    
+
+    }
+
+</style>

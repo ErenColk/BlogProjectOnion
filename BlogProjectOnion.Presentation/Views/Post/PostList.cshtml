@@ -1,11 +1,14 @@
 ﻿@using BlogProjectOnion.Application.Models.VMs;
+@using BlogProjectOnion.Application.Services.Abstract;
 @using BlogProjectOnion.Domain.Entities;
 @using Microsoft.AspNetCore.Identity;
 
 @inject UserManager<AppUser> _userManager
+@inject ILikeService _likeManager
 
 @{
     AppUser appUser = await _userManager.GetUserAsync(User);
+
 }
 
 
@@ -26,10 +29,11 @@
         <div class="h1 text-center text-dark" id="pageHeaderTitle"></div>
         @foreach (var item in Model)
         {
-            @*   @if (ViewData["renk"] == "blue")
-        {
-        ViewData["renk"] = "red";
-        *@
+
+            Like like = await _likeManager.TGetDefault(x => x.AppUserId == appUser.Id && x.PostId == item.Id);
+
+
+
             var darkRandomColor = $"rgba({random.Next(100)}, {random.Next(100)}, {random.Next(100)}, 0.1)";
             var lightRandomColor = $"rgba({random.Next(222, 256)}, {random.Next(211, 256)}, {random.Next(215, 256)}, 0.2)";
             <article class="postcard light" style="background: linear-gradient(to right, @darkRandomColor 50%, @lightRandomColor 100%);">
@@ -64,10 +68,21 @@
                     }
                     <ul class="postcard__tagbox">
                         <li class="tag__item">
-                            <a onclick="GetpostAndUserId(@item.Id,'@appUser.Id')">
-                                <i class="fas fa-clock mr-2"></i> Beğen
-                            </a>
+                            @if (like == null)
+                            {
+                                <a onclick="toggleLikeState(@item.Id, '@appUser.Id', this)" data-liked="true">
+                                    <i class="fas fa-clock mr-2"></i> <span id="likeText">Beğen</span>
+                                </a>
+                            }
+                            else
+                            {
+                                <a onclick="toggleLikeState(@item.Id, '@appUser.Id', this)" data-liked="false">
+                                    @* data-liked true yada false gidiyor ona göre işlem sağlanıyor *@
+                                    <i class="fas fa-thumbs-up mr-2"></i><span id="likeText"> Beğenildi</span>
+                                </a>
+                            }
                         </li>
+
                         <li class="tag__item">
                             <a href="/Post/Index/@item.Id">
                                 <i class="fas fa-clock mr-2"></i> Yorum Yap
@@ -101,14 +116,49 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 <script>
+
+    function toggleLikeState(postId, userId, element) {
+        var liked = element.getAttribute('data-liked') === 'true';
+
+        if (liked) {
+
+            GetpostAndUserId(postId, userId);
+            element.innerHTML = '<i class="fas fa-thumbs-up mr-2"></i> Beğenildi';
+
+            element.setAttribute('data-liked', 'false');
+        } else {
+            RemoveLike(postId, userId);
+            element.innerHTML = '<i class="fas fa-clock mr-2"></i> Beğen';
+            element.setAttribute('data-liked', 'true');
+        }
+    }
     function GetpostAndUserId(_postid, _userid) {
+        console.log("Ekleme")
         let like = {
             postId: _postid,
             userId: _userid,
         };
-
         $.ajax({
             url: "/Post/AddLike",
+            type: "POST",
+            data: like,
+            dataType: "json",
+            success: function () {
+                console.log("Başarılı");
+            },
+            error: function (error) {
+                console.log("Başarısız");
+            },
+        });
+    }
+    function RemoveLike(_postid, _userid) {
+        console.log("Silme")
+        let like = {
+            postId: _postid,
+            userId: _userid,
+        };
+        $.ajax({
+            url: "/Post/RemoveLike",
             type: "POST",
             data: like,
             dataType: "json",

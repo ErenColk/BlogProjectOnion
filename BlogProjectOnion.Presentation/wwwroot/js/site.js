@@ -19,7 +19,7 @@ function ViewComments(id) {
 
 
 function ListComments(id) {
-    
+
     $.ajax({
         url: "/Post/ListComments/" + id,
         type: "GET",
@@ -33,17 +33,28 @@ function ListComments(id) {
 
 
 function Sort() {
-    debugger
+    debugger;
+}
 
+function ListArticles(id) {
+    let _id = id;
 
+    $.ajax({
+        url: "/Profile/ListPost/" + _id,
+        type: "GET",
+        success: function (response) {
+            $("#profil-Post-List").html("");
+            $("#profil-Post-List").html(response);   
+        }
 
+     });
 }
 
 
 function CommentOnThePost(id) {
     let commentText = $("#message").val();
     let appUserId = $("#userid").val();
-    
+
     let comment = {
         id: id,
         comment: commentText,
@@ -66,18 +77,18 @@ function CommentOnThePost(id) {
 }
 
 
-function GetpostAndUserId(_postid,_userid) {
+function GetpostAndUserId(_postid, _userid) {
     debugger;
     let like = {
-        postId: _postid, 
-        userId:_userid,
+        postId: _postid,
+        userId: _userid,
     };
 
     $.ajax({
         url: "/Post/AddLike",
         type: "POST",
         data: like,
-        dataType:"json",
+        dataType: "json",
         success: function () {
             console.log("Başarılı");
         },
