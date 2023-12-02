@@ -20,7 +20,7 @@ namespace BlogProjectOnion.Application.Services.Concrete
             _baseRepository = baseRepository;
         }
 
-        public Task<bool> DefaultUpdate(T entity)
+        public Task<bool> TDefaultUpdate(T entity)
         {
             return _baseRepository.DefaultUpdate(entity);
         }
@@ -30,6 +30,18 @@ namespace BlogProjectOnion.Application.Services.Concrete
             if (id <= 0)
                 return null;
             return await _baseRepository.GetById(id);
+        }
+
+        public async Task<bool> THardDelete(T entity)
+        {
+            if (entity == null)
+            {
+                return false;
+
+            }
+            else
+                return await _baseRepository.HardDelete(entity);
+
         }
 
         public Task<bool> TAny(Expression<Func<T, bool>> expression)
@@ -67,7 +79,7 @@ namespace BlogProjectOnion.Application.Services.Concrete
 
         public Task<TResult> TGetFilteredFirstOrDefault<TResult>(Expression<Func<T, TResult>> select = null, Expression<Func<T, bool>> where = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null)
         {
-            return _baseRepository.GetFilteredFirstOrDefault(select,where,orderBy,include);
+            return _baseRepository.GetFilteredFirstOrDefault(select, where, orderBy, include);
         }
 
         public Task<List<TResult>> TGetFilteredList<TResult>(Expression<Func<T, TResult>> select = null, Expression<Func<T, bool>> where = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null)

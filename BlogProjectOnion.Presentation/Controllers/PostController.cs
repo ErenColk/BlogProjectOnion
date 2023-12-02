@@ -19,7 +19,6 @@ namespace BlogProjectOnion.Presentation.Controllers
         private readonly ICommentService _commentService;
         private readonly UserManager<AppUser> _userManager;
         private readonly ILikeService _likeService;
-        private readonly IAppUserService _appUserService;
 
         public PostController(IPostService postService, IMapper mapper, ICommentService commentService, UserManager<AppUser> userManager, ILikeService likeService)
         {
@@ -44,7 +43,7 @@ namespace BlogProjectOnion.Presentation.Controllers
             postVm.AppUserId = user.Id;
             Post post = await _postService.GetById(id);
             post.ClickCount += 1;
-            await _postService.DefaultUpdate(post);
+            await _postService.TDefaultUpdate(post);
             return View(postVm);
         }
 
@@ -56,9 +55,10 @@ namespace BlogProjectOnion.Presentation.Controllers
                 x=> x.Author,x=>x.Comments,x=>x.Genre,x=>x.Likes
             };
 
-            ViewData["renk"] = "blue";
+
             List<PostVM> postVm = _mapper.Map<List<PostVM>>(await _postService.GetIncludePost(x => x.Status != Domain.Enums.Status.Passive, includes)).OrderByDescending(x => x.ClickCount).Take(10).ToList();
             //.Skip((pagenumber - 1) * 10) // SAFYA ATLAMA METODU
+
             return View(postVm);
         }
 
@@ -70,6 +70,14 @@ namespace BlogProjectOnion.Presentation.Controllers
             return Ok("OK");
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveLike(DeleteLikeDTO deleteLikeDTO)
+        {
+            Like like = await _likeService.TGetDefault(x => x.PostId == deleteLikeDTO.PostId && x.AppUserId == deleteLikeDTO.UserId);
+            await _likeService.THardDelete(like);
+            return Ok("OK");
+        }
         [HttpGet]
         public async Task<IActionResult> ListComments(int id)
         {
@@ -85,7 +93,6 @@ namespace BlogProjectOnion.Presentation.Controllers
         [HttpPost]
         public async Task<IActionResult> CommentPost(PostVM postVM)
         {
-
             if (postVM != null)
             {
                 Comment comment = new Comment()
@@ -97,9 +104,7 @@ namespace BlogProjectOnion.Presentation.Controllers
                 await _commentService.TCreate(comment);
                 return RedirectToAction("ListComments", new { id = postVM.Id });
             }
-
             return View();
         }
-
     }
 }

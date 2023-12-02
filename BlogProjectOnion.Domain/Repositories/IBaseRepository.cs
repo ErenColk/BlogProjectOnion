@@ -17,6 +17,8 @@ namespace BlogProjectOnion.Domain.Repositories
         Task<bool> Update(T entity);
         Task<bool> DefaultUpdate(T entity);
         Task<bool> Delete(T entity); // Db'den silme işlemi yapmayacak, status'ü pasife çekecek. (Soft delete olarakda adlandırılır)
+
+        Task<bool> HardDelete(T entity);
         Task<bool> Any(Expression<Func<T, bool>> expression); // Bir kayıt varsa true yoksa false dönecek.
         Task<T> GetDefault(Expression<Func<T, bool>> expression); // Dinamik olarak where filtre işlemi sağlar. Id'ye göre getir gibi...
         Task<T> GetById(int id);

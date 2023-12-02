@@ -1,0 +1,10 @@
+﻿@using BlogProjectOnion.Domain.Entities;
+
+@model List<Post>
+
+<ul class="list-group" id="likedPost">  
+    @foreach (var item in Model)
+    {
+    <li class="list-group-item"><a href="/Post/Index/@item.Id" class="text-decoration-none">@item.Title</a></li>
+    } 
+</ul>
