@@ -16,6 +16,7 @@ namespace BlogProjectOnion.Domain.Entities
         {
             Likes = new List<Like>();
             Comments = new List<Comment>(); 
+            Floows = new List<Follow>();
         }
 
         //public string Address { get; set; }
@@ -31,5 +32,7 @@ namespace BlogProjectOnion.Domain.Entities
         public Author? Author { get; set; }
         public List<Comment> Comments { get; set; }
         public List<Like> Likes { get; set; }
+        public List<Follow> Floows  { get; set; }
+
     }
 }

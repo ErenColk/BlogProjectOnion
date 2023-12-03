@@ -14,23 +14,29 @@ namespace BlogProjectOnion.Application.Services.Concrete
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
+        private readonly IAuthorService _authorManager;
 
-        public AppUserManager(IBaseRepository<AppUser> baseRepository,IAppUserRepository appUserRepository,SignInManager<AppUser> signInManager,UserManager<AppUser> userManager,IMapper mapper) : base(baseRepository)
+        public AppUserManager(IBaseRepository<AppUser> baseRepository, IAppUserRepository appUserRepository, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IMapper mapper, IAuthorService authorManager) : base(baseRepository)
         {
             _baseRepository = baseRepository;
             _appUserRepository = appUserRepository;
             _signInManager = signInManager;
             _userManager = userManager;
             _mapper = mapper;
+            _authorManager = authorManager;
         }
 
         public async Task<UpdateAppUserDTO> GetByUserName(string userName)
         {
-            UpdateAppUserDTO result = await _appUserRepository.GetFilteredFirstOrDefault(select: x=> new UpdateAppUserDTO
+            UpdateAppUserDTO result = await _appUserRepository.GetFilteredFirstOrDefault(select: x => new UpdateAppUserDTO
             {
-                Id = x.Id,UserName = x.UserName,Password = x.PasswordHash,Email = x.Email,ImagePath = x.ImagePath
+                Id = x.Id,
+                UserName = x.UserName,
+                Password = x.PasswordHash,
+                Email = x.Email,
+                ImagePath = x.ImagePath
             },
-            where : x=> x.UserName == userName );
+            where: x => x.UserName == userName);
 
             return result;
         }
@@ -50,18 +56,35 @@ namespace BlogProjectOnion.Application.Services.Concrete
         {
             AppUser user = new AppUser();
             user.UserName = model.UserName;
-            user.Email  = model.Email;
+            user.Email = model.Email;
             user.CreatedDate = model.CreatedDate;
+
+
             //user.PasswordHash = model.Password;
+            IdentityResult result = await _userManager.CreateAsync(user, model.Password);
 
-            IdentityResult result = await _userManager.CreateAsync(user,model.Password);
 
-            if(result.Succeeded)
+            if (result.Succeeded)
             {
-                if(model.Role == 1)
-                await _userManager.AddToRoleAsync(user, "Author");
-                else if(model.Role == 2)
-                await _userManager.AddToRoleAsync(user, "User");
+                if (model.Role == 1)
+                {
+                    Author author = new Author();
+                    if (await _authorManager.TCreate(author))
+                    {
+                        user.Author = author;
+                        await _userManager.UpdateAsync(user);
+                    }
+
+                    await _userManager.AddToRoleAsync(user, "Author");
+
+                }
+                else if (model.Role == 2)
+                {
+                    await _userManager.AddToRoleAsync(user, "User");
+
+                }
+
+
 
                 await _signInManager.SignInAsync(user, isPersistent: false); // eger kayıt olabildiyse direkt olarak signin olmasını saglayacak
 
@@ -74,20 +97,20 @@ namespace BlogProjectOnion.Application.Services.Concrete
         //Kullanıcının güncellemek istediği bilgileri View'dan UpdateProfileDTO aracılığıyla alacağız. Resim,Email,Password alanlarını kontrol ederek AppUser nesnesinde güncelleme yapacağız
         public async Task UpdateAppUser(UpdateAppUserDTO model)
         {
-           // Update işlemlerinde önce Id ile ilgili nesneyi RAM'e çekeriz. Dışarıdan gelen güncel bilgilerle değişikleri yaparız. En son SaveChanges ile veritabanına güncellemeleri göndeririz.
+            // Update işlemlerinde önce Id ile ilgili nesneyi RAM'e çekeriz. Dışarıdan gelen güncel bilgilerle değişikleri yaparız. En son SaveChanges ile veritabanına güncellemeleri göndeririz.
 
             //Mapper
             var user = _mapper.Map<AppUser>(model);
 
-            AppUser user2 = await _appUserRepository.GetDefault(x=> x.Id == user.Id);
+            AppUser user2 = await _appUserRepository.GetDefault(x => x.Id == user.Id);
 
             // UploadPAth resim işlemleri
-            if(model.UploadPath != null)
+            if (model.UploadPath != null)
             {
                 using var image = Image.Load(model.UploadPath.OpenReadStream());
 
                 image.Mutate(x => x.Resize(300, 300)); // Görsel ile ilgili işlemler mutate() içerisinde yapılabilir. Boyutlandırma kırpma vs.
-                
+
                 Guid guid = Guid.NewGuid(); // Resmin ismini unique oluşturacağız.
                 image.Save($"wwwroot/images/{guid}.jpg"); // wwwroot klasörünün içinde images içinde guid bir isimle dosya kaydedilsin.
                 user2.ImagePath = $"/images/{guid}.jpg";
@@ -103,15 +126,15 @@ namespace BlogProjectOnion.Application.Services.Concrete
             await _appUserRepository.Update(user2);
 
             //Parola değiştirme işlemi
-            if(model.Password != null)
+            if (model.Password != null)
             {
 
-                user2.PasswordHash = _userManager.PasswordHasher.HashPassword(user2,model.Password);
+                user2.PasswordHash = _userManager.PasswordHasher.HashPassword(user2, model.Password);
                 await _userManager.UpdateAsync(user2);
             }
 
             // Email adres işlemleri (Eğer yoksa ekleteceğiz)
-            if(model.Email != null)
+            if (model.Email != null)
             {
                 AppUser isUserEmailExists = await _userManager.FindByEmailAsync(model.Email);
 

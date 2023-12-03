@@ -7,30 +7,30 @@
 @model PostVM
 
 <!-- Page Header-->
-<header class="masthead" style="background-image: url('/@Model.ImagePath'); background-size: cover;">
+<header class="masthead" style="background-image: url('/@Model.ImagePath')">
     <div class="container position-relative px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
                 <div class="post-heading">
-                    <h1 style="font-size:75px">@Model.Title</h1>
+                    <h1>@Model.Title</h1>
                     <h2 class="subheading">@Model.SubTitle</h2>
                     <span class="meta">
                         Bu makale
-                        <a href="#!">@Model.Author.FirstName  @Model.Author.LastName </a>
-                        tarafından  @Model.CreatedDate.ToShortDateString() tarihinde yayınlandı.
+                        <a href="/Profile/Index/@Model.Author.Id">@Model.Author.FirstName @Model.Author.LastName</a>
+                        tarafından @Model.CreatedDate.ToShortDateString() tarihinde yayınlandı.
                     </span>
-
                 </div>
             </div>
         </div>
     </div>
 </header>
+
 <!-- Post Content-->
 <article class="mb-4">
-    <div class="container px-12 px-lg-1">
-        <div class="row gx-10 gx-lg-1 justify-content-center">
-            <div class="col-md-10 col-lg-2 col-xl-12">
-                @Html.Raw("<div class='custom-font'>" + Model.Content+ "</div>")
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                @Html.Raw("<div class='custom-font'>" + Model.Content + "</div>")
             </div>
         </div>
     </div>
@@ -82,6 +82,42 @@
 
 
 <style>
+
+
+     body {
+      margin: 0;
+      padding: 0;
+    }
+
+    .masthead {
+      position: relative;
+      height: 300px; /* Header alanının istediğiniz yüksekliğini belirtin */
+      background-size: cover;
+      background-position: center;
+      color: #fff; /* Yazı rengi ayarlayabilirsiniz */
+    }
+
+    .masthead .container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+
+    .masthead h1 {
+      font-size: 75px;
+      margin-bottom: 10px; /* İstediğiniz boşluğu ayarlayabilirsiniz */
+    }
+
+    .masthead h2 {
+      margin-bottom: 20px; /* İstediğiniz boşluğu ayarlayabilirsiniz */
+    }
+
+    .masthead .meta {
+      display: block;
+      font-size: 16px;
+    }
 
     form {
         margin-top: 20px;

@@ -53,7 +53,7 @@ namespace BlogProjectOnion.Presentation.Controllers
         }
         public async Task<IActionResult> Logout()
         {
-            //SİLİNECEK
+           
             //AppUser ıd = await _userManager.GetUserAsync(HttpContext.User);
 
             await _signInManager.SignOutAsync();

@@ -27,6 +27,10 @@ namespace BlogProjectOnion.Infrastructure.SeedData
                     Status = Domain.Enums.Status.Active
                 };
 
+                Author author = new Author();
+                await _context.Authors.AddAsync(author);
+                await _context.SaveChangesAsync();
+                user.Author = author;
                 userManager.CreateAsync(user, "Eren12345.").Wait();
 
                 AppUser createdUser = await userManager.FindByNameAsync("admin");
