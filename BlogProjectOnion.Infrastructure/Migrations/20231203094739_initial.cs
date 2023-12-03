@@ -37,8 +37,8 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(35)", maxLength: 35, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(35)", maxLength: 35, nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(35)", maxLength: 35, nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(35)", maxLength: 35, nullable: true),
                     ImagePath = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
                 },
                 constraints: table =>
@@ -241,6 +241,37 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Follow",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AppUserId = table.Column<int>(type: "int", nullable: false),
+                    AppUserId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AuthorId = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Follow", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Follow_AspNetUsers_AppUserId1",
+                        column: x => x.AppUserId1,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Follow_Authors_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "Authors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Comments",
                 columns: table => new
                 {
@@ -304,17 +335,17 @@ namespace BlogProjectOnion.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "CreatedDate", "DeletedDate", "Name", "NormalizedName", "Status", "UpdatedDate" },
-                values: new object[] { new Guid("0663ae62-7880-4fd1-9c7b-2f440db3ef74"), "042392f8-befa-4819-ad90-fd3a6a691641", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "User", "USER", 0, null });
+                values: new object[] { new Guid("abc0a47e-49f4-4c44-9839-44a007a94de0"), "bc31b2ff-ef88-4dbc-bf7a-003ffa431ed9", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Author", "AUTHOR", 0, null });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "CreatedDate", "DeletedDate", "Name", "NormalizedName", "Status", "UpdatedDate" },
-                values: new object[] { new Guid("5ae3e391-a7b5-46b9-8103-6cfdfddd939e"), "c3627fe1-3758-4ee2-bcba-d9c4e1f17a41", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Author", "AUTHOR", 0, null });
+                values: new object[] { new Guid("d6f0e1d8-d457-40a0-951b-9989b763a27e"), "9c05af54-0fbd-4f7e-92a7-d96253cde096", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "User", "USER", 0, null });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "CreatedDate", "DeletedDate", "Name", "NormalizedName", "Status", "UpdatedDate" },
-                values: new object[] { new Guid("f2f56c70-009b-430f-80e4-5ef9a625f013"), "2cef5980-e7a9-48eb-9028-1fa185b7d7f5", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Admin", "ADMIN", 0, null });
+                values: new object[] { new Guid("f20f4b1b-03f3-4722-9fe9-ac84a35f3fff"), "5b581ec1-d5f9-4fef-80ce-eaff0cc0d83a", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Admin", "ADMIN", 0, null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -371,6 +402,16 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Follow_AppUserId1",
+                table: "Follow",
+                column: "AppUserId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Follow_AuthorId",
+                table: "Follow",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Likes_AppUserId",
                 table: "Likes",
                 column: "AppUserId");
@@ -410,6 +451,9 @@ namespace BlogProjectOnion.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Comments");
+
+            migrationBuilder.DropTable(
+                name: "Follow");
 
             migrationBuilder.DropTable(
                 name: "Likes");
