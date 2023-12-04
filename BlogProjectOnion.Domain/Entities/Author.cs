@@ -21,7 +21,7 @@ namespace BlogProjectOnion.Domain.Entities
         public DateTime? UpdatedDate { get; set; }
         public DateTime? DeletedDate { get; set; }
         public Status Status { get; set; }
-        public string?  FirstName { get; set; }
+        public string? FirstName { get; set; } = "Anonim";
         public string? LastName { get; set; }
         public string? ImagePath { get; set; }
         [NotMapped] // DB' de yer almayacak

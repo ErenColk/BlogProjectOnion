@@ -23,11 +23,14 @@ namespace BlogProjectOnion.Infrastructure.SeedData
                     UserName = "admin",
                     Email = "eren.colk@gmail.com",
                     EmailConfirmed = true,
-                    CreatedDate = DateTime.Now,
+                    CreatedDate = DateTime.Now,                   
                     Status = Domain.Enums.Status.Active
                 };
 
                 Author author = new Author();
+                author.FirstName = "Admin";
+                author.Status = Domain.Enums.Status.Active;
+                author.CreatedDate = DateTime.Now;
                 await _context.Authors.AddAsync(author);
                 await _context.SaveChangesAsync();
                 user.Author = author;

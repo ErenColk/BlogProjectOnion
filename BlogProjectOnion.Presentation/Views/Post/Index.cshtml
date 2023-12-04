@@ -6,7 +6,7 @@
 
 @model PostVM
 
-<!-- Page Header-->
+@* <!-- Page Header-->
 <header class="masthead" style="background-image: url('/@Model.ImagePath')">
     <div class="container position-relative px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
@@ -40,7 +40,68 @@
 <section class="content-item" id="comments">
     <div class="container">
         <div class="row">
-            <div class="col-sm-10">               
+            <div class="col-sm-10">
+                <form>
+                    <button type="button" class="btn btn-success pull-right" onclick="CommentOnThePost(@Model.Id)" style="margin-bottom :10px;margin-left:10px;">Yorum Gönder</button>
+                    <button type="button" class="btn btn-success pull-right" data-mdb-ripple-init>Makaleyi Beğen</button>
+                    <h3 class="pull-left">Yeni Yorum</h3>
+                    <fieldset>
+                        <div class="row">
+                            <div class="col-sm-10 col-lg-2 col-xl-3">
+                                <img class="img-responsive" style="width:150px" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="">
+                            </div>
+                            <div class="form-group col-xs-12 col-sm-9 col-lg-9">
+                                <textarea class="form-control" asp-for="Comment" id="message" placeholder="Mesajın" required=""></textarea>
+                                <input id="userid" type="hidden" asp-for="AppUserId" />
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+                <div id="form-Comment-List">
+                    <!-- COMMENT -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+ *@
+
+<!-- Page Header-->
+<header class="masthead" style="background-image: url('/@Model.ImagePath')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-9">
+                <div class="post-heading">
+                    <h1>@Model.Title</h1>
+                    <h2 class="subheading">@Model.SubTitle</h2>
+                    <span class="meta">
+                        Bu makale
+                        <a href="/Profile/Index/@Model.Author.Id">@Model.Author.FirstName @Model.Author.LastName</a>
+                        tarafından @Model.CreatedDate.ToShortDateString() tarihinde yayınlandı.
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Post Content-->
+<article class="mb-4">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-8" >
+                @Html.Raw("<div class='custom-font'>" + Model.Content + "</div>")
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<section class="content-item" id="comments">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-7" style="margin:auto">
                 <form>
                     <button type="button" class="btn btn-success pull-right" onclick="CommentOnThePost(@Model.Id)" style="margin-bottom :10px;margin-left:10px;">Yorum Gönder</button>
                     <button type="button" class="btn btn-success pull-right" data-mdb-ripple-init>Makaleyi Beğen</button>
@@ -65,10 +126,9 @@
     </div>
 </section>
 
-<!-- Footer-->
-<!-- Bootstrap core JS-->
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Core theme JS-->
+
 
 <script src="~/js/site.js"></script>
 
@@ -82,43 +142,6 @@
 
 
 <style>
-
-
-     body {
-      margin: 0;
-      padding: 0;
-    }
-
-    .masthead {
-      position: relative;
-      height: 300px; /* Header alanının istediğiniz yüksekliğini belirtin */
-      background-size: cover;
-      background-position: center;
-      color: #fff; /* Yazı rengi ayarlayabilirsiniz */
-    }
-
-    .masthead .container {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-    }
-
-    .masthead h1 {
-      font-size: 75px;
-      margin-bottom: 10px; /* İstediğiniz boşluğu ayarlayabilirsiniz */
-    }
-
-    .masthead h2 {
-      margin-bottom: 20px; /* İstediğiniz boşluğu ayarlayabilirsiniz */
-    }
-
-    .masthead .meta {
-      display: block;
-      font-size: 16px;
-    }
-
     form {
         margin-top: 20px;
         background-color: #f9f9f9;
@@ -157,9 +180,10 @@
         border-radius: 20px; /* Yuvarlak (oval) kenarlar ekler */
     }
 
-        .btn:hover {
-            box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.8); /* Hover durumunda gölgelik artırır */
-        }
+    .btn:hover {
+        box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.8); /* Hover durumunda gölgelik artırır */
+    }
+
     .custom-font {
         font-family: 'Arial', sans-serif; /* Özel yazı tipi tanımı */
         font-size: 25px; /* Yazı tipi boyutu */

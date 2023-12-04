@@ -9,7 +9,7 @@
 <!-- COMMENT 1 - START -->
 @foreach (var item in Model)
 {
-    <div class="media"  >
+    <div class="media">
         @if (item.AppUser.ImagePath == "" || item.AppUser.ImagePath == null)
         {
             <a class="pull-left" href="#"><img class="media-object" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""></a>
@@ -23,18 +23,16 @@
             <p>@item.Content</p>
             <ul class="list-unstyled list-inline media-detail pull-left">
                 <li><i class="fa fa-calendar"></i>@item.CreatedDate.ToShortDateString()</li>
-                <li style="float:left"><i class="fa fa-thumbs-up" ></i>0</li>
-            </ul>     
+                <li style="float:left"><i class="fa fa-thumbs-up"></i>0</li>
+            </ul>
         </div>
     </div>
 }
 
 <style>
-    .media-object{
-        width: 150px;
+    .media-object {
+        width: 100px;
         border-radius: 20px;
-    
-
     }
 
 </style>
