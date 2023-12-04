@@ -37,6 +37,8 @@ function Sort() {
 }
 
 function ListArticles(id) {
+    debugger;
+    console.log("deneme");
     let _id = id;
 
     $.ajax({

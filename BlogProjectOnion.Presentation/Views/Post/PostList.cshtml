@@ -21,39 +21,36 @@
 }
 
 
+
 <section class="light">
+	<div class="container py-2">
+		<div class="h1 text-center text-dark" id="pageHeaderTitle">MAKALELER</div>
 
-    <div class="container py-5">
-        <div class="h1 text-center text-dark" id="pageHeaderTitle"></div>
-        @foreach (var item in Model)
+           @foreach (var item in Model)
         {
-
             Like like = await _likeManager.TGetDefault(x => x.AppUserId == appUser.Id && x.PostId == item.Id);
-
-
-
-            var darkRandomColor = $"rgba({random.Next(100)}, {random.Next(100)}, {random.Next(100)}, 0.1)";
-            var lightRandomColor = $"rgba({random.Next(222, 256)}, {random.Next(211, 256)}, {random.Next(215, 256)}, 0.2)";
-            <article class="postcard light" style="background: linear-gradient(to right, @darkRandomColor 50%, @lightRandomColor 100%);">
-                <a class="postcard__img_link" href="~/Post/Index/@item.Id">
-                    @if (item.ImagePath == "" || item.ImagePath == null)
-                    {
-                        <img class="postcard__img skewed-img" src="~/assets/img/defaultPost.jpg" alt="Image Title" />
-                    }
-                    else
-                    {
-                        <img class="postcard__img" src="/@item.ImagePath" alt="Image Title" />
-                    }
-                </a>
-                <div class="postcard__text t-dark">
+           
+		<article class="postcard light blue">
+			<a class="postcard__img_link" href="#">
+                @if (item.ImagePath == "" || item.ImagePath == null)
+                {
+                    <img class="postcard__img skewed-img" src="~/assets/img/defaultPost.jpg" alt="Image Title" />
+                }
+                else
+                {
+                    <img class="postcard__img" src="/@item.ImagePath" alt="Image Title" />
+                }
+            </a>
+			<div class="postcard__text t-dark">
                     <h1 class="postcard__title blue"><a href="~/Post/Index/@item.Id">@item.Title</a></h1>
                     <a href="/Profile/Index/@item.Author.Id"><h6 style="font-weight:normal;">Yazar : @item.Author.FirstName @item.Author.LastName</h6></a>
-                    <div class="postcard__subtitle small">
-                        <time datetime="2020-05-25 12:00:00">
+
+				<div class="postcard__subtitle small">
+					<time datetime="2020-05-25 12:00:00">
                             <i class="fas fa-calendar-alt mr-2"></i> @item.CreatedDate.ToShortDateString()
-                        </time>
-                    </div>
-                    <div class="postcard__bar"></div>
+					</time>
+				</div>
+				<div class="postcard__bar"></div>
                     @if (item.Content.Length >= 350)
                     {
                         <div class="postcard__preview-txt">@Html.Raw(@item.Content.Substring(0,350))...</div>
@@ -66,7 +63,7 @@
                     }
                     <ul class="postcard__tagbox">
                         <li class="tag__item">
-                            @if (like == null)
+                           @if (like == null)
                             {
                                 <a onclick="toggleLikeState(@item.Id, '@appUser.Id', this)" data-liked="true">
                                     <i class="fas fa-clock mr-2"></i> <span id="likeText">Beğen</span>
@@ -79,21 +76,17 @@
                                     <i class="fas fa-thumbs-up mr-2"></i><span id="likeText"> Beğenildi</span>
                                 </a>
                             }
-                        </li>
-
                         <li class="tag__item">
                             <a href="/Post/Index/@item.Id">
                                 <i class="fas fa-clock mr-2"></i> Yorum Yap
                             </a>
                         </li>
-
-                    </ul>
-                </div>
-            </article>
+				</ul>
+			</div>
+		</article>
         }
-    </div>
+		</div>
 </section>
-
 
 <style>
     .tag__item a {

@@ -4,8 +4,6 @@
     ViewData["Title"] = "Detail";
 }
 
-<h1>Detail</h1>
-
 @model AppUserVM
 
 <section style="background-color: #eee; ">
@@ -180,10 +178,12 @@
     </div>
 </section>
 
+<script src="/js/site.js"></script>
+
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         ListArticles(1);
-
     });
    
     function active(element, pageNumber) {

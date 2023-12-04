@@ -243,7 +243,7 @@ namespace BlogProjectOnion.Presentation.Areas.Admin.Controllers
 
                 }
 
-                _mapper.Map(post, updatePost);
+                _mapper.Map(updatePost,post);
                 await _postService.TUpdate(post);
                 return RedirectToAction("PostList", "Post");
             }
