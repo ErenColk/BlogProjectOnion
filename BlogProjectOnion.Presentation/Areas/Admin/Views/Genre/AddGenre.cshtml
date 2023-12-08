@@ -15,6 +15,7 @@
                     <input type="text" asp-for="Name" class="form-control" id="kategori" placeholder="Kategori Adı Giriniz...">
                 </div>
             </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="card-action" style="display:flex; ">
                 <button type="submit" class="btn btn-success">Ekle</button>
                 <a class="btn btn-danger" href="/Admin/Genre/Index" style="margin-left:10px">Geri Dön</a>

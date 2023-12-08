@@ -2,69 +2,67 @@
 @{
     ViewData["Title"] = "Login";
 }
-@* <h1>Login</h1>
 
-<h4>LoginAppUserDTO</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Index">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
+<section class="vh-50" style="background-color: #edeff2;">
+    <div class="container py-2 h-150">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col col-xl-9">
+                <div class="card" style="border-radius: 1rem;">
+                    <div class="row g-0">
+                        <div class="col-md-6 col-lg-5 d-none d-md-block">
+                            <img src="~/images/loginfoto.jpg" />
+                        </div>
+                        <div class="col-md-6 col-lg-7 d-flex align-items-center">
+                            <div class="card-body p-4 p-lg-5 text-black">
+
+                                <form asp-action="Index">
+
+                                    <div class="d-flex align-items-center mb-3 pb-1">
+                                        <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
+                                        <span class="h1 fw-bold mb-0">Blog Vista</span>
+                                    </div>
+
+                                    <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Hesabınıza Giriş Yapın</h5>
+
+                                    <div class="form-outline mb-4">
+                                        <input asp-for="UserName" type="text" id="form2Example17" class="form-control form-control-lg" />
+                                        <label asp-for="UserName" class="form-label" for="form2Example17">Kullanıcı Adı</label>
+                                    </div>
+
+                                    <div class="form-outline mb-4">
+                                        <input asp-for="Password" type="password" id="form2Example27" class="form-control form-control-lg" />
+                                        <label asp-for="Password" class="form-label" for="form2Example27">Şifre</label>
+                                    </div>
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    @if (!Model.IsEmailConfirmed)
+                                    {
+                                        <p class="mb-5 pb-lg-2" style="color: #393f81;">
+                                            Mail onaylamak için <a class="small text-muted" href="/ConfirmMail/Index/@Model.Id"> BURAYA </a>tıklayınız...
+                                        </p>
+                                    }
+                                    <div class="pt-1 mb-4">
+                                        <input type="submit" class="btn btn-dark btn-lg btn-block" value="Giriş" />
+                                    </div>
+                                    <a class="small text-muted" href="#!">Parolanızı mı unuttunuz?</a>
+                                    <p class="mb-5 pb-lg-2" style="color: #393f81;">
+                                        Hesabınız yok mu? <a href="/Register/Index"
+                                                             style="color: #393f81;">Buradan kaydolun</a>
+                                    </p>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RememberMe">Beni Hatırla</label>
-                <input asp-for="RememberMe" type="checkbox" class="form-check-input"  />               
-            </div>
-            <div class="form-group" style="margin-top:10px">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
- *@
-@* @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-} *@
-
-
-<link href="~/css/login.css" rel="stylesheet" id="bootstrap-css">
-
-<div class="wrapper fadeInDown" style="margin-top:95px">
-    <div id="formContent">
-        <!-- Tabs Titles -->
-        <!-- Icon -->
-        <div class="fadeIn first" style="margin-top:10px">
-            <h3 style="font-weight: normal; color:#f8f5fc;">Giriş İşlemi</h3>
         </div>
-
-        <!-- Login Form -->
-        <form asp-action="Index" asp-controller="Login" method="post">
-            <input type="text" asp-for="UserName" id="login" class="fadeIn second"  placeholder="Kullanıcı Adı">
-            <input type="text" asp-for="Password" id="password" class="fadeIn third"  placeholder="Parola">
-            <div class="form-group">
-                <label style="color:white" asp-for="RememberMe">Beni Hatırla</label>
-                <input asp-for="RememberMe" type="checkbox" class="form-check-input"  />
-            </div>
-            <input type="submit" class="fadeIn fourth "   value="Giriş Yap">
-        </form>
-        <!-- Remind Passowrd -->
-        <div id="formFooter">
-            <a class="underlineHover" href="#">Şifreyi mi unuttun?</a>
-        </div>
-
     </div>
-</div>
+</section>
 
+<style>
+    .col-md-6 img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 1rem 0 0 1rem;
+    }
+</style>

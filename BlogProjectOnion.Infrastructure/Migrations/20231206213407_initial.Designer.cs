@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogProjectOnion.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231203094739_initial")]
+    [Migration("20231206213407_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -66,8 +66,8 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d6f0e1d8-d457-40a0-951b-9989b763a27e"),
-                            ConcurrencyStamp = "9c05af54-0fbd-4f7e-92a7-d96253cde096",
+                            Id = new Guid("4a1bd975-af5d-40c1-b0a8-a8272a0e6b37"),
+                            ConcurrencyStamp = "2236a28f-85ae-4819-8f1e-83f0a36185ba",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "User",
                             NormalizedName = "USER",
@@ -75,8 +75,8 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("f20f4b1b-03f3-4722-9fe9-ac84a35f3fff"),
-                            ConcurrencyStamp = "5b581ec1-d5f9-4fef-80ce-eaff0cc0d83a",
+                            Id = new Guid("28de4c01-f1d0-4fbe-b5ca-6eeb3b3c8396"),
+                            ConcurrencyStamp = "ebf97a0f-c631-4211-973d-bc7f0dc705f4",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Admin",
                             NormalizedName = "ADMIN",
@@ -84,8 +84,8 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("abc0a47e-49f4-4c44-9839-44a007a94de0"),
-                            ConcurrencyStamp = "bc31b2ff-ef88-4dbc-bf7a-003ffa431ed9",
+                            Id = new Guid("8c373c55-cdab-41e5-b116-13829aa0f551"),
+                            ConcurrencyStamp = "b31ddc7d-7a73-4ff5-bbcf-9dd1fe3bbd49",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Author",
                             NormalizedName = "AUTHOR",
@@ -108,6 +108,9 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ConfirmCode")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");

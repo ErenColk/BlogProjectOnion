@@ -1,0 +1,97 @@
+﻿@using BlogProjectOnion.Application.Models.DTOs.PostDTOs;
+@{
+    ViewData["Title"] = "MyPostList";
+}
+
+@model List<ResultPostDTO>
+
+<div class="container-fluid main-cont" style="background-image: url('https://images.unsplash.com/photo-1519419166318-4f5c601b8e6c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); background-size: cover; background-position: center; width: auto; height: auto;">
+
+    <div class="row news-row">
+        <div class="container-fluid col-md-10 col-sm-6 justify-content-center" style="margin-left:200px">
+            <h1 class="h1" id="pageHeaderTitle">MAKALELERİM</h1>
+            <div class="card-group">
+                @foreach (ResultPostDTO item in Model)
+                {
+                    <div class="underlay" >
+                        <a href="#" class="card-link" style="padding:0px">
+                            <div class="card">
+                                <div class="card-img-top" style="background-image: url('/@item.ImagePath'); background-position:center;background-size: cover;"></div>
+                                <div class="card-block">
+                                    @if (item.Title.Length > 60)
+                                    {
+                                        <h5 class="card-title" style="font-family: 'Anton', sans-serif">@item.Title.Substring(0,60) ...</h5>
+                                        <hr />
+                                    }
+                                    else
+                                    {
+
+                                        <h5 class="card-title" style="font-family: 'Anton', sans-serif">@item.Title</h5>
+
+                                        <hr />
+                                    }
+
+                                    @if (item.SubTitle.Length > 60)
+                                    {
+
+                                        <p class="card-text">@Html.Raw(item.SubTitle.Substring(0,60))</p>
+
+                                    }
+                                    else
+                                    {
+                                        <p class="card-text">@Html.Raw(item.SubTitle)</p>
+
+                                    }
+                                    <p class="card-text"><small class="text-muted">@item.CreatedDate.ToShortDateString() tarihinde oluşturuldu.</small></p>
+                                </div>
+
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+    <div class="d-flex justify-content-center">
+        <a type="button" href="~/Post/AddPost" class="btn btn-outline-secondary">Makale Yazmak İçin Tıklayınız</a>
+    </div>
+</div>
+
+
+
+<script src="/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/postlist.js"></script>
+
+<link href="~/css/mypostlist.css" rel="stylesheet" />
+
+
+<style>
+    .h1 {
+        font-family: 'Segoe Print', sans-serif;
+        color: #999;
+    }
+</style>
+
+<script name="toggle-grid" type="text/javascript">
+    $(document).ready(function () {
+        $(document).on("keypress", function (event) {
+            // If 'alt + g' keys are pressed:
+            if (event.which === 169) {
+                $('#toggle-grid').toggle();
+            }
+        });
+
+        $('#toggle-grid').on("click"
+            , function () {
+                $('.pixel-grid').toggle();
+                $('#toggle-grid').toggleClass('orange');
+            });
+    });
+</script>
+
+
+
+
+
+

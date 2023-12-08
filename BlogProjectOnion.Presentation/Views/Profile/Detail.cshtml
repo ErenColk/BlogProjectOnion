@@ -10,7 +10,7 @@
     <div class="container py-5">
         <div class="row">
             <div class="col-lg-4">
-                <div class="card mb-3">
+                <div class="card mb-3" style="height:400px">
                     <div class="card-body text-center">
                         @if (Model.ImagePath == "" || Model.ImagePath == null)
                         {
@@ -22,8 +22,8 @@
                             <img src="/@Model.ImagePath" alt="avatar"
                                  class="rounded-circle img-fluid" style="width: 150px;">
                         }
-                        <h5 class="" style="margin-bottom:-20px;margin-top:10px">@Model.UserName</h5>
-                        <p class="text-muted " style="margin-bottom:-20px">ÜYE</p>
+                        <h5 class="" style="margin-top:10px">@Model.UserName</h5>
+                        <p class="text-muted " style="">ÜYE</p>
                         <p class="text-muted mb-4">Kayıt Tarihi : @Model.CreatedDate </p>
                         <div class="d-flex justify-content-center mb-2">
                             <button type="button" class="btn btn-primary">Follow</button>
@@ -97,7 +97,7 @@
                         <hr>
                         <div class="row">
                             <div class="col-sm-3">
-                                <p class="mb-0">Email</p>
+                                <p class="mb-0">Email :</p>
                             </div>
                             <div class="col-sm-9">
                                 <p class="text-muted mb-0">@Model.Email</p>
@@ -106,7 +106,7 @@
                         <hr>
                         <div class="row">
                             <div class="col-sm-3">
-                                <p class="mb-0">Telefon</p>
+                                <p class="mb-0">Telefon :</p>
                             </div>
                             <div class="col-sm-9">
                                 <p class="text-muted mb-0">@Model.PhoneNumber</p>
@@ -115,7 +115,7 @@
                         <hr>
                         <div class="row">
                             <div class="col-sm-3">
-                                <p class="mb-0">Adres</p>
+                                <p class="mb-0">Adres :</p>
                             </div>
                             <div class="col-sm-9">
                                 <p class="text-muted mb-0">@* @Model.Address *@</p>

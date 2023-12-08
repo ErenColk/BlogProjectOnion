@@ -5,6 +5,7 @@
 
 
 function ViewComments(id) {
+    debugger;
     $.ajax({
         url: "Admin/Post/PostDetailComments/" + id,
         type: "GET",

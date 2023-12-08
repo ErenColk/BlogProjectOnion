@@ -3,6 +3,10 @@
     ViewData["Title"] = "Home Page";
 }
 
+@model List<PostVM>
+
+<link href="~/css/styles.css" rel="stylesheet" />
+
 <header class="masthead" style="background-image: url('/assets/img/home-bg.jpg')">
     <div class="container position-relative px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
@@ -16,23 +20,20 @@
     </div>
 </header>
 
-
-
 <section class="transition-section" style="background-color: #f8f9fa;">
-
     <div class="container px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
-            <div class="col-md-10 col-lg-8 col-xl-8 text-center">
-                <h2 class="section-heading mb-4">En Çok Okunan İlk 10 Makalemizi Keşfedin</h2>
+            <div class="col-md-10 col-lg-8 col-xl-10 text-center">
+                <h1 class="section-heading mb-2" style="font-size:45px">En Çok Okunan İlk 10 Makalemizi Keşfedin</h1>
                 <p class="text-muted">Çeşitli konuları kapsayan düşündürücü makaleler koleksiyonunu keşfedin. Her bir yazı, size değerli görüşler ve bilgiler sunmak için özenle hazırlanmıştır. Keyifli okumalar!</p>
             </div>
         </div>
 
         <div class="row gx-4 gx-lg-5 justify-content-center">
-            <div class="col-md-10 col-lg-8 col-xl-8">
+            <div class="col-md-10 col-lg-8 col-xl-9">
                 @foreach (var item in Model)
                 {
-
+                    <hr />
                     <div class="post-preview">
                         <a href="/Post/Index/@item.Id">
                             <h2 class="post-title">@item.Title</h2>
@@ -48,31 +49,7 @@
                             <span class="post-view-counter">@item.ClickCount</span>
                         </div>
                     </div>
-
-@*                     <div class="post-preview">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <a href="/Post/Index/@item.Id" style="text-align: left; display: block;">
-                                    <h2 style="font-size: 40px; margin-bottom: 10px;" class="post-title">@item.Title</h2>
-                                    <label style="margin-top: 20px; text-align: left; display: block;">
-                                        @Html.Raw("<div class='custom-font' style='font-size: 18px;'>" + item.SubTitle + "</div>")
-                                    </label>
-                                </a>
-                                <p class="post-meta" style="text-align: left;">
-                                    Yayınlandığı Tarih
-                                    <a href="#!">@item.Author</a>
-                                    @item.CreatedDate.ToShortDateString()
-                                </p>
-                            </div>
-
-                            <div class="d-flex align-items-center">
-                                <i class="fas fa-eye mr-1"></i>
-                                <span class="post-view-counter">@item.ClickCount</span>
-                            </div>
-                        </div>
-                        <hr class="my-4" />
-                    </div> *@
-
+                  
                 }
                 <!-- Divider-->
                 <!-- Pager-->
@@ -85,7 +62,6 @@
 
 
 
-@model List<PostVM>
 
 
 

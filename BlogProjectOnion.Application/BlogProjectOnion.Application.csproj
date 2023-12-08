@@ -23,12 +23,9 @@
 
   <ItemGroup>
     <Folder Include="Models\VMs\LikeVMs\" />
-    <Folder Include="ValidationRules\AppUserValidationRules\" />
     <Folder Include="ValidationRules\AppRoleValidationRules\" />
     <Folder Include="ValidationRules\AuthorValidatonRules\" />
-    <Folder Include="ValidationRules\GenreValidatonRules\" />
     <Folder Include="ValidationRules\CommentValidatonRules\" />
-    <Folder Include="ValidationRules\PostValidatonRules\" />
   </ItemGroup>
 
 </Project>

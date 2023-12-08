@@ -20,6 +20,8 @@
     var random = new Random();
 }
 
+<link href="~/css/postlist.css" rel="stylesheet" />
+<script src="/lib/jquery/dist/jquery.min.js"></script>
 
 
 <section class="light">
@@ -42,8 +44,8 @@
                 }
             </a>
 			<div class="postcard__text t-dark">
-                    <h1 class="postcard__title blue"><a href="~/Post/Index/@item.Id">@item.Title</a></h1>
-                    <a href="/Profile/Index/@item.Author.Id"><h6 style="font-weight:normal;">Yazar : @item.Author.FirstName @item.Author.LastName</h6></a>
+                    <h1 class="postcard__title blue" style="text-decoration: none;"><a href="~/Post/Index/@item.Id">@item.Title</a></h1>
+                    <a href="/Profile/Index/@item.Author.Id"><h6 style="font-weight:normal; text-decoration: none;">Yazar : @item.Author.FirstName @item.Author.LastName</h6></a>
 
 				<div class="postcard__subtitle small">
 					<time datetime="2020-05-25 12:00:00">
@@ -65,15 +67,17 @@
                         <li class="tag__item">
                            @if (like == null)
                             {
-                                <a onclick="toggleLikeState(@item.Id, '@appUser.Id', this)" data-liked="true">
-                                    <i class="fas fa-clock mr-2"></i> <span id="likeText">Beğen</span>
+                               
+                                <a onclick="toggleLikeState(@item.Id,@item.Likes.Count + 1, '@appUser.Id', this)" data-liked="true">
+                                    <i class="fas fa-clock mr-2"></i> <span id="likeText">@item.Likes.Count Beğen</span>
                                 </a>
                             }
                             else
                             {
-                                <a onclick="toggleLikeState(@item.Id, '@appUser.Id', this)" data-liked="false">
+                                
+                                <a onclick="toggleLikeState(@item.Id,@item.Likes.Count, '@appUser.Id', this)" data-liked="false">
                                     @* data-liked true yada false gidiyor ona göre işlem sağlanıyor *@
-                                    <i class="fas fa-thumbs-up mr-2"></i><span id="likeText"> Beğenildi</span>
+                                    <i class="fas fa-thumbs-up mr-2"></i><span id="likeText">@item.Likes.Count Beğenildi</span>
                                 </a>
                             }
                         <li class="tag__item">
@@ -88,7 +92,14 @@
 		</div>
 </section>
 
-<style>
+
+
+ <style >
+    .custom-header {
+        font-family: 'YourFont', sans-serif;
+        color: #999;
+    }
+
     .tag__item a {
         cursor: pointer; /* Fare imlecini değiştir */
         text-decoration: none; /* Link altı çizgisini kaldır */
@@ -106,20 +117,21 @@
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-<script>
+ <script>
 
-    function toggleLikeState(postId, userId, element) {
+    function toggleLikeState(postId, likeCount, userId, element) {
         var liked = element.getAttribute('data-liked') === 'true';
-
+        
         if (liked) {
-
             GetpostAndUserId(postId, userId);
-            element.innerHTML = '<i class="fas fa-thumbs-up mr-2"></i> Beğenildi';
+            element.innerHTML = `<i class="fas fa-thumbs-up mr-2"></i> ${likeCount} Beğenildi`;
 
             element.setAttribute('data-liked', 'false');
         } else {
             RemoveLike(postId, userId);
-            element.innerHTML = '<i class="fas fa-clock mr-2"></i> Beğen';
+          
+            likeCount -= 1;
+            element.innerHTML = `<i class="fas fa-clock mr-2"></i> ${likeCount} Beğen`;
             element.setAttribute('data-liked', 'true');
         }
     }
@@ -142,6 +154,8 @@
             },
         });
     }
+
+
     function RemoveLike(_postid, _userid) {
         console.log("Silme")
         let like = {
@@ -161,4 +175,4 @@
             },
         });
     }
-</script>
+ </script>

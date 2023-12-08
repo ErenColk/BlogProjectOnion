@@ -2,7 +2,6 @@
 using BlogProjectOnion.Domain.Entities;
 using BlogProjectOnion.Domain.Enums;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +12,7 @@ namespace BlogProjectOnion.Application.Models.VMs.PostVMs
 {
     public class CreatePostVM : IUploadImagePath
     {
+
         public string Title { get; set; }
         public string SubTitle { get; set; }
         public string Content { get; set; }

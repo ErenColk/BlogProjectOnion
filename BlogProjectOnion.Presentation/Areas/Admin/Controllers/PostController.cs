@@ -5,6 +5,7 @@ using BlogProjectOnion.Application.Models.DTOs.PostDTOs;
 using BlogProjectOnion.Application.Models.VMs;
 using BlogProjectOnion.Application.Models.VMs.PostVMs;
 using BlogProjectOnion.Application.Services.Abstract;
+using BlogProjectOnion.Application.ValidationRules.PostValidatonRules;
 using BlogProjectOnion.Domain.Entities;
 using BlogProjectOnion.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
@@ -43,7 +44,7 @@ namespace BlogProjectOnion.Presentation.Areas.Admin.Controllers
              {
                  Id = x.Id,
                  Title = x.Title,
-                  SubTitle = x.SubTitle,
+                 SubTitle = x.SubTitle,
                  Genre = x.Genre,
                  Content = x.Content,
                  Likes = x.Likes,
@@ -60,12 +61,15 @@ namespace BlogProjectOnion.Presentation.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> AddPost()
         {
-            AppUser user = await _userManager.GetUserAsync(HttpContext.User);
-            AppUser appUser = await _userManager.Users.Include(x => x.Author).Where(x => x == user).FirstOrDefaultAsync();
 
-            await _userManager.GetUserAsync(HttpContext.User);
+            //AppUser user = await _userManager.GetUserAsync(HttpContext.User);
+            //AppUser appUser = await _userManager.Users.Include(x => x.Author).Where(x => x == user).FirstOrDefaultAsync();
+
+            //await _userManager.GetUserAsync(HttpContext.User);
             //appUser.Author = _authorService.TGetDefault(x=>x)
 
+
+            AppUser appUser = await _userManager.Users.Include(x => x.Author).FirstOrDefaultAsync(x => x.Id == _userManager.GetUserAsync(HttpContext.User).Result.Id);
             CreatePostVM createPostVM = new CreatePostVM()
             {
                 Genres = await _genreService.TGetDefaults(),
@@ -81,18 +85,41 @@ namespace BlogProjectOnion.Presentation.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> AddPost(CreatePostVM createPostVM)
         {
-            Post post = _mapper.Map<Post>(createPostVM);
+            PostCreateValidator validationRules = new PostCreateValidator();
+            var resultCreate = validationRules.Validate(createPostVM);
 
-            post.ImagePath = $"images/{Guid.NewGuid()}" + Path.GetExtension(createPostVM.UploadPath.FileName);
-            SaveImage.ImagePath(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/", post.ImagePath), createPostVM);
-            bool result = await _postService.TCreate(post);
-            if (!result)
+            if (resultCreate.IsValid)
             {
 
-                return View(createPostVM);
+                Post post = _mapper.Map<Post>(createPostVM);
+                if (createPostVM.UploadPath != null)
+                {
+                    post.ImagePath = $"images/{Guid.NewGuid()}" + Path.GetExtension(createPostVM.UploadPath.FileName);
+                    SaveImage.ImagePath(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/", post.ImagePath), createPostVM);
+                }
+
+                bool result = await _postService.TCreate(post);
+                if (!result)
+                {
+                    return View(createPostVM);
+                }
+                else
+                    return RedirectToAction("PostList", "Post");
+
             }
             else
-                return RedirectToAction("PostList", "Post");
+            {
+                foreach (var item in resultCreate.Errors)
+                {
+
+                    ModelState.AddModelError("", item.ErrorMessage);
+
+                }
+                createPostVM.Genres = await _genreService.TGetDefaults();
+                return View(createPostVM);
+            }
+
+
         }
 
 
@@ -238,12 +265,12 @@ namespace BlogProjectOnion.Presentation.Areas.Admin.Controllers
                         System.IO.File.Delete(oldImagePath);
                     }
 
-                    post.ImagePath = $"images/{Guid.NewGuid()}" + Path.GetExtension(updatePost.UploadPath.FileName);
-                    SaveImage.ImagePath(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/", post.ImagePath), updatePost);
+                    updatePost.ImagePath = $"images/{Guid.NewGuid()}" + Path.GetExtension(updatePost.UploadPath.FileName);
+                    SaveImage.ImagePath(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/", updatePost.ImagePath), updatePost);
 
                 }
 
-                _mapper.Map(updatePost,post);
+                _mapper.Map(updatePost, post );
                 await _postService.TUpdate(post);
                 return RedirectToAction("PostList", "Post");
             }

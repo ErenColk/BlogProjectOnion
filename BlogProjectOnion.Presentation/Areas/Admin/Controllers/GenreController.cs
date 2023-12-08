@@ -5,6 +5,7 @@ using BlogProjectOnion.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using BlogProjectOnion.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
+using BlogProjectOnion.Application.ValidationRules.GenreValidatonRules;
 
 namespace BlogProjectOnion.Presentation.Areas.Admin.Controllers
 {
@@ -67,17 +68,32 @@ namespace BlogProjectOnion.Presentation.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> AddGenre(CreateGenreDTO genreDTO)
         {
-            Genre genre = _mapper.Map<Genre>(genreDTO);
+            GenreCreateValidation validationRules = new GenreCreateValidation();
+            var result = validationRules.Validate(genreDTO);
 
-            if (genre == null)
+            if (result.IsValid)
             {
-                return View();
+
+                Genre genre = _mapper.Map<Genre>(genreDTO);
+
+                if (genre == null)
+                {
+                    return View();
+                }
+                else
+                {
+                    await _genreService.TCreate(genre);
+                    return RedirectToAction("Index", "Genre");
+                }
             }
             else
             {
-                await _genreService.TCreate(genre);
 
-                return RedirectToAction("Index", "Genre");
+                foreach (var item in result.Errors)
+                {
+                    ModelState.AddModelError("", item.ErrorMessage);
+                }
+                return View();
             }
 
         }
