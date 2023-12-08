@@ -93,6 +93,7 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
+                    ConfirmCode = table.Column<int>(type: "int", nullable: true),
                     ImagePath = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     AuthorId = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
@@ -335,17 +336,17 @@ namespace BlogProjectOnion.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "CreatedDate", "DeletedDate", "Name", "NormalizedName", "Status", "UpdatedDate" },
-                values: new object[] { new Guid("abc0a47e-49f4-4c44-9839-44a007a94de0"), "bc31b2ff-ef88-4dbc-bf7a-003ffa431ed9", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Author", "AUTHOR", 0, null });
+                values: new object[] { new Guid("28de4c01-f1d0-4fbe-b5ca-6eeb3b3c8396"), "ebf97a0f-c631-4211-973d-bc7f0dc705f4", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Admin", "ADMIN", 0, null });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "CreatedDate", "DeletedDate", "Name", "NormalizedName", "Status", "UpdatedDate" },
-                values: new object[] { new Guid("d6f0e1d8-d457-40a0-951b-9989b763a27e"), "9c05af54-0fbd-4f7e-92a7-d96253cde096", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "User", "USER", 0, null });
+                values: new object[] { new Guid("4a1bd975-af5d-40c1-b0a8-a8272a0e6b37"), "2236a28f-85ae-4819-8f1e-83f0a36185ba", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "User", "USER", 0, null });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "CreatedDate", "DeletedDate", "Name", "NormalizedName", "Status", "UpdatedDate" },
-                values: new object[] { new Guid("f20f4b1b-03f3-4722-9fe9-ac84a35f3fff"), "5b581ec1-d5f9-4fef-80ce-eaff0cc0d83a", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Admin", "ADMIN", 0, null });
+                values: new object[] { new Guid("8c373c55-cdab-41e5-b116-13829aa0f551"), "b31ddc7d-7a73-4ff5-bbcf-9dd1fe3bbd49", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Author", "AUTHOR", 0, null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

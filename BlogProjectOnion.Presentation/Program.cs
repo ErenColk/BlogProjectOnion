@@ -9,9 +9,11 @@ using BlogProjectOnion.Domain.Repositories;
 using BlogProjectOnion.Infrastructure.Context;
 using BlogProjectOnion.Infrastructure.Repositories;
 using BlogProjectOnion.Infrastructure.SeedData;
+using BlogProjectOnion.Presentation.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace BlogProjectOnion.Presentation
 {
@@ -34,10 +36,19 @@ namespace BlogProjectOnion.Presentation
 
             //});
 
+            
+
+
             builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("conStr")));
 
+           
             //Identity 
-            builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<AppDbContext>();
+            builder.Services.AddIdentity<AppUser, AppRole>(options => {
+            
+                options.User.RequireUniqueEmail = true;
+            
+            
+            }).AddEntityFrameworkStores<AppDbContext>().AddErrorDescriber<AppUserIdentityValidator>();
 
             builder.Services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
       

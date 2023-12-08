@@ -10,8 +10,7 @@ namespace BlogProjectOnion.Application.Models.DTOs.GenreDTOs
 {
     public class CreateGenreDTO
     {
-        [Required(ErrorMessage = "Must to type Genre Name!")]
-        [MinLength(5, ErrorMessage = "Minimum length is 5")]
+
         public string Name { get; set; }
         public DateTime CreatedDate { get; set; }
         public Status Status { get; set; }

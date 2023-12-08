@@ -24,6 +24,7 @@ namespace BlogProjectOnion.Domain.Entities
         public DateTime? UpdatedDate { get; set; }
         public DateTime? DeletedDate { get; set; }
         public Status Status { get; set; }
+        public int? ConfirmCode { get; set; }
         public string  ImagePath { get; set; }
         [NotMapped] // DB' de yer almayacak
         public IFormFile UploadPath { get; set; }

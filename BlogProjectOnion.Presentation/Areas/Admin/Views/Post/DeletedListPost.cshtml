@@ -19,9 +19,7 @@
                             <table class="table mt-4">
                                 <thead>
                                     <tr>
-                                        <th scope="col">#</th>
                                         <th scope="col">Makale Adı</th>
-                                        <th scope="col">Makale İçerik</th>
                                         <th scope="col">Yazar Adı</th>
                                         <th scope="col">Oluşturulma Zamanı</th>
                                         <th scope="col">Silinme Zamanı</th>
@@ -33,9 +31,7 @@
                                     @foreach (var item in Model)
                                     {
                                         <tr>
-                                            <td>@item.Id</td>
                                             <td>@item.Title</td>
-                                            <td>@item.Content</td>
                                             <td>@item.AuthorFullName</td>
                                             <td>@item.CreatedDate</td>
                                             <td>@item.DeletedDate.Value</td>

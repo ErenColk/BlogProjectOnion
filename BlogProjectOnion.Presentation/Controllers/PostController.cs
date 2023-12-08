@@ -1,11 +1,16 @@
 ﻿using AutoMapper;
+using BlogProjectOnion.Application.Helper;
 using BlogProjectOnion.Application.Models.DTOs.LikeDTOs;
+using BlogProjectOnion.Application.Models.DTOs.PostDTOs;
 using BlogProjectOnion.Application.Models.VMs;
+using BlogProjectOnion.Application.Models.VMs.PostVMs;
 using BlogProjectOnion.Application.Services.Abstract;
+using BlogProjectOnion.Application.ValidationRules.PostValidatonRules;
 using BlogProjectOnion.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
@@ -19,14 +24,16 @@ namespace BlogProjectOnion.Presentation.Controllers
         private readonly ICommentService _commentService;
         private readonly UserManager<AppUser> _userManager;
         private readonly ILikeService _likeService;
+        private readonly IGenreService _genreService;
 
-        public PostController(IPostService postService, IMapper mapper, ICommentService commentService, UserManager<AppUser> userManager, ILikeService likeService)
+        public PostController(IPostService postService, IMapper mapper, ICommentService commentService, UserManager<AppUser> userManager, ILikeService likeService, IGenreService genreService)
         {
             _postService = postService;
             _mapper = mapper;
             _commentService = commentService;
             _userManager = userManager;
             _likeService = likeService;
+            _genreService = genreService;
         }
 
         //TODOO : BURAYI DÜZENLE
@@ -106,5 +113,76 @@ namespace BlogProjectOnion.Presentation.Controllers
             }
             return View();
         }
+
+
+        [Authorize(Roles = "Admin,Author")]
+        [HttpGet]
+        public async Task<IActionResult> MyPostList()
+        {
+            AppUser appUser = await _userManager.Users.Include(x => x.Author).FirstOrDefaultAsync(x => x.Id == _userManager.GetUserAsync(HttpContext.User).Result.Id);
+
+            List<ResultPostDTO> resultPostDTO = _mapper.Map<List<ResultPostDTO>>(await _postService.TGetDefaults(x => x.AuthorId == appUser.Author.Id));
+
+            return View(resultPostDTO);
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddPost()
+        {
+
+            AppUser appUser = await _userManager.Users.Include(x => x.Author).FirstOrDefaultAsync(x => x.Id == _userManager.GetUserAsync(HttpContext.User).Result.Id);
+
+            CreatePostVM createPostVM = new CreatePostVM()
+            {
+                Genres = await _genreService.TGetDefaults(),
+                AuthorId = appUser.Author.Id
+            };
+
+            return View(createPostVM);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddPost(CreatePostVM createPostVM)
+        {
+
+            PostCreateValidator validationRules = new PostCreateValidator();
+            var resultCreate = validationRules.Validate(createPostVM);
+
+            if (resultCreate.IsValid)
+            {
+
+                Post post = _mapper.Map<Post>(createPostVM);
+                if (createPostVM.UploadPath != null)
+                {
+                    post.ImagePath = $"images/{Guid.NewGuid()}" + Path.GetExtension(createPostVM.UploadPath.FileName);
+                    SaveImage.ImagePath(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/", post.ImagePath), createPostVM);
+                }
+
+                bool result = await _postService.TCreate(post);
+                if (!result)
+                {
+                    return View(createPostVM);
+                }
+                else
+                    return RedirectToAction("MyPostList", "Post");
+
+            }
+            else
+            {
+                foreach (var item in resultCreate.Errors)
+                {
+
+                    ModelState.AddModelError("", item.ErrorMessage);
+
+                }
+                createPostVM.Genres = await _genreService.TGetDefaults();
+                return View(createPostVM);
+            }
+
+
+        }
+
     }
 }

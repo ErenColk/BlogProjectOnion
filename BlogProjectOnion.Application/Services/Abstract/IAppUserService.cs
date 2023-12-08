@@ -11,7 +11,7 @@ namespace BlogProjectOnion.Application.Services.Abstract
 {
     public interface IAppUserService : IBaseServices<AppUser>
     {
-        Task<IdentityResult> Register(RegisterAppUserDTO model);
+        Task<IdentityResult> Register(RegisterAppUserDTO model, AppUser user);
         Task<SignInResult> Login(LoginAppUserDTO model);
         Task Logout();
         Task<UpdateAppUserDTO> GetByUserName(string userName);
