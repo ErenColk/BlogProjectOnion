@@ -4,6 +4,7 @@ using BlogProjectOnion.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogProjectOnion.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231214190807_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,8 +66,8 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("4690b04e-b5c1-4121-b57f-1a82b2351856"),
-                            ConcurrencyStamp = "61c23205-9b5e-4683-98f2-06db56b166de",
+                            Id = new Guid("52a64731-8d18-4100-81c1-adf488133ce3"),
+                            ConcurrencyStamp = "6c1c1323-9c78-4617-84d4-7699309a2a0d",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "User",
                             NormalizedName = "USER",
@@ -73,8 +75,8 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("437e862d-a0b7-41ac-8fd3-fa8e07432d7d"),
-                            ConcurrencyStamp = "3bf9cc79-b319-4a9d-8121-58987279746e",
+                            Id = new Guid("91bbf44e-6539-4aec-ade1-dd9a80a8a412"),
+                            ConcurrencyStamp = "2d9e54c5-64d7-4fc4-94d6-0bbf916d0817",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Admin",
                             NormalizedName = "ADMIN",
@@ -82,8 +84,8 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("77add848-8afc-4b61-b91e-ed868484ea76"),
-                            ConcurrencyStamp = "68d81e9d-5454-46e4-bf25-fab126d8a88c",
+                            Id = new Guid("449bf421-3bb2-4226-beae-ce26684b6c44"),
+                            ConcurrencyStamp = "0ca3299e-b179-430d-9fcf-81616d875ed5",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Author",
                             NormalizedName = "AUTHOR",
@@ -97,13 +99,10 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("About")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("Address")
+                    b.Property<string>("Addres")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("AuthorId")

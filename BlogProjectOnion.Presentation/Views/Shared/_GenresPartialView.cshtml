@@ -1,0 +1,11 @@
+﻿@using BlogProjectOnion.Domain.Entities;
+
+@model List<Genre>
+
+<select class="form-control" id="articleTypeFilterGenre" onchange="filterArticles()">
+    <option value="tum-turler">Tüm Türler</option>
+    @foreach (var item in Model)
+    {
+        <option value="@item.Name">@item.Name</option>
+    }
+</select>

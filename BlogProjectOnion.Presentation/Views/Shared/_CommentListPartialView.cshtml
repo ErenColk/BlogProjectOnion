@@ -4,26 +4,31 @@
 
 
 
-<h3>@Model.Count Yorum</h3>
+<h3 style="font-size:13px">@Model.Count Yorum</h3>
 
 <!-- COMMENT 1 - START -->
 @foreach (var item in Model)
 {
     <div class="media">
-        @if (item.AppUser.ImagePath == "" || item.AppUser.ImagePath == null)
-        {
-            <a class="pull-left" href="#"><img class="media-object" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""></a>
-        }
-        else
-        {
-            <a class="pull-left" href="#"><img class="media-object" src="@item.AppUser.ImagePath" alt=""></a>
-        }
-        <div class="media-body">
-            <h4 class="media-heading">@item.AppUser.UserName</h4>
-            <p>@item.Content</p>
-            <ul class="list-unstyled list-inline media-detail pull-left">
-                <li><i class="fa fa-calendar"></i>@item.CreatedDate.ToShortDateString()</li>
-                <li style="float:left"><i class="fa fa-thumbs-up"></i>0</li>
+        <div class="media-body" style="display: flex; align-items: center;">
+            @if (item.AppUser.ImagePath == "" || item.AppUser.ImagePath == null)
+            {
+                @* <a class="pull-left" href="/Profile/Index/{@item.AppUser.Id}"> *@<img class="media-object" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="">@* </a> *@
+            }
+            else
+            {
+                @* <a class="pull-left" href="/Profile/Index/{@item.AppUser.Id}"> *@<img class="media-object" src="/@item.AppUser.ImagePath" alt="">@* </a> *@
+            }
+
+            <div style="margin-left: 15px;padding:0px;margin-top:15px ">
+                <a href="/Profile/Detail/{@item.AppUser.Id}"> <h4 class="media-heading" style="font-size:15px">@item.AppUser.UserName</h4> </a>
+                <p style="margin-top:5px;font-size:13px">@item.Content</p>
+            </div>
+        </div>
+        <div>
+            <ul class="list-unstyled list-inline media-detail">
+                <li><i class="fa fa-calendar"></i> @item.CreatedDate.ToShortDateString()</li>
+                <li style="float: left; margin-right: 15px;"><i class="fa fa-thumbs-up"></i> 0</li>
             </ul>
         </div>
     </div>
@@ -31,8 +36,9 @@
 
 <style>
     .media-object {
-        width: 100px;
-        border-radius: 20px;
+        width: 50px;
+        height:50px;
+        border-radius: 15px;
     }
 
 </style>

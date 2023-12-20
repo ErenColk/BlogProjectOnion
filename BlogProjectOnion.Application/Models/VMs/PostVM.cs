@@ -17,14 +17,13 @@ namespace BlogProjectOnion.Application.Models.VMs
         public string ImagePath { get; set; }
         public int ClickCount { get; set; }
         public Guid AppUserId  { get; set; }
+        public AppUser AppUser  { get; set; }
         public string Comment { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
         public Status Status { get; set; }
         public Author Author { get; set; }
         public Genre Genre { get; set; }
-
-
         public List<Comment> Comments { get; set; }
         public List<Like> Likes { get; set; }
 

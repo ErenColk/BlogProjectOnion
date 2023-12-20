@@ -38,8 +38,6 @@ function Sort() {
 }
 
 function ListArticles(id) {
-    debugger;
-    console.log("deneme");
     let _id = id;
 
     $.ajax({
@@ -47,10 +45,10 @@ function ListArticles(id) {
         type: "GET",
         success: function (response) {
             $("#profil-Post-List").html("");
-            $("#profil-Post-List").html(response);   
+            $("#profil-Post-List").html(response);
         }
 
-     });
+    });
 }
 
 
@@ -81,7 +79,6 @@ function CommentOnThePost(id) {
 
 
 function GetpostAndUserId(_postid, _userid) {
-    debugger;
     let like = {
         postId: _postid,
         userId: _userid,
@@ -100,3 +97,5 @@ function GetpostAndUserId(_postid, _userid) {
         },
     });
 }
+
+

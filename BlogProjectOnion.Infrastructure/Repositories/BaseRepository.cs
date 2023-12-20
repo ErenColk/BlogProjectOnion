@@ -157,7 +157,7 @@ namespace BlogProjectOnion.Infrastructure.Repositories
             {
                 entity.UpdatedDate = DateTime.Now;
                 entity.Status = Domain.Enums.Status.Modified;
-                _context.Entry<T>(entity).State = EntityState.Modified; // Güncelleme işlemini Entity State'ini değiştirerek yapıyoruz
+                _context.Entry<T>(entity).State = EntityState.Modified; 
                 return await _context.SaveChangesAsync() > 0;
 
             }
@@ -182,6 +182,23 @@ namespace BlogProjectOnion.Infrastructure.Repositories
 
                 return false;
             }
+
+        }
+
+        public async Task<T> GetFilteredInclude(Expression<Func<T, bool>> expression = null, Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null )
+        {
+          
+            IQueryable<T> query =  _context.Set<T>();
+
+            if(expression != null)
+            {
+                query =  query.Where(expression);
+            }
+
+            query = include(query);
+
+
+            return await query.FirstOrDefaultAsync();
 
         }
     }

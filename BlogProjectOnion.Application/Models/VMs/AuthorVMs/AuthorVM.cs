@@ -14,6 +14,7 @@ namespace BlogProjectOnion.Application.Models.VMs.AuthorVMs
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string ImagePath { get; set; }
+        public string Address { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
         public Status Status { get; set; }

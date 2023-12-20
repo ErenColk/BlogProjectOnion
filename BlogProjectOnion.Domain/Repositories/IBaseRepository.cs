@@ -42,5 +42,9 @@ namespace BlogProjectOnion.Domain.Repositories
               Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, // sırlama işlemi
               Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null // Join işlemi
               );
+
+        Task<T> GetFilteredInclude(Expression<Func<T,bool>> expression = null, Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null);
+
+
     }
 }
