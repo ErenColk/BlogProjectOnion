@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BlogProjectOnion.Application.Models.DTOs.AppUserDTOs;
 using BlogProjectOnion.Application.Models.DTOs.AuthorDTOs;
 using BlogProjectOnion.Application.Models.DTOs.CommentDTOs;
 using BlogProjectOnion.Application.Models.DTOs.GenreDTOs;
@@ -43,6 +44,8 @@ namespace BlogProjectOnion.Application.AutoMapper
             CreateMap<AppUser,UpdateAppUserDTO>().ReverseMap();
             CreateMap<AppUser,AppUserVM>().ReverseMap();
             CreateMap<AppUser,ConfirmMailDTO>().ReverseMap();
+            CreateMap<AppUser, UpdateAppUserPersonalDTO>().ReverseMap();
+            CreateMap<AppUser, UpdateAppUserContactDTO>().ReverseMap();
 
 
             CreateMap<Like, CreateLikeDTO>().ReverseMap().ForMember(x =>  x.AppUserId , x=>x.MapFrom(x=>x.UserId));

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Register";
 }
 <section class="vh-200 bg-image"
-         style="background-image: url('/assets/img/register.jpg');" >
+         style="background-image: url('/assets/img/register.jpg');">
     <div class="mask d-flex align-items-left h-100 gradient-custom-3">
         <div class="container h-100">
             <div class="row d-flex justify-content-start align-items-start" style="margin-top:50px;margin-bottom:50px">
@@ -43,17 +43,31 @@
 
                                 <div class="form-outline mb-2">
                                     <label class="form-label" for="form3Example3cb">Seçim Kutusu</label>
-                                    <select id="form3Example3cb" asp-for="Role" class="form-select form-select-lg">
+                                    <select id="form3Example3cb" onchange="toggleAuthorFields()" asp-for="Role" class="form-select form-select-lg">
                                         <option value="" disabled selected>Seçiniz</option>
                                         <option value="1">YAZAR</option>
                                         <option value="2">ÜYE</option>
                                     </select>
                                     <span asp-validation-for="Role"></span>
-
                                 </div>
+
+                                <div id="authorFields" style="display:none">
+                                    <div class="form-outline mb-2">
+                                        <label class="form-label" for="form3ExampleFirstName">Adınız</label>
+                                        <input type="text" asp-for="FirstName" id="form3ExampleFirstName" class="form-control form-control-lg" />
+                                        <span asp-validation-for="FirstName"></span>
+                                    </div>
+
+                                    <div class="form-outline mb-2">
+                                        <label class="form-label" for="form3ExampleLastName">Soyadınız</label>
+                                        <input type="text" asp-for="LastName" id="form3ExampleLastName" class="form-control form-control-lg" />
+                                        <span asp-validation-for="LastName"></span>
+                                    </div>
+                                </div>
+
                                 <div asp-validation-summary="ModelOnly"></div>
                                 <div class="d-flex justify-content-center" style="margin:auto">
-                            
+
                                     <input type="submit"
                                            class="btn btn-outline-success btn-block btn-lg gradient-custom-2 text-body" value="KAYIT" />
                                 </div>
@@ -82,5 +96,23 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Yumuşak bir gölge efekti ekler */
     }
 
-
 </style>
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        toggleAuthorFields();
+    });
+
+    function toggleAuthorFields() {
+        var roleSelect = document.getElementById('form3Example3cb');
+        var authorFields = document.getElementById('authorFields');
+
+        // Eğer "YAZAR" seçildiyse ilgili alanları görünür yap, aksi halde gizle
+        if (roleSelect.value === '1') {
+            authorFields.style.display = 'block';
+        } else {
+            authorFields.style.display = 'none';
+        }
+    }
+</script>

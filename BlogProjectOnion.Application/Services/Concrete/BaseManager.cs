@@ -96,5 +96,10 @@ namespace BlogProjectOnion.Application.Services.Concrete
                 return false;
 
         }
+
+        public Task<T> TGetFilteredInclude(Expression<Func<T, bool>> expression = null, Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null)
+        {
+            return _baseRepository.GetFilteredInclude(expression, include);
+        }
     }
 }

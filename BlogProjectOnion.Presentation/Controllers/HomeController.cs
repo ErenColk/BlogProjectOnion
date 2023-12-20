@@ -28,7 +28,7 @@ namespace BlogProjectOnion.Presentation.Controllers
 
         public async Task<IActionResult> About()
         {
-
+            
             return View();
         }
         public IActionResult Privacy()

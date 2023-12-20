@@ -1,4 +1,6 @@
 ﻿@using BlogProjectOnion.Application.Models.VMs.AppUserVMs;
+@using BlogProjectOnion.Domain.Entities;
+@using Microsoft.AspNetCore.Identity;
 
 @{
     ViewData["Title"] = "Detail";
@@ -6,54 +8,186 @@
 
 @model AppUserVM
 
-<section style="background-color: #eee; ">
+<section style="background-color: #eee;">
     <div class="container py-5">
         <div class="row">
             <div class="col-lg-4">
-                <div class="card mb-3" style="height:400px">
+                <div class="card mb-3" style="height:auto">
                     <div class="card-body text-center">
-                        @if (Model.ImagePath == "" || Model.ImagePath == null)
+
+                        @if (ViewData["IsUser"] == "true")
                         {
-                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
-                                 class="rounded-circle img-fluid" style="width: 150px;">
+                            <div style="display: flex; justify-content: flex-end;">
+                                <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                                    <i class="fas fa-cog"></i>
+                                </button>
+                            </div>
+
                         }
-                        else
-                        {
-                            <img src="/@Model.ImagePath" alt="avatar"
-                                 class="rounded-circle img-fluid" style="width: 150px;">
-                        }
-                        <h5 class="" style="margin-top:10px">@Model.UserName</h5>
-                        <p class="text-muted " style="">ÜYE</p>
-                        <p class="text-muted mb-4">Kayıt Tarihi : @Model.CreatedDate </p>
-                        <div class="d-flex justify-content-center mb-2">
-                            <button type="button" class="btn btn-primary">Follow</button>
-                            <button type="button" class="btn btn-outline-primary ms-1">Message</button>
+
+                        <div style="display:flex;justify-content:center">
+
+                            @if (Model.ImagePath == "" || Model.ImagePath == null)
+                            {
+                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
+                                     class="rounded-circle img-fluid" style="width:150px;height:135px;opacity:0.8">
+                            }
+                            else
+                            {
+                                <img src="/@Model.ImagePath" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;height:135px;box-shadow: 0 5px 10px rgba(0, 0, 0, 0.6);opacity:0.8">
+
+                            }
+                        </div>
+
+                        <table class="table">
+                            <thead>
+                                <tr style="text-align: left;">
+                                    <th colspan="2">Kişisel Bilgiler</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="text-align: left;">
+                                    <th>Kullanıcı Adı :</th>
+                                    <td>@Model.UserName</td>
+                                </tr>
+                                <tr style="text-align: left;">
+                                    <th>Ad Soyad :</th>
+                                    <td>@Model.FirstName  @Model.LastName</td>
+                                </tr>
+
+                                <tr style="text-align: left;">
+                                    <th>Rolü :</th>
+                                    <td>@(Context.User.IsInRole("User") ? "ÜYE" : "YAZAR")</td>
+                                </tr>
+                                <tr style="text-align: left;">
+                                    <th>Kayıt Tarihi :</th>
+                                    <td>@Model.CreatedDate</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div style="display:flex;justify-content:space-around">
                         </div>
                     </div>
                 </div>
+
+
+
+                <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editProfileModalLabel">Profil Düzenle</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <div class="card-title">Profil</div>
+                                        </div>
+                                        <form asp-action="UpdatePrivate" method="post" enctype="multipart/form-data">
+                                            <input type="hidden" asp-for="@Model.Id" />
+                                            <div class="card-body" style="display:flex;flex-direction:column;gap:15px">
+                                                <div class="form-group">
+                                                    <label asp-for="@Model.FirstName">Adı </label>
+                                                    <input asp-for="@Model.FirstName" type="text" class="form-control" placeholder="Adınızı Giriniz..." />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label asp-for="@Model.LastName">Soyadı </label>
+                                                    <input asp-for="@Model.LastName" type="text" class="form-control" placeholder="Soyadınızı Giriniz..." />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label asp-for="@Model.UserName">Kullanıcı Adı </label>
+                                                    <input asp-for="@Model.UserName" type="text" class="form-control" placeholder="Kullanıcı Adınızı Giriniz..." />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleFormControlFile1">Profil Fotoğrafı : </label>
+                                                    <input asp-for="@Model.UploadPath" type="file" class="form-control-file" id="exampleFormControlFile1">
+                                                </div>
+                                            </div>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                                            <input type="submit" class="btn btn-primary" value="Kaydet" />
+
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="modal fade" id="editContactModal" tabindex="-1" aria-labelledby="editContactModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editContactModalLabel">İletişim Bilgileri Düzenle</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <div class="card-title">İletişim Bilgileri</div>
+                                        </div>
+                                        <form asp-action="UpdateContact" method="post">
+                                            <input type="hidden" asp-for="@Model.Id" />
+                                            <div class="card-body" style="display:flex;flex-direction:column;gap:15px">
+                                                <div class="form-group">
+                                                    <label asp-for="@Model.Email">Email</label>
+                                                    <input asp-for="@Model.Email" type="text" class="form-control" placeholder="Email Giriniz..." />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label asp-for="@Model.PhoneNumber">Telefon  </label>
+                                                    <input asp-for="@Model.PhoneNumber" type="text" class="form-control" placeholder="Telefonunuzu Giriniz" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label asp-for="@Model.Address">Adres  </label>
+                                                    <input asp-for="@Model.Address" type="text" class="form-control" placeholder="Adresinizi Giriniz" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label asp-for="@Model.About">Hakkımda  </label>
+                                                    <textarea asp-for="@Model.About" type="text" class="form-control" placeholder="Hakkımda Alanını Doldurunuz"> </textarea>
+                                                </div>
+                                            </div>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                                            <input type="submit" class="btn btn-primary" value="Kaydet" />
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="card mb-4 mb-lg-0">
                     <div class="card-body p-3">
                         <div>
-                            <h5 class="card-title text-primary mb-4">Takip Edilen Yazarlar</h5>
+                            <h5 class="card-title mb-4">Takip Edilen Yazarlar</h5>
                             <ul class="list-group list-group-flush rounded-3">
                                 <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                    <i class="fas fa-user-friends fa-lg text-primary"></i>
+                                    <i class="fas fa-user-friends fa-lg"></i>
                                     <p class="mb-0">Takip Edilen Kişi Adı 1</p>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                    <i class="fas fa-user-friends fa-lg text-primary"></i>
+                                    <i class="fas fa-user-friends fa-lg"></i>
                                     <p class="mb-0">Takip Edilen Kişi Adı 2</p>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                    <i class="fas fa-user-friends fa-lg text-primary"></i>
+                                    <i class="fas fa-user-friends fa-lg"></i>
                                     <p class="mb-0">Takip Edilen Kişi Adı 3</p>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                    <i class="fas fa-user-friends fa-lg text-primary"></i>
+                                    <i class="fas fa-user-friends fa-lg"></i>
                                     <p class="mb-0">Takip Edilen Kişi Adı 4</p>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                    <i class="fas fa-user-friends fa-lg text-primary"></i>
+                                    <i class="fas fa-user-friends fa-lg"></i>
                                     <p class="mb-0">Takip Edilen Kişi Adı 5</p>
                                 </li>
                                 <!-- Sayfalama için ileri-geri tuşları -->
@@ -86,39 +220,52 @@
             <div class="col-lg-8">
                 <div class="card" style="margin-bottom:18.5px;height:398px">
                     <div class="card-body">
+
+                        @if (ViewData["IsUser"] == "true")
+                        {
+                            <div class="float-end">
+                                <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#editContactModal">
+                                    <i class="fas fa-cog"></i>
+                                </button>
+                            </div>
+                        }
+                        <br />
+                        <p class="contact-comment"><strong>İletişim Bilgileri</strong></p>
+                        <hr />
                         <div class="row">
                             <div class="col-sm-3">
-                                <p class="mb-0">Ad Soyad :</p>
+                                <p class="contact-title mb-0">Email :</p>
                             </div>
                             <div class="col-sm-9">
-                                <p class="text-muted mb-0">@Model.UserName</p>
+                                <p class="contact-comment mb-0">@Model.Email</p>
                             </div>
                         </div>
                         <hr>
                         <div class="row">
                             <div class="col-sm-3">
-                                <p class="mb-0">Email :</p>
+                                <p class="contact-title mb-0">Telefon :</p>
                             </div>
                             <div class="col-sm-9">
-                                <p class="text-muted mb-0">@Model.Email</p>
+                                <p class="contact-comment mb-0">@Model.PhoneNumber</p>
                             </div>
                         </div>
                         <hr>
                         <div class="row">
                             <div class="col-sm-3">
-                                <p class="mb-0">Telefon :</p>
+                                <p class="contact-title mb-0">Adres :</p>
                             </div>
                             <div class="col-sm-9">
-                                <p class="text-muted mb-0">@Model.PhoneNumber</p>
+                                <p class="contact-comment mb-0"> @Model.Address </p>
                             </div>
+
                         </div>
                         <hr>
                         <div class="row">
                             <div class="col-sm-3">
-                                <p class="mb-0">Adres :</p>
+                                <p class="contact-title mb-0">Hakkında :</p>
                             </div>
                             <div class="col-sm-9">
-                                <p class="text-muted mb-0">@* @Model.Address *@</p>
+                                <p class="contact-comment mb-0"> @Model.About</p>
                             </div>
                         </div>
                     </div>
@@ -128,7 +275,7 @@
                         <div class="card mb-4">
                             <div class="card-body">
 
-                                <h5 class="card-title text-primary mb-4">Beğenilen Makaleler</h5>
+                                <h5 class="card-title mb-4">Beğenilen Makaleler</h5>
 
                                 <div id="profil-Post-List">
 
@@ -138,26 +285,9 @@
 
                             </div>
                             <nav aria-label="Page navigation">
-                              @*   <ul class="pagination justify-content-center">
-
-                                    <li class="page-item disabled">
-                                        <span class="page-link">Önceki</span>
-                                    </li>
-                                    @for (int i = 1; i <= Math.Ceiling(Model.Posts.Count / 5.00); i++)
-                                    {
-                                    <li class="page-item active" aria-current="page">
-                                        <a class="page-link" onclick="ListArticles(@i)">@i</a>
-                                    </li>
-                                        
-                                    }                                  
+                                <ul class="pagination justify-content-center">
                                     <li class="page-item">
-                                        <a class="page-link" href="#">Sonraki</a>
-                                    </li>
-                                </ul> *@
-
-                                <ul class="pagination justify-content-center" >
-                                    <li class="page-item">
-                                        <a class="page-link" >Önceki</a>
+                                        <a class="page-link">Önceki</a>
                                     </li>
                                     @for (int i = 1; i <= Math.Ceiling(Model.Posts.Count / 5.00); i++)
                                     {
@@ -166,7 +296,7 @@
                                         </li>
                                     }
                                     <li class="page-item">
-                                        <a class="page-link" >Sonraki</a>
+                                        <a class="page-link">Sonraki</a>
                                     </li>
                                 </ul>
                             </nav>
@@ -185,7 +315,7 @@
     document.addEventListener("DOMContentLoaded", function () {
         ListArticles(1);
     });
-   
+
     function active(element, pageNumber) {
 
         var currentActive = document.querySelector('.page-item.active');
@@ -193,16 +323,53 @@
         if (currentActive) {
             currentActive.classList.remove('active');
         }
-        
+
         ListArticles(pageNumber);
         element.parentNode.classList.add('active');
 
     }
- 
+
 </script>
 
 
 <style>
+
+
+
+
+    .contact-comment {
+        color: #333; /* veya istediğiniz koyu renk kodu */
+        font-weight: bold;
+        font-family: 'Cambria';
+        opacity: 0.7;
+    }
+
+    .contact-title {
+        opacity: 0.7;
+        font-weight: bold;
+        font-family: 'Cambria'
+    }
+
+    th {
+        opacity: 0.7;
+        font-family: 'Cambria'
+    }
+
+    td {
+        color: #333; /* veya istediğiniz koyu renk kodu */
+        font-weight: bold;
+        font-family: 'Cambria';
+        opacity: 0.7;
+    }
+
+    section {
+        background-image: url('https://images.unsplash.com/photo-1517933981816-1f2d0c2ffc0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+        background-size: cover; /* Resmi arka planı kaplayacak şekilde sığdır */
+        background-position: center; /* Resmi ortalamak için */
+        background-repeat: no-repeat; /* Resmi tekrarlamamak için */
+    }
+
+
     /* Add borders and box shadows to the card elements */
     .card {
         border: 1px solid #ddd; /* Border color */

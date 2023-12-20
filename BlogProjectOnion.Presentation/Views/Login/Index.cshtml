@@ -33,6 +33,11 @@
                                         <input asp-for="Password" type="password" id="form2Example27" class="form-control form-control-lg" />
                                         <label asp-for="Password" class="form-label" for="form2Example27">Şifre</label>
                                     </div>
+                                    <div class="form-check mb-4">
+                                        <input asp-for="RememberMe" class="form-check-input" type="checkbox" id="rememberMe" />
+                                        <label class="form-check-label" for="rememberMe">Beni Hatırla</label>
+                                    </div>
+
                                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                     @if (!Model.IsEmailConfirmed)
                                     {

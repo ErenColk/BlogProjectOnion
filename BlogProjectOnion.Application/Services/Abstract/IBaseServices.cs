@@ -39,5 +39,8 @@ namespace BlogProjectOnion.Application.Services.Abstract
               Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, 
               Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null 
               );
+
+        Task<T> TGetFilteredInclude(Expression<Func<T, bool>> expression = null, Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null);
+
     }
 }

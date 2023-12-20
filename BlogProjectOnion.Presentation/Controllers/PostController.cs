@@ -47,7 +47,7 @@ namespace BlogProjectOnion.Presentation.Controllers
 
             PostVM postVm = _mapper.Map<PostVM>(await _postService.GetByIncludePost(x => x.Id == id, includes));
             AppUser user = await _userManager.GetUserAsync(HttpContext.User);
-            postVm.AppUserId = user.Id;
+            postVm.AppUser = user;
             Post post = await _postService.GetById(id);
             post.ClickCount += 1;
             await _postService.TDefaultUpdate(post);
@@ -63,9 +63,9 @@ namespace BlogProjectOnion.Presentation.Controllers
             };
 
 
-            List<PostVM> postVm = _mapper.Map<List<PostVM>>(await _postService.GetIncludePost(x => x.Status != Domain.Enums.Status.Passive, includes)).OrderByDescending(x => x.ClickCount).Take(10).ToList();
+            List<PostVM> postVm = _mapper.Map<List<PostVM>>(await _postService.GetIncludePost(x => x.Status != Domain.Enums.Status.Passive, includes)).Take(10).ToList();
             //.Skip((pagenumber - 1) * 10) // SAFYA ATLAMA METODU
-
+            
             return View(postVm);
         }
 
@@ -115,13 +115,22 @@ namespace BlogProjectOnion.Presentation.Controllers
         }
 
 
-        [Authorize(Roles = "Admin,Author")]
+        //[Authorize(Roles = "Admin,Author")]
         [HttpGet]
-        public async Task<IActionResult> MyPostList()
+        public async Task<IActionResult> MyPostList(Guid id)
         {
-            AppUser appUser = await _userManager.Users.Include(x => x.Author).FirstOrDefaultAsync(x => x.Id == _userManager.GetUserAsync(HttpContext.User).Result.Id);
+            AppUser appUser;
+            if (id == Guid.Empty)
+            {
 
-            List<ResultPostDTO> resultPostDTO = _mapper.Map<List<ResultPostDTO>>(await _postService.TGetDefaults(x => x.AuthorId == appUser.Author.Id));
+                appUser = await _userManager.Users.Include(x => x.Author).FirstOrDefaultAsync(x => x.Id == _userManager.GetUserAsync(HttpContext.User).Result.Id);
+            }
+            else
+            {
+                appUser = await _userManager.Users.Include(x => x.Author).FirstOrDefaultAsync(x => x.Id == id);
+            }
+
+            List<ResultPostDTO> resultPostDTO = _mapper.Map<List<ResultPostDTO>>(await _postService.TGetDefaults(x => x.AuthorId == appUser.Author.Id && x.Status != Domain.Enums.Status.Passive));
 
             return View(resultPostDTO);
 
@@ -181,6 +190,16 @@ namespace BlogProjectOnion.Presentation.Controllers
                 return View(createPostVM);
             }
 
+
+        }
+
+
+
+        [HttpGet]
+        public async Task<IActionResult> GenreList()
+        {
+            List<Genre> genres = _mapper.Map<List<Genre>>(await _genreService.TGetDefaults());
+            return PartialView("_GenresPartialView", genres);
 
         }
 

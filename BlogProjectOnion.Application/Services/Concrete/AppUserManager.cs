@@ -35,7 +35,7 @@ namespace BlogProjectOnion.Application.Services.Concrete
                 Password = x.PasswordHash,
                 Email = x.Email,
                 ImagePath = x.ImagePath
-                
+
             },
             where: x => x.UserName == userName);
 
@@ -53,14 +53,9 @@ namespace BlogProjectOnion.Application.Services.Concrete
             await _signInManager.SignOutAsync();
         }
 
-        public async Task<IdentityResult> Register(RegisterAppUserDTO model,AppUser user)
+        public async Task<IdentityResult> Register(RegisterAppUserDTO model, AppUser user)
         {
-
-         
-
-            //user.PasswordHash = model.Password;
             IdentityResult result = await _userManager.CreateAsync(user, model.Password);
-
 
             if (result.Succeeded)
             {
@@ -70,6 +65,9 @@ namespace BlogProjectOnion.Application.Services.Concrete
                     if (await _authorManager.TCreate(author))
                     {
                         user.Author = author;
+                        user.FirstName = model.FirstName;
+                        user.LastName = model.LastName;
+
                         await _userManager.UpdateAsync(user);
                     }
 
@@ -79,10 +77,7 @@ namespace BlogProjectOnion.Application.Services.Concrete
                 else if (model.Role == 2)
                 {
                     await _userManager.AddToRoleAsync(user, "User");
-
                 }
-
-                //await _signInManager.SignInAsync(user, isPersistent: false); // eger kayıt olabildiyse direkt olarak signin olmasını saglayacak
 
             }
 

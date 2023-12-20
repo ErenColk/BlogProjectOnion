@@ -3,6 +3,7 @@ using BlogProjectOnion.Application.Models.DTOs.CommentDTOs;
 using BlogProjectOnion.Application.Services.Abstract;
 using BlogProjectOnion.Application.ValidationRules.AppUserValidationRules;
 using BlogProjectOnion.Domain.Entities;
+using FluentValidation.Results;
 using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -31,17 +32,31 @@ namespace BlogProjectOnion.Presentation.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(RegisterAppUserDTO registerAppUser)
         {
-            AppUserRegisterValidator validationRules = new AppUserRegisterValidator();
-            var model  = validationRules.Validate(registerAppUser);
+            AppUserRegisterValidator validationUser = new AppUserRegisterValidator();
+            var model = validationUser.Validate(registerAppUser);
+
+            if (registerAppUser.Role == 1)
+            {
+                AppUserAuthorValidator validationAuthor = new AppUserAuthorValidator();
+                model = validationAuthor.Validate(registerAppUser);
+
+            }
+
+
+
+
             if (model.IsValid)
             {
                 Random random = new Random();
                 int code = random.Next(100000, 1000000);
 
                 AppUser user = new AppUser();
-                user.UserName = registerAppUser.UserName;
-                user.Email = registerAppUser.Email;
-                user.CreatedDate = registerAppUser.CreatedDate;
+                _mapper.Map(registerAppUser, user);
+
+
+                //user.UserName = registerAppUser.UserName;
+                //user.Email = registerAppUser.Email;
+                //user.CreatedDate = registerAppUser.CreatedDate;
                 user.ConfirmCode = code;
                 var result = await _appUserService.Register(registerAppUser, user);
 
@@ -66,43 +81,28 @@ namespace BlogProjectOnion.Presentation.Controllers
                     client.Send(mimeMessage);
                     client.Disconnect(true);
 
-                    return RedirectToAction("Index", "ConfirmMail",new {id = user.Id});
+                    return RedirectToAction("Index", "ConfirmMail", new { id = user.Id });
                 }
                 else
                 {
                     foreach (var item in result.Errors)
                     {
                         ModelState.AddModelError("", item.Description);
+
                     }
-                    return View(registerAppUser);                  
+
+                    return View(registerAppUser);
                 }
             }
             else
             {
                 ModelState.Clear();
                 foreach (var error in model.Errors)
-                {                                 
-                        ModelState.AddModelError("", error.ErrorMessage);                    
+                {
+                    ModelState.AddModelError("", error.ErrorMessage);
                 }
                 return View(registerAppUser);
-            }        
+            }
         }
     }
 }
-
-
-//string uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", Guid.NewGuid().ToString() + Path.GetExtension(registerAppUser.UploadPath.FileName));
-
-//SaveImage.ImagePath(uploadPath, registerAppUser);
-
-//registerAppUser.ImagePath = $"/images/{registerAppUser.UploadPath.FileName}";
-
-//AppUser appUser = _mapper.Map<AppUser>(registerAppUser);
-//IdentityResult result = await _userManager.CreateAsync(appUser, registerAppUser.Password);
-//if (result.Succeeded)
-//{
-
-//    await _userManager.AddToRoleAsync(appUser, "User");
-
-//    return RedirectToAction("Index", "Home");
-//}

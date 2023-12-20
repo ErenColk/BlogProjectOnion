@@ -9,18 +9,18 @@
 
     <div class="row news-row">
         <div class="container-fluid col-md-10 col-sm-6 justify-content-center" style="margin-left:200px">
-            <h1 class="h1" id="pageHeaderTitle">MAKALELERİM</h1>
+         <br />
             <div class="card-group">
                 @foreach (ResultPostDTO item in Model)
                 {
                     <div class="underlay" >
-                        <a href="#" class="card-link" style="padding:0px">
+                        <a href="/Post/Index/@item.Id" class="card-link" style="padding:0px">
                             <div class="card">
                                 <div class="card-img-top" style="background-image: url('/@item.ImagePath'); background-position:center;background-size: cover;"></div>
-                                <div class="card-block">
+                                <div class="card-block" style="padding:5px">
                                     @if (item.Title.Length > 60)
                                     {
-                                        <h5 class="card-title" style="font-family: 'Anton', sans-serif">@item.Title.Substring(0,60) ...</h5>
+                                        <h5 class="card-title" style="font-family: 'Anton', sans-serif">@item.Title.Substring(0,60).Trim()...</h5>
                                         <hr />
                                     }
                                     else
@@ -34,12 +34,12 @@
                                     @if (item.SubTitle.Length > 60)
                                     {
 
-                                        <p class="card-text">@Html.Raw(item.SubTitle.Substring(0,60))</p>
+                                        <p class="card-text">@Html.Raw(item.SubTitle.Substring(0,60).Trim())...</p>
 
                                     }
                                     else
                                     {
-                                        <p class="card-text">@Html.Raw(item.SubTitle)</p>
+                                        <p class="card-text">@Html.Raw(item.SubTitle)...</p>
 
                                     }
                                     <p class="card-text"><small class="text-muted">@item.CreatedDate.ToShortDateString() tarihinde oluşturuldu.</small></p>
@@ -53,16 +53,23 @@
 
         </div>
     </div>
-    <div class="d-flex justify-content-center">
-        <a type="button" href="~/Post/AddPost" class="btn btn-outline-secondary">Makale Yazmak İçin Tıklayınız</a>
-    </div>
+    @if (Context.User.IsInRole("Author"))
+    {
+        <div class="d-flex justify-content-center" style="padding:10px">
+            <a type="button" href="~/Post/AddPost" class="btn btn-outline-secondary">Makale Yazmak İçin Tıklayınız</a>
+        </div>
+    }
+    else
+    {
+        <br>
+    }
 </div>
 
 
 
 <script src="/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/js/postlist.js"></script>
 
+<script src="~/js/postlist.js"></script>
 <link href="~/css/mypostlist.css" rel="stylesheet" />
 
 

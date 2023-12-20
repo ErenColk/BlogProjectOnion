@@ -8,93 +8,210 @@
 
 @{
     AppUser appUser = await _userManager.GetUserAsync(User);
-
 }
 
 @{
     ViewData["Title"] = "PostList";
 }
+
 @model List<PostVM>
 
 @{
     var random = new Random();
 }
 
-<link href="~/css/postlist.css" rel="stylesheet" />
+<link href="~/css/listpost.css" rel="stylesheet" />
 <script src="/lib/jquery/dist/jquery.min.js"></script>
 
-
 <section class="light">
-	<div class="container py-2">
-		<div class="h1 text-center text-dark" id="pageHeaderTitle">MAKALELER</div>
 
-           @foreach (var item in Model)
-        {
-            Like like = await _likeManager.TGetDefault(x => x.AppUserId == appUser.Id && x.PostId == item.Id);
-           
-		<article class="postcard light blue">
-			<a class="postcard__img_link" href="#">
-                @if (item.ImagePath == "" || item.ImagePath == null)
-                {
-                    <img class="postcard__img skewed-img" src="~/assets/img/defaultPost.jpg" alt="Image Title" />
-                }
-                else
-                {
-                    <img class="postcard__img" src="/@item.ImagePath" alt="Image Title" />
-                }
-            </a>
-			<div class="postcard__text t-dark">
-                    <h1 class="postcard__title blue" style="text-decoration: none;"><a href="~/Post/Index/@item.Id">@item.Title</a></h1>
-                    <a href="/Profile/Index/@item.Author.Id"><h6 style="font-weight:normal; text-decoration: none;">Yazar : @item.Author.FirstName @item.Author.LastName</h6></a>
+    <div class="container py-2">
+        <h1 class="h1 text-center text-dark" style="opacity: 0.5 !important;  font-family: Cambria, sans-serif; " id="pageHeaderTitle">
+            MAKALELER
+        </h1>
+        <hr style="color:black" />
 
-				<div class="postcard__subtitle small">
-					<time datetime="2020-05-25 12:00:00">
-                            <i class="fas fa-calendar-alt mr-2"></i> @item.CreatedDate.ToShortDateString()
-					</time>
-				</div>
-				<div class="postcard__bar"></div>
-                    @if (item.Content.Length >= 350)
-                    {
-                        <div class="postcard__preview-txt">@Html.Raw(@item.Content.Substring(0,350))...</div>
+        <div style="display:flex;justify-content:end;align-items:center;gap:10px">
+            <div id="genre-list" style="width: 25%; margin-right: 10px;"></div>
+            <label for="filter" style="color:black;font-family: Cambria, sans-serif;opacity:0.5;"><strong>ARA :</strong></label>
+            <input name="filter" class="form-control" style="width:25%;margin-right:0px" id="articleFilterInput" type="text" placeholder="Makaleleri filtrele...">
+        </div>
+        <br />
+        <div id="articleContainer">
 
-                    }
-                    else
-                    {
-                        <div class="postcard__preview-txt">@Html.Raw(@item.Content)</div>
+            @foreach (var item in Model)
+            {
+                Like like = await _likeManager.TGetDefault(x => x.AppUserId == appUser.Id && x.PostId == item.Id);
 
-                    }
-                    <ul class="postcard__tagbox">
-                        <li class="tag__item">
-                           @if (like == null)
-                            {
-                               
-                                <a onclick="toggleLikeState(@item.Id,@item.Likes.Count + 1, '@appUser.Id', this)" data-liked="true">
-                                    <i class="fas fa-clock mr-2"></i> <span id="likeText">@item.Likes.Count Beğen</span>
-                                </a>
-                            }
-                            else
-                            {
-                                
-                                <a onclick="toggleLikeState(@item.Id,@item.Likes.Count, '@appUser.Id', this)" data-liked="false">
-                                    @* data-liked true yada false gidiyor ona göre işlem sağlanıyor *@
-                                    <i class="fas fa-thumbs-up mr-2"></i><span id="likeText">@item.Likes.Count Beğenildi</span>
-                                </a>
-                            }
-                        <li class="tag__item">
-                            <a href="/Post/Index/@item.Id">
-                                <i class="fas fa-clock mr-2"></i> Yorum Yap
+                <article class="postcard light blue">
+                    <input type="hidden" asp-for="@item.Genre.Name">
+                    <a class="postcard__img_link" href="#">
+                        @if (item.ImagePath == "" || item.ImagePath == null)
+                        {
+                            <img class="postcard__img" src="~/assets/img/defaultPost.jpg" alt="Image Title" />
+
+                        }
+                        else
+                        {
+                            <img class="postcard__img" src="/@item.ImagePath" alt="Image Title" />
+                        }
+                    </a>
+                    <div class="postcard__text t-dark">
+                        <h1 class="postcard__title blue"><a href="~/Post/Index/@item.Id">@item.Title</a></h1>
+                        <div>
+                            <a style="padding:0" class="btn" data-bs-toggle="modal" data-bs-target="#seeProfileModal-@item.Author.Id">
+                                <h6 style="font-weight:normal; text-decoration: none; color: black;" onmouseover="this.style.color='#0076bd'" onmouseout="this.style.color='black'">Yazar : @item.Author.FirstName @item.Author.LastName</h6>
                             </a>
-                        </li>
-				</ul>
-			</div>
-		</article>
-        }
-		</div>
+                        </div>
+
+                        <div class="postcard__subtitle small">
+                            <time datetime="2020-05-25 12:00:00">
+                                <i class="fas fa-calendar-alt mr-2"></i> @item.CreatedDate.ToShortDateString()
+                            </time>
+                        </div>
+                        <div class="postcard__bar"></div>
+                        @if (item.Content.Length >= 350)
+                        {
+                            <div class="postcard__preview-txt">@Html.Raw(@item.Content.Substring(0,350))...</div>
+
+                        }
+                        else
+                        {
+                            <div class="postcard__preview-txt">@Html.Raw(@item.Content)</div>
+
+                        }
+                        <ul class="postcard__tagbox">
+                        </ul>
+                        <ul class="postcard__tagbox">
+                            <li class="tag__item">
+                                @if (like == null)
+                                {
+
+                                    <a onclick="toggleLikeState(@item.Id,@item.Likes.Count + 1, '@appUser.Id', this)" data-liked="true">
+                                        <i class="fas fa-clock mr-2"></i> <span id="likeText">@item.Likes.Count Beğen</span>
+                                    </a>
+                                }
+                                else
+                                {
+
+                                    <a onclick="toggleLikeState(@item.Id,@item.Likes.Count, '@appUser.Id', this)" data-liked="false">
+                                        @* data-liked true yada false gidiyor ona göre işlem sağlanıyor *@
+                                        <i class="fas fa-thumbs-up mr-2"></i><span id="likeText"> @item.Likes.Count  Beğenildi</span>
+                                    </a>
+                                }
+                            <li class="tag__item">
+                                <a href="/Post/Index/@item.Id">
+                                    <i class="fas fa-clock mr-2"></i> Yorum Yap
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                    <div class="modal fade" id="seeProfileModal-@item.Author.Id" tabindex="-1" aria-labelledby="seeProfileModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 style="opacity:0.5" class="modal-title" id="seeProfileModalLabel">Yazar Profili</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="col-md-12">
+
+                                            <div class="row d-flex justify-content-center align-items-center ">
+                                                <div class="col col-md-9 col-lg-10 col-xl-12">
+                                                    <div class="card" style="border-radius: 15px; background-color: #f2f5fa;">
+                                                        <div class="card-body p-4 text-black">
+                                                            <div>
+                                                                <h6 class="mb-4">
+                                                                    Merhaba Vista kullanıcıları! Beni takip edip profilimi ziyaret ederek iletişim kurabilirsiniz.
+                                                                </h6>
+                                                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                                                    <p class="small mb-0" title="Kayıt Tarihi">
+                                                                        <i class="far fa-calendar-alt me-2"></i>@item.Author.CreatedDate.ToShortDateString()
+                                                                    </p>
+
+                                                                    <p class="fw-bold mb-0"></p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="d-flex align-items-center mb-4">
+                                                                <div class="flex-shrink-0">
+                                                                    @if (item.Author.ImagePath == "" || item.Author.ImagePath == null)
+                                                                    {
+                                                                        <img src="https://as2.ftcdn.net/v2/jpg/02/15/84/43/1000_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg"
+                                                                             alt="Generic placeholder image" class="img-fluid rounded-circle border border-dark border-3"
+                                                                             style="width: 70px;">
+
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <img src="/@item.Author.ImagePath"
+                                                                             alt="Generic placeholder image" class="img-fluid rounded-circle border border-dark border-3"
+                                                                             style="width: 70px;">
+
+                                                                    }
+                                                                </div>
+                                                                <div class="flex-grow-1 ms-3">
+                                                                    <div class="d-flex flex-row align-items-center mb-2">
+                                                                        @{
+                                                                            var count = 0;
+                                                                            @foreach (var post in item.Author.Posts)
+                                                                            {
+                                                                                count += post.Likes.Count;
+                                                                            }
+                                                                        }
+                                                                        <p class="mb-0 me-2">@item.Author.FirstName  @item.Author.LastName  </p>
+                                                                        <ul class="mb-0 list-unstyled d-flex flex-row" style="color:#1B7B2C;">
+                                                                            <li>
+                                                                                <i class="fas fa-star fa-xs"></i>
+                                                                            </li>
+                                                                        </ul>
+                                                                        <p class="mb-0 me-2" title="Toplam Makale Beğeni Sayısı">@count  Beğeni</p>
+                                                                    </div>
+                                                                    <div>
+                                                                        <button type="button" class="btn btn-outline-dark btn-rounded btn-sm"
+                                                                                data-mdb-ripple-color="dark">
+                                                                            + Takip Et
+                                                                        </button>
+                                                                        <a href="/Profile/Index/@item.Author.Id" class="btn btn-outline-dark btn-rounded btn-sm"
+                                                                                data-mdb-ripple-color="dark">
+                                                                            Profili Gör
+                                                                        </a>
+                                                                        <a type="button" class="btn btn-outline-dark btn-floating btn-sm"
+                                                                                data-mdb-ripple-color="dark">
+                                                                            <i class="fas fa-comment"></i>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <hr>
+                                                         @*    <p class="my-4 pb-1">@item.Author.Posts.Count Makale Yazısı</p>
+                                                            <button type="button" class="btn btn-success btn-rounded btn-block btn-lg">
+                                                                <i class="far fa-clock me-2"></i>Book now
+                                                            </button> *@
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </article>
+            }
+        </div>
+    </div>
 </section>
 
 
+<style>
 
- <style >
+
     .custom-header {
         font-family: 'YourFont', sans-serif;
         color: #999;
@@ -107,7 +224,7 @@
     }
 
         .tag__item a:hover {
-            color: #007bff; /* Fare üzerine gelindiğinde metin rengini değiştir */
+            color: #007bff !important; /* Fare üzerine gelindiğinde metin rengini değiştir */
         }
 
     .tag__item .btn {
@@ -117,11 +234,48 @@
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
- <script>
+<script>
+
+
+
+    function GetGenreList() {
+        debugger;
+        $.ajax({
+            url: "/Post/GenreList",
+            type: "GET",
+            success: function (response) {
+                $("#genre-list").html(response)
+
+            },
+
+            error: function (error) {
+
+                console.log("Başarısız");
+            }
+
+        })
+    }
+
+
+    function filterArticles() {
+        var selectedGenre = document.getElementById('articleTypeFilterGenre').value;
+        var articles = document.querySelectorAll('.postcard');
+
+        articles.forEach(function (article) {
+            var genre = article.querySelector('input[type="hidden"]').value;
+
+            if (selectedGenre === 'tum-turler' || selectedGenre === genre) {
+                article.style.display = '';
+            } else {
+                article.style.display = 'none';
+            }
+        });
+    }
+
 
     function toggleLikeState(postId, likeCount, userId, element) {
         var liked = element.getAttribute('data-liked') === 'true';
-        
+
         if (liked) {
             GetpostAndUserId(postId, userId);
             element.innerHTML = `<i class="fas fa-thumbs-up mr-2"></i> ${likeCount} Beğenildi`;
@@ -129,12 +283,13 @@
             element.setAttribute('data-liked', 'false');
         } else {
             RemoveLike(postId, userId);
-          
+
             likeCount -= 1;
             element.innerHTML = `<i class="fas fa-clock mr-2"></i> ${likeCount} Beğen`;
             element.setAttribute('data-liked', 'true');
         }
     }
+
     function GetpostAndUserId(_postid, _userid) {
         console.log("Ekleme")
         let like = {
@@ -156,6 +311,33 @@
     }
 
 
+
+    $(document).ready(function () {
+        GetGenreList()
+        $("#articleFilterInput").on("keyup", function () {
+            var filterValue = $(this).val().toLowerCase();
+
+            $("#articleContainer article").each(function () {
+                var articleTitle = $(this).find("h1.postcard__title a").text().toLowerCase();
+
+                // Başlık içindeki karakterleri tek tek kontrol et
+                var match = true;
+                for (var i = 0; i < filterValue.length; i++) {
+                    if (articleTitle[i] !== filterValue[i]) {
+                        match = false;
+                        break;
+                    }
+
+                }
+
+                $(this).toggle(match);
+            });
+        });
+    });
+
+
+
+
     function RemoveLike(_postid, _userid) {
         console.log("Silme")
         let like = {
@@ -175,4 +357,5 @@
             },
         });
     }
- </script>
+</script>
+

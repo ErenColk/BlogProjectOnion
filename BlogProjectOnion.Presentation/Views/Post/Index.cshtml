@@ -39,19 +39,30 @@
 
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <section class="content-item" id="comments">
-    <div class="container">
+    <div class="comment-container">
         <div class="row">
             <div class="col-sm-7" style="margin:auto">
                 <form>
-                    <button type="button" class="btn btn-success pull-right" onclick="CommentOnThePost(@Model.Id)" style="margin-bottom :10px;margin-left:10px;">Yorum Gönder</button>
-                    <button type="button" class="btn btn-success pull-right" data-mdb-ripple-init>Makaleyi Beğen</button>
+                    <button type="button" class="btn btn-outline-secondary pull-right" onclick="CommentOnThePost(@Model.Id)" style="margin-bottom :10px;margin-left:10px;">Yorum Gönder</button>
+                    <button type="button" class="btn btn-outline-secondary pull-right" data-mdb-ripple-init>Makaleyi Beğen</button>
                     <h3 class="pull-left">Yeni Yorum</h3>
                     <fieldset>
                         <div class="row">
-                            <div class="col-sm-10 col-lg-2 col-xl-3">
-                                <img class="img-responsive" style="width:150px" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="">
+                            <div class="col-sm-10 col-lg-2 col-xl-2">
+                                @if (Model.AppUser.ImagePath == null || Model.AppUser.ImagePath == "")
+                                {
+                                    
+                                    <img class="img-responsive" style="width:80px" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="">
+
+                                }
+                                else
+                                {
+                                    
+                                    <img class="img-responsive" style="width:80px" src="/@Model.AppUser.ImagePath" alt="">
+
+                                }
                             </div>
-                            <div class="form-group col-xs-12 col-sm-9 col-lg-9">
+                            <div class="form-group col-xs-8 col-sm-6 col-lg-10">
                                 <textarea class="form-control" asp-for="Comment" id="message" placeholder="Mesajın" required=""></textarea>
                                 <input id="userid" type="hidden" asp-for="AppUserId" />
                             </div>
@@ -101,8 +112,9 @@
     }
 
     textarea {
-        resize: none;
+        
         min-height: 100px;
+        
     }
 
     input[type="hidden"] {
@@ -113,21 +125,22 @@
         border-radius: 10px; /* Köşeleri ovalleştir */
         box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Gölgelik ekler */
         transition: box-shadow 0.3s ease; /* Gölgelik için animasyon ekler */
+        padding:5px;
     }
 
     .img-responsive {
-        width: 150px;
+        width: 100px;
         border-radius: 20px; /* Yuvarlak (oval) kenarlar ekler */
+
     }
 
     .btn:hover {
         box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.8); /* Hover durumunda gölgelik artırır */
+        background-color:green;
     }
 
-    .custom-font {
-        font-family: 'Arial', sans-serif; /* Özel yazı tipi tanımı */
-        font-size: 25px; /* Yazı tipi boyutu */
-        font-weight: bold; /* Yazı tipi kalınlığı */
-        /* Diğer stil özellikleri... */
-    }
+   /*  .custom-font {
+        font-family: 'Arial', sans-serif;  
+        font-size: 25px; 
+        font-weight: bold; }*/
 </style>
