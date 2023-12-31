@@ -21,12 +21,12 @@ namespace BlogProjectOnion.Infrastructure.EntityTypeConfig
                     Name = "User",
                     NormalizedName = "USER"
                 },
-                     new AppRole
-                     {
-                         Id = Guid.NewGuid(),
-                         Name = "Admin",
-                         NormalizedName = "ADMIN"
-                     },
+            new AppRole
+            {
+                Id = Guid.NewGuid(),
+                Name = "Admin",
+                NormalizedName = "ADMIN"
+            },
             new AppRole
             {
                 Id = Guid.NewGuid(),

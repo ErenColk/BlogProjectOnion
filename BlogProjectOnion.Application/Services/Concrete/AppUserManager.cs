@@ -68,6 +68,9 @@ namespace BlogProjectOnion.Application.Services.Concrete
                         user.FirstName = model.FirstName;
                         user.LastName = model.LastName;
 
+                        user.Author.FirstName = model.FirstName;
+                        user.Author.LastName = model.LastName;
+
                         await _userManager.UpdateAsync(user);
                     }
 

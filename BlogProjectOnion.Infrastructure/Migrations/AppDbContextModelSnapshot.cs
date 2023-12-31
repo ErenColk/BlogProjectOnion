@@ -64,8 +64,8 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("4690b04e-b5c1-4121-b57f-1a82b2351856"),
-                            ConcurrencyStamp = "61c23205-9b5e-4683-98f2-06db56b166de",
+                            Id = new Guid("136ce4ba-3f5b-4109-b2f1-b68e35336231"),
+                            ConcurrencyStamp = "c2e14214-4864-4695-8322-519c1e89adeb",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "User",
                             NormalizedName = "USER",
@@ -73,8 +73,8 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("437e862d-a0b7-41ac-8fd3-fa8e07432d7d"),
-                            ConcurrencyStamp = "3bf9cc79-b319-4a9d-8121-58987279746e",
+                            Id = new Guid("68a24fbe-086a-4480-a4ef-2dac755d4af5"),
+                            ConcurrencyStamp = "5d947d44-32f1-4d99-8e1c-311ee121e165",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Admin",
                             NormalizedName = "ADMIN",
@@ -82,8 +82,8 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("77add848-8afc-4b61-b91e-ed868484ea76"),
-                            ConcurrencyStamp = "68d81e9d-5454-46e4-bf25-fab126d8a88c",
+                            Id = new Guid("f99ac9f6-1529-42c0-92d3-7f38dcd5e3fb"),
+                            ConcurrencyStamp = "702e9386-e6ba-45e3-a4a9-673b7d4f71c9",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Author",
                             NormalizedName = "AUTHOR",
@@ -283,10 +283,7 @@ namespace BlogProjectOnion.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("AppUserId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("AppUserId1")
+                    b.Property<Guid>("AppUserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("AuthorId")
@@ -306,7 +303,7 @@ namespace BlogProjectOnion.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId1");
+                    b.HasIndex("AppUserId");
 
                     b.HasIndex("AuthorId");
 
@@ -567,8 +564,8 @@ namespace BlogProjectOnion.Infrastructure.Migrations
             modelBuilder.Entity("BlogProjectOnion.Domain.Entities.Follow", b =>
                 {
                     b.HasOne("BlogProjectOnion.Domain.Entities.AppUser", "AppUser")
-                        .WithMany("Floows")
-                        .HasForeignKey("AppUserId1")
+                        .WithMany("Follows")
+                        .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -676,7 +673,7 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                 {
                     b.Navigation("Comments");
 
-                    b.Navigation("Floows");
+                    b.Navigation("Follows");
 
                     b.Navigation("Likes");
                 });

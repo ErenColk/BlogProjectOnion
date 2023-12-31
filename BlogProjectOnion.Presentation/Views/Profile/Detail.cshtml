@@ -14,15 +14,13 @@
             <div class="col-lg-4">
                 <div class="card mb-3" style="height:auto">
                     <div class="card-body text-center">
-
-                        @if (ViewData["IsUser"] == "true")
+                        @if (ViewData["IsOpenedSettings"] == "true")
                         {
-                            <div style="display: flex; justify-content: flex-end;">
+                            <div style="display: flex; justify-content: flex-end;height:20px;">
                                 <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#editProfileModal">
                                     <i class="fas fa-cog"></i>
                                 </button>
                             </div>
-
                         }
 
                         <div style="display:flex;justify-content:center">
@@ -34,7 +32,7 @@
                             }
                             else
                             {
-                                <img src="/@Model.ImagePath" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;height:135px;box-shadow: 0 5px 10px rgba(0, 0, 0, 0.6);opacity:0.8">
+                                <img src="/@Model.ImagePath" alt="avatar" class=" img-fluid" style="width: 200px;height:155px;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);opacity:0.9;border-radius:10px;margin-top:-5px;margin-bottom:30px">
 
                             }
                         </div>
@@ -46,6 +44,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+
                                 <tr style="text-align: left;">
                                     <th>Kullanıcı Adı :</th>
                                     <td>@Model.UserName</td>
@@ -57,7 +56,21 @@
 
                                 <tr style="text-align: left;">
                                     <th>Rolü :</th>
-                                    <td>@(Context.User.IsInRole("User") ? "ÜYE" : "YAZAR")</td>
+                                    <td>
+                                        @{
+
+                                            if (Context.User.IsInRole("User") || (bool)ViewData["IsUser"])
+                                            {
+                                                <text>ÜYE</text>
+
+                                            }
+                                            else
+                                            {
+                                                <text>YAZAR</text>
+                                            }
+
+                                        }
+                                    </td>
                                 </tr>
                                 <tr style="text-align: left;">
                                     <th>Kayıt Tarihi :</th>
@@ -65,7 +78,6 @@
                                 </tr>
                             </tbody>
                         </table>
-
                         <div style="display:flex;justify-content:space-around">
                         </div>
                     </div>
@@ -170,27 +182,14 @@
                         <div>
                             <h5 class="card-title mb-4">Takip Edilen Yazarlar</h5>
                             <ul class="list-group list-group-flush rounded-3">
-                                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                    <i class="fas fa-user-friends fa-lg"></i>
-                                    <p class="mb-0">Takip Edilen Kişi Adı 1</p>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                    <i class="fas fa-user-friends fa-lg"></i>
-                                    <p class="mb-0">Takip Edilen Kişi Adı 2</p>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                    <i class="fas fa-user-friends fa-lg"></i>
-                                    <p class="mb-0">Takip Edilen Kişi Adı 3</p>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                    <i class="fas fa-user-friends fa-lg"></i>
-                                    <p class="mb-0">Takip Edilen Kişi Adı 4</p>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                    <i class="fas fa-user-friends fa-lg"></i>
-                                    <p class="mb-0">Takip Edilen Kişi Adı 5</p>
-                                </li>
-                                <!-- Sayfalama için ileri-geri tuşları -->
+                                @foreach (Follow item in Model.Follows)
+                                {
+                                    <li class="list-group-item d-flex justify-content-start align-items-center p-3">
+                                        <i class="fas fa-user-friends fa-lg"></i>
+                                        <a href="/Profile/Index/@item.Author.Id" style="color: inherit; text-decoration: none; box-shadow: none;">@item.Author.FirstName @item.Author.LastName </a>/ Makale Sayısı : @item.Author.Posts.Count
+                                    </li>
+                                
+                                }
                             </ul>
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-center">
@@ -199,12 +198,6 @@
                                     </li>
                                     <li class="page-item active" aria-current="page">
                                         <span class="page-link">1</span>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">2</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">3</a>
                                     </li>
                                     <li class="page-item">
                                         <a class="page-link" href="#">Sonraki</a>
@@ -218,10 +211,10 @@
             </div>
 
             <div class="col-lg-8">
-                <div class="card" style="margin-bottom:18.5px;height:398px">
+                <div class="card" style="margin-bottom:18.5px;">
                     <div class="card-body">
 
-                        @if (ViewData["IsUser"] == "true")
+                        @if (ViewData["IsOpenedSettings"] == "true")
                         {
                             <div class="float-end">
                                 <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#editContactModal">
@@ -239,16 +232,7 @@
                             <div class="col-sm-9">
                                 <p class="contact-comment mb-0">@Model.Email</p>
                             </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <p class="contact-title mb-0">Telefon :</p>
-                            </div>
-                            <div class="col-sm-9">
-                                <p class="contact-comment mb-0">@Model.PhoneNumber</p>
-                            </div>
-                        </div>
+                        </div>                        
                         <hr>
                         <div class="row">
                             <div class="col-sm-3">
@@ -356,7 +340,7 @@
     }
 
     td {
-        color: #333; /* veya istediğiniz koyu renk kodu */
+        color: #333;
         font-weight: bold;
         font-family: 'Cambria';
         opacity: 0.7;
@@ -364,38 +348,35 @@
 
     section {
         background-image: url('https://images.unsplash.com/photo-1517933981816-1f2d0c2ffc0d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
-        background-size: cover; /* Resmi arka planı kaplayacak şekilde sığdır */
-        background-position: center; /* Resmi ortalamak için */
-        background-repeat: no-repeat; /* Resmi tekrarlamamak için */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
     }
 
 
-    /* Add borders and box shadows to the card elements */
     .card {
-        border: 1px solid #ddd; /* Border color */
-        border-radius: 10px; /* Border radius for rounded corners */
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle effect */
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
     .page-item.active {
-        background-color: #007bff; /* Örnek renk */
+        background-color: #007bff;
         border-color: #007bff;
         color: #fff;
     }
-    /* Add borders to the list items */
+
     .list-group-item {
         border: 1px solid #ddd;
         border-radius: 5px;
     }
 
-    /* Add borders and box shadows to the progress bars */
     .progress {
         border: 1px solid #ddd;
         border-radius: 5px;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     }
 
-        /* Add spacing between progress bars */
         .progress + p {
             margin-top: 10px;
         }

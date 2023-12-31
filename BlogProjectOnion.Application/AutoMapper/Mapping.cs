@@ -44,8 +44,12 @@ namespace BlogProjectOnion.Application.AutoMapper
             CreateMap<AppUser,UpdateAppUserDTO>().ReverseMap();
             CreateMap<AppUser,AppUserVM>().ReverseMap();
             CreateMap<AppUser,ConfirmMailDTO>().ReverseMap();
+
             CreateMap<AppUser, UpdateAppUserPersonalDTO>().ReverseMap();
             CreateMap<AppUser, UpdateAppUserContactDTO>().ReverseMap();
+
+            CreateMap<AppUser, ResultAppUserDTO>().ReverseMap();
+            CreateMap<AppUser, DetailAppUserDto>().ReverseMap();
 
 
             CreateMap<Like, CreateLikeDTO>().ReverseMap().ForMember(x =>  x.AppUserId , x=>x.MapFrom(x=>x.UserId));

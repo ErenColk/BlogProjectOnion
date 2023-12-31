@@ -15,14 +15,10 @@ namespace BlogProjectOnion.Application.Services.Abstract
         Task<bool> TCreate(T entity);
         Task<bool> TUpdate(T entity);
         Task<bool> TDefaultUpdate(T entity);
-
         Task<bool> TDelete(T entity);
-
         Task<bool> THardDelete(T entity);
-
         Task<bool> TAny(Expression<Func<T, bool>> expression); 
         Task<T> TGetDefault(Expression<Func<T, bool>> expression);
-
         Task<T> GetById(int id);
         Task<List<T>> TGetDefaults(Expression<Func<T, bool>> expression = null);
 

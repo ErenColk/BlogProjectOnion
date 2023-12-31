@@ -10,7 +10,7 @@ namespace BlogProjectOnion.Domain.Entities
     public class Follow : IBaseEntity
     {
         public int Id { get; set; }
-        public int AppUserId { get; set; } 
+        public Guid AppUserId { get; set; } 
         public AppUser AppUser { get; set; }
         public int AuthorId { get; set; } 
         public Author Author { get; set; }

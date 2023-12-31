@@ -12,6 +12,5 @@ namespace BlogProjectOnion.Application.Services.Abstract
     {
         Task<List<Like>> TGetByInclude(Expression<Func<Like, bool>> expression = null, params Expression<Func<Like, object>>[]? includes);
 
-
     }
 }

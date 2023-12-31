@@ -9,60 +9,81 @@
 
     <div class="row news-row">
         <div class="container-fluid col-md-10 col-sm-6 justify-content-center" style="margin-left:200px">
-         <br />
+            <br />
             <div class="card-group">
                 @foreach (ResultPostDTO item in Model)
-                {
-                    <div class="underlay" >
-                        <a href="/Post/Index/@item.Id" class="card-link" style="padding:0px">
-                            <div class="card">
-                                <div class="card-img-top" style="background-image: url('/@item.ImagePath'); background-position:center;background-size: cover;"></div>
-                                <div class="card-block" style="padding:5px">
-                                    @if (item.Title.Length > 60)
-                                    {
-                                        <h5 class="card-title" style="font-family: 'Anton', sans-serif">@item.Title.Substring(0,60).Trim()...</h5>
-                                        <hr />
-                                    }
-                                    else
-                                    {
+                {               
+                        <div class="underlay" style="margin-top:100px">                  
+                            <a href="/Post/Index/@item.Id" class="card-link" style="padding:0px">
+                                <div class="card">
+                                    <div class="card-img-top" style="background-image: url('/@item.ImagePath'); background-position:center;background-size: cover;"></div>
+                                    <div class="card-block" style="padding:5px">
+                                        @if (item.Title.Length > 60)
+                                        {
+                                            <h5 class="card-title" style="font-family: 'Anton', sans-serif">@item.Title.Substring(0,60).Trim()...</h5>
+                                            <hr />
+                                        }
+                                        else
+                                        {
+                                            <h5 class="card-title" style="font-family: 'Anton', sans-serif">@item.Title</h5>
+                                            <hr />
+                                        }
+                                        @if (item.SubTitle.Length > 60)
+                                        {
 
-                                        <h5 class="card-title" style="font-family: 'Anton', sans-serif">@item.Title</h5>
+                                            <p class="card-text">@Html.Raw(item.SubTitle.Substring(0,60).Trim())...</p>
+                                        }
+                                        else
+                                        {
+                                            <p class="card-text">@Html.Raw(item.SubTitle)...</p>
 
-                                        <hr />
-                                    }
-
-                                    @if (item.SubTitle.Length > 60)
-                                    {
-
-                                        <p class="card-text">@Html.Raw(item.SubTitle.Substring(0,60).Trim())...</p>
-
-                                    }
-                                    else
-                                    {
-                                        <p class="card-text">@Html.Raw(item.SubTitle)...</p>
-
-                                    }
-                                    <p class="card-text"><small class="text-muted">@item.CreatedDate.ToShortDateString() tarihinde oluşturuldu.</small></p>
+                                        }
+                                        <p class="card-text"><small class="text-muted">@item.CreatedDate.ToShortDateString() tarihinde oluşturuldu.</small></p>
+                                    </div>
+                                    <div>
+                                    </div>
                                 </div>
+                            </a>
+                            <br />
 
+                        @if ((bool)TempData["IsDifferentUser"])
+                        {
+                            <div class="article-buttons">
+                                <a href="/Post/UpdatePost/@item.Id" class="btn btn-outline-success">
+                                    <i class="fas fa-edit"></i> Düzenle
+                                </a>
+                                <a href="/Post/RemoveMyPost/@item.Id" class="btn btn-outline-danger">
+                                    <i class="fas fa-trash-alt"></i> SİL
+                                </a>
                             </div>
-                        </a>
-                    </div>
+                         
+                        }
+                        else
+                        {
+                            <br>
+                        }
+                           
+                        </div>
                 }
+
             </div>
 
         </div>
     </div>
-    @if (Context.User.IsInRole("Author"))
+    @* type="button" href="~/Post/AddPost" *@
+    @if ((bool)TempData["IsDifferentUser"])
     {
         <div class="d-flex justify-content-center" style="padding:10px">
-            <a type="button" href="~/Post/AddPost" class="btn btn-outline-secondary">Makale Yazmak İçin Tıklayınız</a>
+            <a href="/Post/AddPost" class="btn btn-outline-secondary">Makale Yazmak İçin Tıklayınız</a>
         </div>
+
     }
     else
     {
         <br>
     }
+
+
 </div>
 
 
@@ -74,9 +95,25 @@
 
 
 <style>
+    .article-buttons{
+        display:flex;
+        gap:10px;
+
+    }
     .h1 {
         font-family: 'Segoe Print', sans-serif;
         color: #999;
+    }
+
+    .underlay {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #remove-Button {
+        width: 50%;
     }
 </style>
 
@@ -95,7 +132,25 @@
                 $('#toggle-grid').toggleClass('orange');
             });
     });
+
+
+
+
+    //SİL TIKLANDIGINDA HOVER VE CURSORU İPTAL ET
+
+    function disableCardClick() {
+        var cards = document.querySelectorAll('.underlay');
+        cards.forEach(function (card) {
+            card.classList.add('disabled-card');
+        });
+
+        var checkboxes = document.querySelectorAll('.underlay input[type="checkbox"]:not(:checked)');
+        checkboxes.forEach(function (card) {
+            card.closest('.underlay input[type="checkbox"]').classList.remove('disabled-card');
+        });
+    }
 </script>
+
 
 
 

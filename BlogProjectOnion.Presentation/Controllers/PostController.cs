@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
@@ -36,20 +37,24 @@ namespace BlogProjectOnion.Presentation.Controllers
             _genreService = genreService;
         }
 
-        //TODOO : BURAYI DÜZENLE
+
         [HttpGet]
         public async Task<IActionResult> Index(int id)
         {
+            AppUser user = await _userManager.GetUserAsync(HttpContext.User);
             Expression<Func<Post, object>>[] includes = new Expression<Func<Post, object>>[]{
-
                 x=> x.Author,x=>x.Comments,x=>x.Genre,x=>x.Likes
             };
 
             PostVM postVm = _mapper.Map<PostVM>(await _postService.GetByIncludePost(x => x.Id == id, includes));
-            AppUser user = await _userManager.GetUserAsync(HttpContext.User);
+
+
             postVm.AppUser = user;
+            postVm.AppUserId = user.Id;
+
             Post post = await _postService.GetById(id);
             post.ClickCount += 1;
+
             await _postService.TDefaultUpdate(post);
             return View(postVm);
         }
@@ -63,9 +68,8 @@ namespace BlogProjectOnion.Presentation.Controllers
             };
 
 
-            List<PostVM> postVm = _mapper.Map<List<PostVM>>(await _postService.GetIncludePost(x => x.Status != Domain.Enums.Status.Passive, includes)).Take(10).ToList();
-            //.Skip((pagenumber - 1) * 10) // SAFYA ATLAMA METODU
-            
+            List<PostVM> postVm = _mapper.Map<List<PostVM>>(await _postService.GetIncludePost(x => x.Status != Domain.Enums.Status.Passive, includes)).ToList();
+
             return View(postVm);
         }
 
@@ -124,10 +128,12 @@ namespace BlogProjectOnion.Presentation.Controllers
             {
 
                 appUser = await _userManager.Users.Include(x => x.Author).FirstOrDefaultAsync(x => x.Id == _userManager.GetUserAsync(HttpContext.User).Result.Id);
+                TempData["IsDifferentUser"] = true;
             }
             else
             {
                 appUser = await _userManager.Users.Include(x => x.Author).FirstOrDefaultAsync(x => x.Id == id);
+                TempData["IsDifferentUser"] = false;
             }
 
             List<ResultPostDTO> resultPostDTO = _mapper.Map<List<ResultPostDTO>>(await _postService.TGetDefaults(x => x.AuthorId == appUser.Author.Id && x.Status != Domain.Enums.Status.Passive));
@@ -135,6 +141,26 @@ namespace BlogProjectOnion.Presentation.Controllers
             return View(resultPostDTO);
 
         }
+
+        [HttpGet]
+        public async Task<IActionResult> RemoveMyPost(int id)
+        {
+            Post post = await _postService.GetById(id);
+
+            if (post != null)
+            {
+                await _postService.TDelete(post);
+                ModelState.AddModelError("", "Silme İşlemi Başarılı");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Silme İşlemi Başarısız");
+
+            }
+            return RedirectToAction("MyPostList");
+        }
+
+
 
         [HttpGet]
         public async Task<IActionResult> AddPost()
@@ -196,6 +222,58 @@ namespace BlogProjectOnion.Presentation.Controllers
 
 
         [HttpGet]
+        public async Task<IActionResult> UpdatePost(int id)
+        {
+
+            UpdatePostDTO updatePost = _mapper.Map<UpdatePostDTO>(await _postService.GetById(id));
+            updatePost.Genres = await _genreService.TGetDefaults();
+            if (updatePost == null)
+                return RedirectToAction("MyPostList", "Post");
+            else
+                return View(updatePost);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdatePost(UpdatePostDTO updatePost)
+        {
+
+            Post post = await _postService.GetById(updatePost.Id);
+
+            if (post == null)
+                return View();
+            else
+            {
+                if (updatePost.UploadPath != null)
+                {
+                    if (updatePost.ImagePath != null)
+                    {
+                        var oldImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/", post.ImagePath);
+
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
+
+                    updatePost.ImagePath = $"images/{Guid.NewGuid()}" + Path.GetExtension(updatePost.UploadPath.FileName);
+                    SaveImage.ImagePath(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/", updatePost.ImagePath), updatePost);
+
+                }
+
+                _mapper.Map(updatePost, post);
+                await _postService.TUpdate(post);
+                return RedirectToAction("MyPostList", "Post");
+            }
+
+
+
+        }
+
+
+
+        [HttpGet]
         public async Task<IActionResult> GenreList()
         {
             List<Genre> genres = _mapper.Map<List<Genre>>(await _genreService.TGetDefaults());
@@ -205,3 +283,5 @@ namespace BlogProjectOnion.Presentation.Controllers
 
     }
 }
+
+

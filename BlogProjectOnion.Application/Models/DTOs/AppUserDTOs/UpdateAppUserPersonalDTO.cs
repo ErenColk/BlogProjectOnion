@@ -15,7 +15,7 @@ namespace BlogProjectOnion.Application.Models.DTOs.AppUserDTOs
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string UserName { get; set; }
-        public string ImagePath { get; set; }
+        //public string ImagePath { get; set; }
         public IFormFile UploadPath { get; set; }
 
         public DateTime UpdatedDate = DateTime.Now;

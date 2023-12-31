@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿
+using AutoMapper;
 using BlogProjectOnion.Application.Helper;
 using BlogProjectOnion.Application.Models.DTOs.AppUserDTOs;
 using BlogProjectOnion.Application.Models.DTOs.CommentDTOs;
@@ -25,8 +26,9 @@ namespace BlogProjectOnion.Presentation.Controllers
         private readonly IPostService _postService;
         private readonly ILikeService _likeService;
         private readonly IAppUserService _appUserService;
+        private readonly IFollowService _followService;
 
-        public ProfileController(UserManager<AppUser> userManager, IAuthorService authorService, IMapper mapper, IPostService postService, ILikeService likeService, IAppUserService appUserService)
+        public ProfileController(UserManager<AppUser> userManager, IAuthorService authorService, IMapper mapper, IPostService postService, ILikeService likeService, IAppUserService appUserService, IFollowService followService)
         {
             _userManager = userManager;
             _authorService = authorService;
@@ -34,6 +36,7 @@ namespace BlogProjectOnion.Presentation.Controllers
             _postService = postService;
             _likeService = likeService;
             _appUserService = appUserService;
+            _followService = followService;
         }
 
         public async Task<IActionResult> Detail(Guid id)
@@ -43,22 +46,31 @@ namespace BlogProjectOnion.Presentation.Controllers
             if (id == Guid.Empty)
             {
                 appUser = await _userManager.GetUserAsync(HttpContext.User);
-                ViewData["IsUser"] = "true";
+                ViewData["IsUser"] = false;
+                ViewData["IsOpenedSettings"] = "true";
             }
             else
             {
                 appUser = await _userManager.FindByIdAsync(id.ToString());
                 TempData["id"] = id;
+                ViewData["IsUser"] = true;
             }
 
             AppUserVM appUserVM = _mapper.Map<AppUserVM>(appUser);
-          
 
             foreach (Like item in await _likeService.TGetByInclude(x => x.AppUserId == appUser.Id))
             {
                 if (item.Post.Status != Status.Passive)
                     appUserVM.Posts.Add(await _postService.TGetDefault(x => x.Id == item.PostId));
             }
+
+            foreach (Follow item in await _followService.TGetDefaults(x=>x.AppUserId == appUser.Id))
+            {
+                item.Author = await _authorService.TGetFilteredInclude(x=>x.Id == item.AuthorId,include: q=>q.Include(x=>x.Posts));
+                appUserVM.Follows.Add(item);
+
+            }
+
 
             return View(appUserVM);
         }
@@ -91,55 +103,76 @@ namespace BlogProjectOnion.Presentation.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(int id)
         {
-
-
-
             Expression<Func<Author, object>>[] includes = new Expression<Func<Author, object>>[]
             {
                 x=>x.Posts,x=>x.Follows
             };
 
+            Author author = _mapper.Map<Author>(await _authorService.TGetInclude(x => x.Id == id && (x.Status != Status.Passive), includes));
 
-            AuthorVM authorVM = _mapper.Map<AuthorVM>(await _authorService.TGetInclude(x => x.Id == id && x.Status == Domain.Enums.Status.Active || x.Status == Status.Modified, includes));
             foreach (var item in await _postService.TGetDefaults(x => x.Status == Status.Passive))
             {
-                authorVM.Posts.Remove(item);
-
+                author.Posts.Remove(item);
             }
-
-            Author author = _mapper.Map<Author>(authorVM);
-
             AppUser appUser = await _appUserService.TGetDefault(x => x.Author.Id == id);
             appUser.Author = author;
 
+
+            AppUser loggedInUser = await _userManager.GetUserAsync(HttpContext.User);
+            if (appUser.Author.Follows.Where(x => x.AppUserId == loggedInUser.Id).ToList().Count <= 0)
+            {
+                ViewData["InFollow"] = false;
+            }
+            else
+            {
+                ViewData["InFollow"] = true;
+            }
             return View(appUser);
+
         }
 
 
 
 
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> AddFollow(int id)
         {
+            AppUser appUser = await _userManager.GetUserAsync(HttpContext.User);
 
-            return View();
+            if (appUser != null)
+            {
+                Follow follow = new Follow()
+                {
+                    AppUserId = appUser.Id,
+                    AuthorId = id
+                };
+
+                await _followService.TCreate(follow);
+            }
+            return RedirectToAction("Index", new { id = id });
         }
 
 
-        [HttpGet]
-        public async Task<IActionResult> RemoveFloow(int id)
+        [HttpPost]
+        public async Task<IActionResult> RemoveFollow(int id)
         {
 
+            AppUser appUser = await _userManager.GetUserAsync(HttpContext.User);
 
-            return View();
+            if (appUser != null)
+            {
+                Follow follow = await _followService.TGetDefault(x => x.AppUserId == appUser.Id && x.AuthorId == id);
+                await _followService.THardDelete(follow);
+
+            }
+
+            return RedirectToAction("Index", new { id = id });
         }
 
 
-        //TODOO : USER LASTNAME FİRSTNAME EKLE APPUSER İÇERİSİNE
         [HttpPost]
         public async Task<IActionResult> UpdatePrivate(UpdateAppUserPersonalDTO appUserDTO)
         {
-
 
             AppUser appUser = await _appUserService.TGetFilteredInclude(x => x.Id == appUserDTO.Id, q => q.Include(x => x.Author));
 
@@ -147,8 +180,8 @@ namespace BlogProjectOnion.Presentation.Controllers
 
             if (appUserDTO.UploadPath != null)
             {
-
                 appUser.ImagePath = $"images/{Guid.NewGuid()}" + Path.GetExtension(appUserDTO.UploadPath.FileName);
+
                 SaveImage.ImagePath(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/", appUser.ImagePath), appUserDTO);
             }
 
@@ -157,7 +190,7 @@ namespace BlogProjectOnion.Presentation.Controllers
             {
                 appUser.Author.FirstName = appUser.FirstName;
                 appUser.Author.LastName = appUser.LastName;
-
+                appUser.Author.ImagePath = appUser.ImagePath;
             }
 
             await _userManager.UpdateAsync(appUser);

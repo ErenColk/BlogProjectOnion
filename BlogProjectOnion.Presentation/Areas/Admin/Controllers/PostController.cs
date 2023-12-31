@@ -53,21 +53,14 @@ namespace BlogProjectOnion.Presentation.Areas.Admin.Controllers
              where: x => x.Status == Status.Active || x.Status == Status.Modified, null,
              include: q => q.Include(x => x.Likes).Include(x => x.Genre)));
 
+          
+
             return View(result);
         }
 
-
-        //TODOO BURAYA GÖZ AT ID YI FARKLI ÇEKMEYE ÇALIŞ
         [HttpGet]
         public async Task<IActionResult> AddPost()
         {
-
-            //AppUser user = await _userManager.GetUserAsync(HttpContext.User);
-            //AppUser appUser = await _userManager.Users.Include(x => x.Author).Where(x => x == user).FirstOrDefaultAsync();
-
-            //await _userManager.GetUserAsync(HttpContext.User);
-            //appUser.Author = _authorService.TGetDefault(x=>x)
-
 
             AppUser appUser = await _userManager.Users.Include(x => x.Author).FirstOrDefaultAsync(x => x.Id == _userManager.GetUserAsync(HttpContext.User).Result.Id);
             CreatePostVM createPostVM = new CreatePostVM()
@@ -258,11 +251,14 @@ namespace BlogProjectOnion.Presentation.Areas.Admin.Controllers
             {
                 if (updatePost.UploadPath != null)
                 {
-                    var oldImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/", post.ImagePath);
-
-                    if (System.IO.File.Exists(oldImagePath))
+                    if (updatePost.ImagePath != null)
                     {
-                        System.IO.File.Delete(oldImagePath);
+                        var oldImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/", post.ImagePath);
+
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
                     }
 
                     updatePost.ImagePath = $"images/{Guid.NewGuid()}" + Path.GetExtension(updatePost.UploadPath.FileName);

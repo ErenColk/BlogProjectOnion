@@ -19,7 +19,6 @@
                         <table class="table mt-4">
                             <thead>
                                 <tr>
-                                    <th scope="col">#</th>
                                     <th scope="col">Ad Soyad  </th>
                                     <th scope="col">Durumu</th>
                                     <th scope="col">Detaylar</th>
@@ -30,7 +29,6 @@
                                 @foreach (var item in Model)
                                 {
                                     <tr>
-                                        <td>@item.Id</td>
                                         <td>@item.FirstName  @item.LastName</td>
                                         <td>@GetEnumDescription.Description(item.Status)</td>
                                         <td><a href="/Admin/Author/DetailAuthor/@item.Id" class="btn btn-outline-primary">Detaylar</a></td>
@@ -40,8 +38,7 @@
 
                             </tbody>
                         </table>
-                        <a href="/Admin/Author/AddAuthor" class="btn btn-outline-primary">Yeni Yazar Girişi </a>
-                        <a style="margin-left:10px" href="/Admin/Genre/DeletedListGenre" class="btn btn-outline-danger">Silinen Yazarlar</a>
+                        <a style="margin-left:10px" href="/Admin/Author/DeletedListAuthor" class="btn btn-outline-danger">Silinen Yazarlar</a>
                     </div>
                 </div>
             </div>
