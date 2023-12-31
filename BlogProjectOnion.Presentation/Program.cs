@@ -46,8 +46,7 @@ namespace BlogProjectOnion.Presentation
             builder.Services.AddIdentity<AppUser, AppRole>(options => {
             
                 options.User.RequireUniqueEmail = true;
-            
-            
+                                      
             }).AddEntityFrameworkStores<AppDbContext>().AddErrorDescriber<AppUserIdentityValidator>();
 
             builder.Services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
@@ -59,12 +58,14 @@ namespace BlogProjectOnion.Presentation
             builder.Services.AddTransient<IGenreRepository,GenreRepository>();
             builder.Services.AddTransient<ILikeRepository,LikeRepository>();
             builder.Services.AddTransient<IPostRepository,PostRepository>();
+            builder.Services.AddTransient<IFollowRepository,FollowRepository>();
 
             builder.Services.AddTransient<IAuthorService, AuthorManager>();
             builder.Services.AddTransient<ICommentService, CommentManager>();
             builder.Services.AddTransient<IGenreService, GenreManager>();
             builder.Services.AddTransient<ILikeService, LikeManager>();
             builder.Services.AddTransient<IPostService, PostManager>();
+            builder.Services.AddTransient<IFollowService, FollowManager>();
 
             builder.Services.ConfigureApplicationCookie(options =>
             {

@@ -1,0 +1,60 @@
+﻿@using BlogProjectOnion.Application.Models.DTOs.AppUserDTOs
+
+@{
+    ViewData["Title"] = "DetailUser";
+}
+
+@model DetailAppUserDto
+
+<div class="content">
+    <div class="container-fluid">
+        <h4 class="page-title">ÜYE</h4>
+        <div class="row">
+            <div class="col-md-5">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Üye İşlemleri</div>
+                    </div>
+                    <table class="table">
+                        <tr>
+                            <td scope="col">ID: </td>
+                            <td>@Model.Id</td>
+                        </tr>
+                        <tr>
+                            <td scope="col">Üye Ad Soyad:</td>
+                            <td>@Model.FirstName  @Model.LastName</td>
+
+                        </tr>
+                        <tr>
+                            <td scope="col">Fotoğrafı:</td>
+                            @if (Model.ImagePath == null)
+                            {
+                                <td>
+                                    <p>Daha önce fotoğraf eklenmemiş</p>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <img name="ImagePath" src="/@Model.ImagePath" style="width:50px;height:50px;" />
+                                </td>
+                            }
+                        </tr>
+                        <tr>
+                            <td scope="col">Oluşturulma Tarihi:</td>
+                            <td>@Model.CreatedDate.ToShortDateString()</td>
+                        </tr>
+                        <tr>
+                            <td scope="col">Durumu :</td>
+                            <td>@GetEnumDescription.Description(Model.Status)</td>
+                        </tr>
+                    </table>
+                    <div class="col-md-12" style="margin-bottom:10px">
+                        <a href="/Admin/User/UserList" class="btn btn-outline-danger">Geri Dön </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

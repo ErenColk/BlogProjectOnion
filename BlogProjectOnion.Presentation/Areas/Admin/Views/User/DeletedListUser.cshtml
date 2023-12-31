@@ -1,0 +1,51 @@
+﻿@using BlogProjectOnion.Application.Models.DTOs.AppUserDTOs
+
+@{
+    ViewData["Title"] = "DeletedListUser";
+}
+
+
+@model List<DetailAppUserDto>
+
+<div class="content">
+    <div class="container-fluid">
+        <h4 class="page-title">SİLİNEN ÜYELER </h4>
+        <div class="row">
+            <div class="col-md-10">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Üye İşlemleri</div>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="AddAgainGenre" method="post">
+                            <table class="table mt-4">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Üye Adı</th>
+                                        <th scope="col">Durumu</th>
+                                        <th scope="col">Eklenme Zamanı</th>
+                                        <th scope="col">Silinme Zamanı</th>
+                                        <th scope="col">İşlem</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@item.FirstName  @item.LastName</td>
+                                            <td>@GetEnumDescription.Description(item.Status)</td>
+                                            <td>@item.CreatedDate</td>
+                                            <td>@item.DeletedDate</td>
+                                            <td><a type="submit" href="/Admin/User/AddAgainUser/@item.Id" class="btn btn-outline-success">Tekrar Ekle</a></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            <a href="/Admin/User/UserList" class="btn btn-outline-primary mt-1">Listeye Geri Dön</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

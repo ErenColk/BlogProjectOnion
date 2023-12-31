@@ -14,6 +14,7 @@ namespace BlogProjectOnion.Application.Models.VMs.AppUserVMs
         {
             Posts = new List<Post>();
             Likes = new List<Like>();
+
         }
         public Guid Id { get; set; }
         public string PhoneNumber { get; set; }
@@ -28,6 +29,7 @@ namespace BlogProjectOnion.Application.Models.VMs.AppUserVMs
         public string About { get; set; }
         public List<Post> Posts{ get; set; }
         public List<Like> Likes { get; set; }
+        public List<Follow> Follows { get; set; }
         public Author Author { get; set; }
 
 

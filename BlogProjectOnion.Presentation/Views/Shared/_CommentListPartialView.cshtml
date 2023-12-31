@@ -13,11 +13,11 @@
         <div class="media-body" style="display: flex; align-items: center;">
             @if (item.AppUser.ImagePath == "" || item.AppUser.ImagePath == null)
             {
-                @* <a class="pull-left" href="/Profile/Index/{@item.AppUser.Id}"> *@<img class="media-object" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="">@* </a> *@
+               <img class="media-object" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="">
             }
             else
             {
-                @* <a class="pull-left" href="/Profile/Index/{@item.AppUser.Id}"> *@<img class="media-object" src="/@item.AppUser.ImagePath" alt="">@* </a> *@
+                <img class="media-object" style=" width: 100px;" src="/@item.AppUser.ImagePath" alt="">
             }
 
             <div style="margin-left: 15px;padding:0px;margin-top:15px ">
@@ -36,9 +36,10 @@
 
 <style>
     .media-object {
-        width: 50px;
-        height:50px;
+       max-width: 80px !important;
+        height:80px;
         border-radius: 15px;
+        background-size:contain;
     }
 
 </style>

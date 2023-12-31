@@ -1,0 +1,103 @@
+﻿@using BlogProjectOnion.Application.Models.DTOs.PostDTOs;
+@{
+    ViewData["Title"] = "UpdatePost";
+}
+
+@model UpdatePostDTO
+
+<div class="row myPost" >
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Makale Ekleme</div>
+            </div>
+            <form asp-action="UpdatePost" class="update-form" method="post" enctype="multipart/form-data">
+                <input type="hidden" asp-for="AuthorId" />
+                <input type="hidden" asp-for="ImagePath" />
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="text">Makale Başlığı</label>
+                        <input type="text" asp-for="Title" class="form-control" id="text" placeholder="Başlık Girişi">
+                        <small id="emailHelp" class="form-text text-muted">Lütfen Konuyla Alakalı Başlık Seçiniz...</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="smallSelect">Kategori Seç</label>
+                        <select asp-for="GenreId" class="form-control form-control-sm">
+                            @foreach (var item in Model.Genres)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="comment"><strong>İÇERİK</strong></label>
+                        <textarea id="summernote" asp-for="Content" class="form-control" rows="5"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="ImagePath"><strong>ÖNCEKİ BAŞLIK FOTOĞRAFI</strong></label>
+                        @if (@Model.ImagePath == null)
+                        {
+                            <p>Daha önce fotoğraf eklenmemiş</p>
+
+                        }
+                        else
+                        {
+                            <div>
+                                <img name="ImagePath" src="/@Model.ImagePath" style="width:200px;height:200px;" />
+                            </div>
+                        }
+
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="UploadPath"><strong>MAKALE BAŞLIK FOTOĞRAFI</strong></label>
+                        <input asp-for="UploadPath" type="file" class="form-control-file" id="exampleFormControlFile1" name="UploadPath">
+                    </div>
+
+                    @* TODO  SADECE KENDİNE AİT MAKALE OLACAK ŞEKİLDE AYARLA *@
+                    @*                 <div class="form-check">
+                    <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" value="">
+                    <span class="form-check-sign">Agree with terms and conditions</span>
+                    </label>
+                    </div> *@
+                </div>
+                <div class="card-action">
+                    <input type="submit" value="Güncelle" class="btn btn-success" />
+                    <a asp-action="MyPostList" class="btn btn-danger">Geri Dön</a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<div id="summernote"></div>
+<script>
+    $('#summernote').summernote({
+        placeholder: 'Hello stand alone ui',
+        tabsize: 2,
+        height: 120,
+
+    });
+</script>
+
+
+<style>
+    .card-action{
+        margin-left:10px;
+        margin-bottom:10px
+    }
+
+    .card-body {
+        display:flex;
+        flex-direction:column;
+        gap:30px
+    }
+      .myPost {
+         
+        padding:30px
+    }
+</style>

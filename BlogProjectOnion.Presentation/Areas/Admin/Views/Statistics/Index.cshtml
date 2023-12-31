@@ -1,0 +1,191 @@
+﻿@using BlogProjectOnion.Application.Models.VMs.StatisticsVMs
+@{
+    ViewData["Title"] = "Index";
+}
+
+@model ResultStatisticsVM
+
+<div class="main-panel" style="width:100%">
+    <div class="content">
+        <div class="container-fluid">
+            <h4 class="page-title">İSTATİSTİKLER</h4>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card card-stats card-warning">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-5">
+                                    <div class="icon-big text-center">
+                                        <i class="la la-pencil-square"></i>
+                                    </div>
+                                </div>
+                                <div class="col-7 d-flex align-items-center">
+                                    <div class="numbers">
+                                        <p class="card-category">Toplam Yazar</p>
+                                        <h4 class="card-title">@Model.Authors.Count</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card card-stats card-success">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-5">
+                                    <div class="icon-big text-center">
+                                        <i class="la la-users"></i>
+                                    </div>
+                                </div>
+                                <div class="col-7 d-flex align-items-center">
+                                    <div class="numbers">
+                                        <p class="card-category">Toplam Üye</p>
+                                        <h4 class="card-title">@Model.AppUsers.Count</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card card-stats card-danger">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-5">
+                                    <div class="icon-big text-center">
+                                        <i class="la la-book"></i>
+                                    </div>
+                                </div>
+                                <div class="col-7 d-flex align-items-center">
+                                    <div class="numbers">
+                                        <p class="card-category">Toplam Makale</p>
+                                        <h4 class="card-title">@Model.Posts.Count</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card card-stats card-primary">
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-5">
+                                    <div class="icon-big text-center">
+                                        <i class="la la-eye"></i>
+                                    </div>
+                                </div>
+                                <div class="col-7 d-flex align-items-center">
+                                    <div class="numbers">
+                                        <p class="card-category">Toplam Okunma</p>
+                                        <h4 class="card-title">@Model.TotalRead</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">@DateTime.Now.Year İstatistik</h4>
+                            <p class="card-category">
+                                Ay bazında makale eklenme sayısı
+                            </p>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="salesChart" class="chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header ">
+                            <h4 class="card-title">Tablo</h4>
+                            <p class="card-category">En Çok Okunan İlk 10 Makale</p>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-head-bg-success table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Yazar Adı</th>
+                                        <th scope="col">Makale Başlığı</th>
+                                        <th scope="col">Tıklanma Sayısı</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int i = 0; i < Model.Top10Posts.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>@(i + 1)</td>
+                                            <td>@Model.Top10Posts[i].Author.FirstName    @Model.Top10Posts[i].Author.LastName</td>
+                                            @if(Model.Top10Posts[i].Title.Length >= 80)
+                                            {
+                                                <td>@Model.Top10Posts[i].Title.Substring(0,79)...</td>
+                                            }
+                                            else
+                                            {
+                                                <td>@Model.Top10Posts[i].Title</td>
+                                                
+                                            }
+                                            <td>@Model.Top10Posts[i].ClickCount</td>
+                                        </tr>
+
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            url: "/Admin/Statistics/HandleCountPost",
+            success: function (response) {
+                SendDays(response);
+            }
+        })
+    })
+
+    function SendDays(response) {
+
+        var salesData = {
+            labels: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'],
+            datasets: [{
+                label: 'Makale sayısı',
+                data: response,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        var ctx = document.getElementById('salesChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: salesData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+</script>

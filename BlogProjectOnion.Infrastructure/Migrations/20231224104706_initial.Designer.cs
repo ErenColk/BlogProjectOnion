@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogProjectOnion.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231216182907_addAbout")]
-    partial class addAbout
+    [Migration("20231224104706_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -66,8 +66,8 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("52e52a1d-1682-465a-b8e6-83ae26b02356"),
-                            ConcurrencyStamp = "b2e0eef8-e0fc-4100-a41f-d0747c62d62a",
+                            Id = new Guid("136ce4ba-3f5b-4109-b2f1-b68e35336231"),
+                            ConcurrencyStamp = "c2e14214-4864-4695-8322-519c1e89adeb",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "User",
                             NormalizedName = "USER",
@@ -75,8 +75,8 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("9ce12a0c-2a72-4940-9a74-6e52dbc3352a"),
-                            ConcurrencyStamp = "2cf67746-f821-4715-9cd5-e474612b877b",
+                            Id = new Guid("68a24fbe-086a-4480-a4ef-2dac755d4af5"),
+                            ConcurrencyStamp = "5d947d44-32f1-4d99-8e1c-311ee121e165",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Admin",
                             NormalizedName = "ADMIN",
@@ -84,8 +84,8 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("6a530b92-65ae-48c6-9d37-468157d06bf0"),
-                            ConcurrencyStamp = "94616c8b-410b-4f61-ac90-4290056b89f8",
+                            Id = new Guid("f99ac9f6-1529-42c0-92d3-7f38dcd5e3fb"),
+                            ConcurrencyStamp = "702e9386-e6ba-45e3-a4a9-673b7d4f71c9",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Author",
                             NormalizedName = "AUTHOR",
@@ -105,7 +105,7 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("Addres")
+                    b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("AuthorId")
@@ -285,10 +285,7 @@ namespace BlogProjectOnion.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("AppUserId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("AppUserId1")
+                    b.Property<Guid>("AppUserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("AuthorId")
@@ -308,7 +305,7 @@ namespace BlogProjectOnion.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId1");
+                    b.HasIndex("AppUserId");
 
                     b.HasIndex("AuthorId");
 
@@ -569,8 +566,8 @@ namespace BlogProjectOnion.Infrastructure.Migrations
             modelBuilder.Entity("BlogProjectOnion.Domain.Entities.Follow", b =>
                 {
                     b.HasOne("BlogProjectOnion.Domain.Entities.AppUser", "AppUser")
-                        .WithMany("Floows")
-                        .HasForeignKey("AppUserId1")
+                        .WithMany("Follows")
+                        .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -678,7 +675,7 @@ namespace BlogProjectOnion.Infrastructure.Migrations
                 {
                     b.Navigation("Comments");
 
-                    b.Navigation("Floows");
+                    b.Navigation("Follows");
 
                     b.Navigation("Likes");
                 });

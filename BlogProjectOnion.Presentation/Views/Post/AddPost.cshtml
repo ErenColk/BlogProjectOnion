@@ -17,6 +17,7 @@
                 </div>
                 <form asp-action="AddPost" method="post" enctype="multipart/form-data">
                     <input type="hidden" asp-for="AuthorId" />
+                    <input type="hidden" asp-for="Genres" />
                     <div class="card-body">
                         <div class="form-group">
                             <label for="text">Makale Başlığı</label>
