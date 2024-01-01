@@ -23,14 +23,22 @@
 ```js
  "AllowedHosts": "*",
  "ConnectionStrings": {
-   "conStr": "Server=[Server adı] ;Database=[Database adı] ;Uid= [Username] ;Pwd= [Parola] "
+   "conStr":"Server=[Server adı];Database=[Database adı];Uid=[Username];Pwd=[Parola] "
  }
 ```
 **3.ADIM :**  Set as Startup Project olarak **"Presentation"** katmanını seçip Package Manager Console açıp Default Project olarak **"Infrastructure"** katmanını seçmelisiniz.  
 
-**4.SON ADIM :**  Package Console Manager kısmına aşağıdaki belirtilen kodları sırasıyla yazmalısınız.
+**4.SON ADIM :**  Package Console Manager kısmına aşağıdaki belirtilen kodları sırasıyla yazmalısınız. Artık projeyi çalıştırabilirsiniz.
+
+```js
+ add-migration [Migration adı]
 
 
+```
+
+```js
+ update-database
+```
 # SİTEYE AİT GÖRSELLER
 <img src="https://github.com/ErenColk/BlogProjectOnion/assets/137501644/a479ed88-5a8d-4653-acc6-7c0fd74a6cd8" alt="HomePage">
 <br/>
