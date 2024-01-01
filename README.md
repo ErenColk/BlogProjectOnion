@@ -2,6 +2,35 @@
   <p>Blog Yönetim Sistemi, kullanıcılara üye ve yazar olarak iki ayrı rolde katılma imkanı tanıyan bir ASP.NET MVC Core uygulamasıdır. Üyeler, sisteme kayıt olarak yazarları takip edebilir, yayınlanan makaleleri okuyabilir. Ayrıca, yazarlar kendi makalelerini oluşturabilir ve paylaşabilirler. Takip etme özelliği sayesinde kullanıcılar, ilgi duydukları yazarları ve konuları daha yakından takip edebilirler.</p>
   <p>Ayrıca, sistemin yöneticileri için özel bir Admin Paneli bulunmaktadır. Admin Paneli üzerinden site içindeki kullanıcıları yönetebilir, istenmeyen içerikleri denetleyebilir ve genel sistemi kontrol edebilirsiniz. Bu sayede, site üzerindeki etkileşimleri izlemek ve yönetmek daha kolay hale gelir.</p>
 
+# Projede Öne Çıkanlar 
+
+**Performans Odaklı Tasarım:** Projede, performansı artırmak adına AJAX yapısını kullanarak daha kullanılabilir bir deneyim sunmaya özen gösterdim. Ayrıca, tasarım kısmında kullanıcı dostu bir arayüz ve açık renkler tercih ettim.
+
+**Güvenlik ve Kimlik Doğrulama:** Admin panelini, Area yapısıyla özelleştirdim ve kimlik doğrulama işlemleri için Identity yapısını kullandım. Ayrıca, kayıt olma esnasında  mail üzerinden gelen kodlarla güvenli bir kayıt sürecini MailKit kütüphanesi ile sağladım.
+
+**Validasyon İşlemleri:** Fluent Validation kütüphanesinden faydalanarak, veri girişlerinde doğrulama işlemlerini daha etkili bir şekilde yönettim. Projenin büyük bir kısmında validation işlemleri sağlandı.
+
+**Grafik İşlemleri:** Projede, verilerin daha etkili bir şekilde görselleştirilmesi amacıyla grafikler kullanılarak yönetici panelinde çeşitli analitik veri gösterimleri sağlandı. Bu işlemde Chart kontrolü kullanılarak veri setleri grafiklere dönüştürüldü.
+
+# Projeyi Çalıştırma Adımları:
+
+**1.ADIM :** Projeyi localde çalıştırabilmek için Clone edebilir veya Code kısmında yazan Open with Visual Studio yazan sekmeye tıklayarak projeyi locale taşıyabilirsiniz. 
+
+![image](https://github.com/ErenColk/BlogProjectOnion/assets/137501644/eb84befc-3e1c-46a4-96b5-cfce20686d8d)
+
+**2.ADIM :** İndirilen projede appsettings.json dosyasına gelerek uygulamanın veritabanına bağlanmak için kullanacağı bağlantı dizesini şekildeki gibi doldurmanız gerekiyor.
+
+```js
+ "AllowedHosts": "*",
+ "ConnectionStrings": {
+   "conStr": "Server=[Server adı] ;Database=[Database adı] ;Uid= [Username] ;Pwd= [Parola] "
+ }
+```
+**3.ADIM :**  Set as Startup Project olarak **"Presentation"** katmanını seçip Package Manager Console açıp Default Project olarak **"Infrastructure"** katmanını seçmelisiniz.  
+
+**4.SON ADIM :**  Package Console Manager kısmına aşağıdaki belirtilen kodları sırasıyla yazmalısınız.
+
+
 # SİTEYE AİT GÖRSELLER
 <img src="https://github.com/ErenColk/BlogProjectOnion/assets/137501644/a479ed88-5a8d-4653-acc6-7c0fd74a6cd8" alt="HomePage">
 <br/>
