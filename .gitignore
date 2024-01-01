@@ -362,3 +362,6 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /BlogProjectOnion.Presentation/appsettings.json
+/BlogProjectOnion.Infrastructure/Migrations/20231224104706_initial.cs
+/BlogProjectOnion.Infrastructure/Migrations/20231231190930_newinitial.cs
+/BlogProjectOnion.Infrastructure/Migrations/AppDbContextModelSnapshot.cs
