@@ -16,7 +16,14 @@
                         <div class="underlay" style="margin-top:100px">                  
                             <a href="/Post/Index/@item.Id" class="card-link" style="padding:0px">
                                 <div class="card">
+                                @if (item.ImagePath == "" || item.ImagePath == null)
+                                {
+                                    <div class="card-img-top" style="background-image: url('/Ready-Bootstrap-Dashboard-master/assets/img/defaultPost.jpg'); background-position:center;background-size: cover;"></div>
+                                }
+                                else
+                                {
                                     <div class="card-img-top" style="background-image: url('/@item.ImagePath'); background-position:center;background-size: cover;"></div>
+                                }
                                     <div class="card-block" style="padding:5px">
                                         @if (item.Title.Length > 60)
                                         {
