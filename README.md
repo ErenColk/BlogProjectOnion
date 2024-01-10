@@ -40,7 +40,20 @@
  update-database
 ```
 # SİTEYE AİT GÖRSELLER
+
 <img src="https://github.com/ErenColk/BlogProjectOnion/assets/137501644/a479ed88-5a8d-4653-acc6-7c0fd74a6cd8" alt="HomePage">
+<br/>
+<hr/>
+<br/>
+<img src="https://github.com/ErenColk/BlogProjectOnion/assets/137501644/51cecec9-9064-4a2a-a50f-6374a75772c2" alt="Articles">
+<br/>
+<hr/>
+<br/>
+<img src="https://github.com/ErenColk/BlogProjectOnion/assets/137501644/e028c789-62a8-4303-ae3f-cc1038e665bc" alt="filltredarticle">
+<br/>
+<hr/>
+<br/>
+<img src="https://github.com/ErenColk/BlogProjectOnion/assets/137501644/40d52aef-d03a-4ec6-9fe3-dd78d534df15" alt="filteredArticle2">
 <br/>
 <hr/>
 <br/>
@@ -87,18 +100,6 @@
 <hr/>
 <br/>
 <img src="https://github.com/ErenColk/BlogProjectOnion/assets/137501644/6c16795d-a4f1-4c7e-9f92-93e0a9328ab3" alt="EditArticle">
-<br/>
-<hr/>
-<br/>
-<img src="https://github.com/ErenColk/BlogProjectOnion/assets/137501644/51cecec9-9064-4a2a-a50f-6374a75772c2" alt="Articles">
-<br/>
-<hr/>
-<br/>
-<img src="https://github.com/ErenColk/BlogProjectOnion/assets/137501644/e028c789-62a8-4303-ae3f-cc1038e665bc" alt="filltredarticle">
-<br/>
-<hr/>
-<br/>
-<img src="https://github.com/ErenColk/BlogProjectOnion/assets/137501644/40d52aef-d03a-4ec6-9fe3-dd78d534df15" alt="filteredArticle2">
 <br/>
 <hr/>
 <br/>
